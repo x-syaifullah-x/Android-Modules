@@ -4,6 +4,7 @@ include(
         ":annotation",
         ":common-test",
         ":common-model",
+        ":exception-handler",
         ":started-android-application",
         ":started-android-library",
         ":started-java-library",

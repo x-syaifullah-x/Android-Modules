@@ -1,0 +1,2 @@
+apply from: "$rootDir/common_java_library.gradle"
+apply from: "$rootDir/maven_publish_java.gradle"
