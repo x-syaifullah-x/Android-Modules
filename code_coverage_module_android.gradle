@@ -1,0 +1,110 @@
+apply plugin: "jacoco"
+
+/*
+    running :
+                ./gradlew :module_name:testDebugUnitTest &&\
+                ./gradlew :module_name:connectedDebugAndroidTest &&\
+                ./gradlew :module_name:debugCodeCoverage
+    result  :   ${module_name}/build/${module_name}-code-coverage
+*/
+jacoco {
+    toolVersion = "$vJacoco"
+    reportsDirectory = layout.buildDirectory.dir("$buildDir/${project.name}-code-coverage")
+}
+
+android {
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+    }
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+}
+
+project.afterEvaluate {
+
+    (android.hasProperty('applicationVariants')
+            ? android.'applicationVariants'
+            : android.'libraryVariants').all { variant ->
+
+        def variantName = variant.name
+        def testVariantNameCodeCoverageTask = "${variantName.toLowerCase()}CodeCoverage"
+
+        tasks.create(
+                name: "${testVariantNameCodeCoverageTask}",
+                type: JacocoReport,
+                dependsOn: [
+//                        "testDebugUnitTest",
+//                        "connectedCheck",
+//                        "connectedDebugAndroidTest"
+                ]
+        ) {
+            group = "Reporting"
+            description = "Generate Jacoco coverage reports for the ${variantName.capitalize()} build"
+
+            reports {
+                html.required.set(true)
+                xml.required.set(true)
+                csv.required.set(true)
+            }
+
+            def fileFilter = [
+                    '**/R.class',
+                    '**/R$*.class',
+                    '**/BuildConfig.*',
+                    '**/Manifest*.*',
+                    '**/*Test*.*',
+                    '**/com/example/databinding/*',
+                    '**/com/example/generated/callback/*',
+                    '**/android/databinding/*',
+                    '**/androidx/databinding/*',
+                    '**/di/module/*',
+                    '**/*MapperImpl*.*',
+                    '**/*$ViewInjector*.*',
+                    '**/*$ViewBinder*.*',
+                    '**/BuildConfig.*',
+                    '**/*Component*.*',
+                    '**/*BR*.*',
+                    '**/*Module.*', /* filtering Dagger modules classes */
+                    '**/*Dagger*.*',/* filtering Dagger-generated classes */
+                    '**/*MembersInjector*.*',
+                    '**/*_Factory*.*',
+                    '**/*_Provide*Factory*.*',
+                    '**/*Args*.*', /* filtering Navigation Component generated classes */
+                    '**/*Directions*.*' /* filtering Navigation Component generated classes */,
+//                    '**/*$Lambda$*.*',
+//                    '**/*Companion*.*',
+//                    '**/*Extensions*.*',
+//                    '**/*$Result.*', /* filtering `sealed` and `data` classes */
+//                    '**/*$Result$*.*',/* filtering `sealed` and `data` classes */
+            ]
+
+            classDirectories.setFrom(files([
+                    fileTree(dir: "$buildDir/tmp/kotlin-classes/$variantName", excludes: fileFilter),
+            ]))
+
+            def coverageSourceDirs = [
+                    "$project.rootDir/$project.name/src/main/java",
+            ]
+
+            additionalSourceDirs.setFrom(files(coverageSourceDirs))
+            sourceDirectories.setFrom(files(coverageSourceDirs))
+
+            File dirConnected = new File("${project.buildDir}/outputs/code_coverage/debugAndroidTest/connected")
+            String deviceName = ""
+            for (String name : dirConnected.list()) {
+                if (!name.isBlank()) {
+                    deviceName = name
+                }
+            }
+            executionData(files([
+                    "${project.buildDir}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                    "${project.buildDir}/outputs/code_coverage/debugAndroidTest/connected/$deviceName/coverage.ec"
+            ]))
+        }
+    }
+}

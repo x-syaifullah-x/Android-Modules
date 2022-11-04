@@ -1,0 +1,12 @@
+apply from: "$rootDir/common_android_application.gradle"
+
+android {
+    String packageName = "id.xxx.started"
+    namespace packageName
+    testNamespace "${packageName}.test"
+}
+
+dependencies {
+
+    implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
+}

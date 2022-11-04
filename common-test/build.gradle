@@ -1,0 +1,12 @@
+apply from: "$rootDir/common_java_library.gradle"
+apply from: "$rootDir/maven_publish_java.gradle"
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    api "junit:junit:$vJunit"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-test:$vKotlinCoroutines"
+    api "org.json:json:$vOrgGson"
+    api "org.mockito:mockito-core:$vMockito"
+    api "org.mockito:mockito-inline:$vMockito"
+}

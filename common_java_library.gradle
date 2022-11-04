@@ -1,0 +1,15 @@
+apply plugin: "java-library"
+apply plugin: "kotlin"
+
+apply from: "$rootDir/code_coverage_module_java.gradle"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    testImplementation project(":common-test")
+}

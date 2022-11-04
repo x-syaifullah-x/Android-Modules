@@ -1,0 +1,11 @@
+apply plugin: "com.android.library"
+
+apply from: "$rootDir/common_android.gradle"
+apply from: "$rootDir/code_coverage_module_android.gradle"
+
+android {
+
+    String packageName = "id.xxx.module.${projectDir.name.replace("-", "_")}"
+    namespace packageName
+    testNamespace "${packageName}.test"
+}

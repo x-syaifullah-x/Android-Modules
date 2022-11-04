@@ -1,0 +1,72 @@
+/*
+    run :   ./gradlew publishToMavenLocal
+*/
+apply plugin: "maven-publish"
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+
+configurations {
+    runtimeClasspath
+}
+
+afterEvaluate {
+
+    publishing {
+        publications {
+
+            release(MavenPublication) {
+                from components.java
+
+                groupId = "id.xxx.module"
+                artifactId = project.name
+                version = "$vModule"
+
+                artifact(sourceJar)
+
+                versionMapping {
+                    usage("java-api") {
+                        fromResolutionOf("runtimeClasspath")
+                    }
+                    usage("java-runtime") {
+                        fromResolutionResult()
+                    }
+                }
+
+                pom {
+                    name = "Android library"
+                    description = "Description"
+                    url = "http://www.example.com/library"
+                    properties = [
+                            myProp          : "value",
+                            "prop.with.dots": "anotherValue"
+                    ]
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = "x.syafiullah.x"
+                            name = "Syaifullah"
+                            email = "x.syaifullah@gmail.com"
+                        }
+                    }
+                    scm {
+                        connection = "scm:https://github.com/x-syaifullah-x/android-module.git"
+                        developerConnection = "scm:git@github.com:x-syaifullah-x/android-module.git"
+                        url = "https://github.com/x-syaifullah-x/android-module"
+                    }
+                }
+            }
+
+//            debug(MavenPublication) {
+//                from components.java
+//            }
+        }
+    }
+}

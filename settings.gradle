@@ -1,0 +1,8 @@
+rootProject.name = "Android Modules"
+
+include(
+        ":common-test",
+        ":started-android-application",
+        ":started-android-library",
+        ":started-java-library",
+)
