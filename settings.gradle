@@ -6,6 +6,7 @@ include(
         ":common-test",
         ":common-model",
         ":exception-handler",
+        ":io",
         ":started-android-application",
         ":started-android-library",
         ":started-java-library",
