@@ -1,0 +1,6 @@
+<resources>
+
+    <style name="Theme.Application" parent="@style/Theme.AppCompat.Light">
+        <!---->
+    </style>
+</resources>
