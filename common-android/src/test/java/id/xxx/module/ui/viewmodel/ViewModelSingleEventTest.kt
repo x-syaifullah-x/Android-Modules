@@ -1,5 +1,6 @@
 package id.xxx.module.ui.viewmodel
 
+import id.xxx.module.viewmodel.ViewModelSingleEvent
 import org.junit.Assert
 import org.junit.Test
 

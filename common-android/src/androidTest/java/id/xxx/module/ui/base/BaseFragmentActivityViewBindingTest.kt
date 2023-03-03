@@ -11,7 +11,8 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.viewbinding.ViewBinding
 import id.xxx.module.common_android.databinding.ContainerMainBinding
-import id.xxx.module.ktx.fragment.viewBinding
+import id.xxx.module.fragment.base.BaseFragmentActivityViewBinding
+import id.xxx.module.fragment.ktx.viewBinding
 import org.junit.Rule
 import org.junit.Test
 

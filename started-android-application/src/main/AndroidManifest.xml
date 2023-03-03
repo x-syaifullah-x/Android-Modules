@@ -10,7 +10,7 @@
         android:theme="@style/Theme.Application">
 
         <activity
-            android:name="id.xxx.started.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

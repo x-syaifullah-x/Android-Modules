@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.viewbinding.ViewBinding
 import id.xxx.module.common_android.databinding.ContainerMainBinding
 import id.xxx.module.common_android.databinding.ContainerMainChildBinding
+import id.xxx.module.fragment.base.BaseFragmentViewBinding
 import org.junit.Test
 
 class BaseFragmentViewBindingTestTwo {

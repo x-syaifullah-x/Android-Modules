@@ -3,16 +3,16 @@
 */
 apply plugin: "maven-publish"
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.java.srcDirs
-    classifier "sources"
-}
-
 configurations {
     runtimeClasspath
 }
 
 afterEvaluate {
+
+    java {
+//        withJavadocJar()
+        withSourcesJar()
+    }
 
     publishing {
         publications {
@@ -23,8 +23,6 @@ afterEvaluate {
                 groupId = "id.xxx.module"
                 artifactId = project.name
                 version = "$vModule"
-
-                artifact(sourceJar)
 
                 versionMapping {
                     usage("java-api") {

@@ -11,26 +11,33 @@ build_versions.name = "$major.$minor.$patch"
 ext.build_versions = build_versions
 
 ext {
-    vGradle = "7.4.2"
-    vKotlin = "1.8.0"
+    vGradle = "8.0.1"
+    vKotlin = "1.8.20"
 
+    vAndroidxActivity = "1.7.0"
     vAndroidxAppCompat = "1.6.1"
-    vAndroidxAnnotation = "1.3.0" /* more than 1.2.0 must use build_versions.target_sdk = 33 */
+    vAndroidxAnnotation = "1.3.0"
+    vAndroidxArchCore = "2.2.0"
     vAndroidxConcurrent = "1.1.0"
-    vAndroidxCore = "1.9.0" /* more than 1.8.0 must use build_versions.target_sdk = 33 */
+    vAndroidxCore = "1.10.0"
+    vAndroidxConstrainLayout = "2.1.4"
     vAndroidxCustomview = "1.1.0"
+    vAndroidxDrawerLayout = "1.1.1"
     vAndroidxEspresso = "3.5.1"
     vAndroidxFragment = "1.5.5"
     vAndroidxJunit = "1.1.5"
-    vAndroidxLifecycle = "2.5.1"
+    vAndroidxLifecycle = "2.6.1"
     vAndroidxTest = "1.5.0"
     vAndroidxTestMonitor = "1.6.1"
     vJacoco = "0.8.7"
     vJunit = "4.13.2"
     vKotlinCoroutines = "1.6.4"
+    vLeakcanaryAndroid = "2.10"
+    vMaterial = "1.8.0"
     vMockito = "3.12.4"
     vModule = "0.0.001"
-    vOrgGson = "20220924"
+    vOrgGson = "20230227"
+    vSquareupOkhttp3 = "4.10.0"
 }
 
 def addRepos(RepositoryHandler handler) {

@@ -1,0 +1,23 @@
+apply from: "$rootDir/common_android_library.gradle"
+apply from: "$rootDir/maven_publish_android.gradle"
+
+android {
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    implementation project(":auth:auth-domain")
+
+    api "androidx.appcompat:appcompat:$vAndroidxAppCompat"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$vAndroidxLifecycle"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$vAndroidxLifecycle"
+    api "androidx.lifecycle:lifecycle-viewmodel:$vAndroidxLifecycle"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$vAndroidxLifecycle"
+
+    api "com.google.android.material:material:$vMaterial"
+}

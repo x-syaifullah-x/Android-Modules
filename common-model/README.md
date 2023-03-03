@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation "id.xxx.module:model:$vModule"
+    implementation "id.xxx.module:common-model:$vModule"
 }
 ```
 ---

@@ -1,6 +1,5 @@
 .gradle
-local.properties
-build
+.idea
 .cxx
-.idea/*
-code-coveage
+build
+local.properties

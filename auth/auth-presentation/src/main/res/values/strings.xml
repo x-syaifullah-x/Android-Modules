@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_sign_hint_input_phone">Enter your phone</string>
+
+    <string name="sign_in_password_hint_input_password">Enter your password</string>
+    <string name="sign_in_password_hint_input_email">Enter your email</string>
+    <string name="sign_in_password_title">Welcome Back</string>
+    <string name="sign_in_password_sign_in">SIGN IN</string>
+    <string name="sign_in_password_sign_in_with_phone">SIGN IN WITH PHONE</string>
+    <string name="sign_in_password_don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_in_password_sign_up">Sign Up</string>
+    <string name="sign_in_password_remember_me">Remember me</string>
+    <string name="sign_in_password_forget_password">Forget Password?</string>
+
+    <string name="sign_up_password_sign_in_with_phone">SIGN UP WITH PHONE</string>
+    <string name="sign_up_password_sign_up">SIGN UP</string>
+    <string name="sign_up_password_hint_input_password">Enter your password</string>
+    <string name="sign_up_password_hint_input_email">Enter your email</string>
+    <string name="sign_up_password_title">Sign Up</string>
+    <string name="sign_up_password_sign_in">Sign In</string>
+    <string name="sign_up_password_already_have_an_account">Already have an account?</string>
+
+    <string name="sign_or">OR</string>
+</resources>

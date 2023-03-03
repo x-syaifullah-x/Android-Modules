@@ -6,7 +6,8 @@ class ExampleInstrumentedTest {
 
     @Test
     fun useAppContext() {
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        val appContext =
+            InstrumentationRegistry.getInstrumentation().targetContext
         Assert.assertNotNull(appContext)
     }
 }

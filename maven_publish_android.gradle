@@ -3,14 +3,18 @@
 */
 apply plugin: "maven-publish"
 
-task sourceJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier "sources"
-}
-
 configurations {
     runtimeClasspath
 }
+
+//android {
+//    publishing {
+//        singleVariant("release") {
+//            withSourcesJar()
+//            withJavadocJar()
+//        }
+//    }
+//}
 
 afterEvaluate {
 
@@ -23,8 +27,6 @@ afterEvaluate {
                 groupId = "id.xxx.module"
                 artifactId = project.name
                 version = "$vModule"
-
-                artifact(sourceJar)
 
                 versionMapping {
                     usage("java-api") {

@@ -1,13 +1,25 @@
 rootProject.name = "Android Modules"
 
-include(
-        ":annotation",
-        ":common-android",
-        ":common-test",
-        ":common-model",
-        ":exception-handler",
-        ":io",
-        ":started-android-application",
-        ":started-android-library",
-        ":started-java-library",
-)
+ArrayList<File> getAllModuleDirs(File dir) {
+    def moduleDirs = []
+    dir.listFiles(new FileFilter() {
+        @Override
+        boolean accept(File file) {
+            file.isDirectory() && !file.getName().startsWith('.')
+        }
+    }).each { moduleDir ->
+        moduleDirs << moduleDir
+        moduleDirs.addAll(getAllModuleDirs(moduleDir))
+    }
+    return moduleDirs
+}
+
+getAllModuleDirs(rootDir).each { moduleDir ->
+    def modulePath = moduleDir.getAbsolutePath().substring(rootDir.getAbsolutePath().length() + 1)
+    def end = "$modulePath".lastIndexOf("/src")
+    if (end != -1) {
+        def module = "$modulePath".substring(0, end)
+                .replaceAll("/", ":")
+        include ":$module"
+    }
+}

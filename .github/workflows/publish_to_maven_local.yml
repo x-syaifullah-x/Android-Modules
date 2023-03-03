@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          java-version: "11"
-          distribution: "adopt"
+          java-version: "17"
+          distribution: "temurin"
 
       - name: Gradle cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
@@ -39,7 +39,7 @@ jobs:
         run: cd ~ && tar czvf /tmp/id.xxx.module.tar.gz .m2/repository/id/xxx/module
 
       - name: Uploading a module archive
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: module
           path: /tmp/id.xxx.module.tar.gz

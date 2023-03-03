@@ -6,14 +6,7 @@ import androidx.test.runner.AndroidJUnitRunner
 
 class AndroidJUnitRunner : AndroidJUnitRunner() {
 
-    class AppAndroidTest : Application() {
-
-        override fun onCreate() {
-            super.onCreate()
-
-            println("aaaa_aaaa")
-        }
-    }
+    class AppAndroidTest : Application()
 
     override fun newApplication(
         cl: ClassLoader, className: String, context: Context
