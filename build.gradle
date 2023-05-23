@@ -24,7 +24,12 @@ buildscript {
                     details.useVersion "$vAndroidxAppCompat"
                 }
                 if (details.requested.group == "androidx.annotation") {
-                    details.useVersion "$vAndroidxAnnotation"
+                    if ("${details.requested}".contains("androidx.annotation:annotation:")) {
+                        details.useVersion "$vAndroidxAnnotation"
+                    }
+                    if ("${details.requested}".contains("androidx.annotation:annotation-experimental:")) {
+                        details.useVersion "$vAndroidxAnnotationExperimental"
+                    }
                 }
                 if (details.requested.group == "androidx.arch.core") {
                     details.useVersion "$vAndroidxArchCore"
@@ -57,7 +62,7 @@ buildscript {
                         details.useVersion "$vAndroidxTestMonitor"
                     }
                     if ("${details.requested}".contains("androidx.test:core:")) {
-                        details.useVersion "$vAndroidxTest"
+                        details.useVersion "$vAndroidxTestCore"
                     }
                 }
                 if (details.requested.group == "junit") {

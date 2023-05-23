@@ -8,5 +8,5 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-test:$vKotlinCoroutines"
     api "org.json:json:$vOrgGson"
     api "org.mockito:mockito-core:$vMockito"
-    api "org.mockito:mockito-inline:$vMockito"
+    api "org.mockito:mockito-inline:$vMockitoInline"
 }
