@@ -16,7 +16,7 @@ import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 
-class SignInPasswordUtils(
+class SignInPasswordFragmentUtils(
     private val activity: AuthActivity,
     action: ISignInPasswordFragment.Action,
     private val block: (SignInType) -> Flow<Resources<User>>,
@@ -67,21 +67,22 @@ class SignInPasswordUtils(
         )
         val liveData = block(type).asLiveData(job)
         val observer = object : Observer<Resources<User>> {
-            override fun onChanged(value: Resources<User>) {
-                when (value) {
+            override fun onChanged(resources: Resources<User>) {
+                when (resources) {
                     is Resources.Loading -> {
                         fragment?.loadingVisible()
                     }
 
                     is Resources.Failure -> {
                         fragment?.loadingGone()
-                        fragment?.showError(err = value.value)
+                        fragment?.showError(err = resources.value)
                         liveData.removeObserver(this)
                     }
 
                     is Resources.Success -> {
                         fragment?.loadingGone()
                         liveData.removeObserver(this)
+                        activity.result(resources.value)
                     }
                 }
             }

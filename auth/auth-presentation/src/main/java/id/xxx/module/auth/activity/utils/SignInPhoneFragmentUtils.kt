@@ -16,7 +16,7 @@ import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 
-class SignInPhoneUtils(
+class SignInPhoneFragmentUtils(
     private val activity: AuthActivity,
     action: ISignInPhoneFragment.Action,
     private val block: (phoneNumber: String, recaptchaToken: String) -> Flow<Resources<VerificationCodeResult>>,

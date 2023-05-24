@@ -91,7 +91,7 @@ class SecurityChallengeDialogFragment : DialogFragment() {
             .scheme("https")
             .authority("x-x-x-test.web.app")
             .path("/recaptcha/index.html")
-            .appendQueryParameter("phoneNumber", phoneNumber)
+            .appendQueryParameter("phoneNumber", phoneNumber.replace("+", ""))
             .appendQueryParameter("languageCode", Locale.getDefault().language)
             .build()
         webView.loadUrl(uri.toString())

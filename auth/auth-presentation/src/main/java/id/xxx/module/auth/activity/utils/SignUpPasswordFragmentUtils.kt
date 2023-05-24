@@ -16,7 +16,7 @@ import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 
-class SignUpPasswordUtils(
+class SignUpPasswordFragmentUtils(
     private val activity: AuthActivity,
     action: ISignUpPasswordFragment.Action,
     private val block: (SignUpType) -> Flow<Resources<User>>,
@@ -61,14 +61,17 @@ class SignUpPasswordUtils(
                     is Resources.Loading -> {
                         fragment?.loadingVisible()
                     }
+
                     is Resources.Failure -> {
                         fragment?.loadingGone()
                         fragment?.showError(err = value.value)
                         liveData.removeObserver(this)
                     }
+
                     is Resources.Success -> {
                         fragment?.loadingGone()
                         liveData.removeObserver(this)
+                        activity.result(value.value)
                     }
                 }
             }

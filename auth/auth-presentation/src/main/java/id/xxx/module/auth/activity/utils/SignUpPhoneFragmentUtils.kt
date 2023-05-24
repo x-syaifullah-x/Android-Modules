@@ -1,11 +1,9 @@
 package id.xxx.module.auth.activity.utils
 
 import androidx.core.os.bundleOf
-import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.*
-import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.auth.ktx.getFragment
 import id.xxx.module.auth.model.VerificationCodeResult
@@ -14,7 +12,7 @@ import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 
-class SignUpPhoneUtils(
+class SignUpPhoneFragmentUtils(
     private val activity: AuthActivity,
     action: ISignUpPhoneFragment.Action,
     private val block: (phoneNumber: String, recaptchaToken: String) -> Flow<Resources<VerificationCodeResult>>,
