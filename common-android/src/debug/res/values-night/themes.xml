@@ -1,6 +1,4 @@
 <resources>
 
-    <style name="Theme.Application" parent="@style/Theme.AppCompat.DayNight">
-        <!---->
-    </style>
+    <style name="Theme.Application" parent="Theme.AppCompat.DayNight" />
 </resources>

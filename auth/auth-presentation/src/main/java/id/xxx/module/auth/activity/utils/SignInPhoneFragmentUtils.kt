@@ -26,8 +26,10 @@ class SignInPhoneFragmentUtils(
         when (action) {
             is ISignInPhoneFragment.Action.ClickNext ->
                 actionNext(action)
+
             is ISignInPhoneFragment.Action.ClickSignUp ->
                 actionSignUp(action)
+
             is ISignInPhoneFragment.Action.ClickSignInWithEmail ->
                 actionSignInWithEmail(action)
         }
@@ -72,6 +74,7 @@ class SignInPhoneFragmentUtils(
                         liveData.removeObserver(this)
                         job.cancel()
                     }
+
                     is Resources.Failure -> {
                         fragment?.loadingGone()
                         fragment?.showError(err = value.value)

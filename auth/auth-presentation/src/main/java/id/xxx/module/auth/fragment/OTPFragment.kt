@@ -5,8 +5,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
-import id.xxx.module.auth.ktx.get
 import id.xxx.module.auth.fragment.listener.IOTPFragment
+import id.xxx.module.auth.ktx.get
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.OtpFragmentBinding
 import java.security.InvalidParameterException

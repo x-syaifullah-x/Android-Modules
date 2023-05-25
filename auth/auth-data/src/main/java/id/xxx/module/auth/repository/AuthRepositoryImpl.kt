@@ -1,6 +1,11 @@
 package id.xxx.module.auth.repository
 
-import id.xxx.module.auth.model.*
+import id.xxx.module.auth.model.OobType
+import id.xxx.module.auth.model.SignInType
+import id.xxx.module.auth.model.SignUpType
+import id.xxx.module.auth.model.UpdateType
+import id.xxx.module.auth.model.User
+import id.xxx.module.auth.model.VerificationCodeResult
 import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
 import id.xxx.module.auth.repository.source.remote.response.Header
 import id.xxx.module.auth.repository.source.remote.response.Response

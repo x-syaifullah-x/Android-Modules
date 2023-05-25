@@ -87,11 +87,12 @@ class SecurityChallengeDialogFragment : DialogFragment() {
             }
         }, "RecaptchaCallback")
 
+        val finalPhoneNumber = phoneNumber.replace("+", "%2b")
         val uri = Uri.Builder()
             .scheme("https")
-            .authority("x-x-x-test.web.app")
-            .path("/recaptcha/index.html")
-            .appendQueryParameter("phoneNumber", phoneNumber.replace("+", ""))
+            .authority("x-x-x-recaptcha.web.app")
+            .path("/index.html")
+            .appendQueryParameter("phoneNumber", finalPhoneNumber)
             .appendQueryParameter("languageCode", Locale.getDefault().language)
             .build()
         webView.loadUrl(uri.toString())

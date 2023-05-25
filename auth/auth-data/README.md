@@ -14,4 +14,14 @@ dependencies {
 }
 ```
 
+- ### <b>API_KEY</b> required for requests to the server
+  #### you can look at id.xxx.module.auth.repository.source.remote.constant.Firebase
+    ```kotlin
+        internal object Firebase {
+
+            private const val API_KEY = "your_api_key"
+  
+        }
+    ```
+
 ---

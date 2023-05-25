@@ -7,15 +7,12 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISecurityChallengeDialogFragment
-import id.xxx.module.auth.ktx.get
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
+import id.xxx.module.auth.ktx.get
 import id.xxx.module.auth.model.SecurityChallengeResult
-import id.xxx.module.auth.model.SignUpType
-import id.xxx.module.auth.model.UserData
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.R
-import id.xxx.module.auth_presentation.databinding.SignUpPasswordFragmentBinding
 import id.xxx.module.auth_presentation.databinding.SignUpPhoneFragmentBinding
 
 class SignUpPhoneFragment : BaseFragment(R.layout.sign_up_phone_fragment),

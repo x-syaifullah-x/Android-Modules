@@ -11,7 +11,6 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import androidx.core.content.ContextCompat
-import id.xxx.module.auth_presentation.R
 
 object RichTextUtils {
 

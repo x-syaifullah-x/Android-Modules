@@ -1,13 +1,13 @@
 package id.xxx.module.auth.repository.source.remote.auth.email
 
-import id.xxx.module.auth.repository.source.remote.client.HttpClient
-import id.xxx.module.auth.repository.source.remote.client.RequestMethode
-import id.xxx.module.auth.repository.source.remote.constant.Firebase
-import id.xxx.module.auth.repository.source.remote.response.Response
 import id.xxx.module.auth.model.OobType
 import id.xxx.module.auth.model.SignInType
 import id.xxx.module.auth.model.SignUpType
 import id.xxx.module.auth.model.UpdateType
+import id.xxx.module.auth.repository.source.remote.client.HttpClient
+import id.xxx.module.auth.repository.source.remote.client.RequestMethode
+import id.xxx.module.auth.repository.source.remote.constant.Firebase
+import id.xxx.module.auth.repository.source.remote.response.Response
 import okhttp3.MediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject

@@ -9,7 +9,9 @@ import id.xxx.module.auth.usecase.AuthUseCase
 import id.xxx.module.auth.usecase.AuthUseCaseImpl
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test

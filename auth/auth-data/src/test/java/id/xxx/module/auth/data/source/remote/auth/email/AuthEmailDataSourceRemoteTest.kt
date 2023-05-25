@@ -1,7 +1,7 @@
 package id.xxx.module.auth.data.source.remote.auth.email
 
-import id.xxx.module.auth.repository.source.remote.response.Response
 import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
+import id.xxx.module.auth.repository.source.remote.response.Response
 import id.xxx.module.io.ktx.read
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

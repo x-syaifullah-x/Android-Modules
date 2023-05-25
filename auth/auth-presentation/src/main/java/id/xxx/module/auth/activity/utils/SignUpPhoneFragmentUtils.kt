@@ -3,7 +3,10 @@ package id.xxx.module.auth.activity.utils
 import androidx.core.os.bundleOf
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.AuthActivity
-import id.xxx.module.auth.fragment.*
+import id.xxx.module.auth.fragment.OTPFragment
+import id.xxx.module.auth.fragment.SignInPhoneFragment
+import id.xxx.module.auth.fragment.SignUpPasswordFragment
+import id.xxx.module.auth.fragment.SignUpPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.auth.ktx.getFragment
 import id.xxx.module.auth.model.VerificationCodeResult
