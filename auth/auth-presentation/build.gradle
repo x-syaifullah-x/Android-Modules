@@ -13,11 +13,11 @@ dependencies {
 
     implementation project(":auth:auth-domain")
 
+    api "androidx.activity:activity-ktx:$vAndroidxActivity"
     api "androidx.appcompat:appcompat:$vAndroidxAppCompat"
     api "androidx.lifecycle:lifecycle-livedata-ktx:$vAndroidxLifecycle"
     api "androidx.lifecycle:lifecycle-runtime-ktx:$vAndroidxLifecycle"
     api "androidx.lifecycle:lifecycle-viewmodel:$vAndroidxLifecycle"
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$vAndroidxLifecycle"
-
     api "com.google.android.material:material:$vMaterial"
 }

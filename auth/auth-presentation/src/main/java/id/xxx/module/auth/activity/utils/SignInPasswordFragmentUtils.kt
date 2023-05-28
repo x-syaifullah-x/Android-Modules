@@ -67,22 +67,22 @@ class SignInPasswordFragmentUtils(
         )
         val liveData = block(type).asLiveData(job)
         val observer = object : Observer<Resources<User>> {
-            override fun onChanged(resources: Resources<User>) {
-                when (resources) {
+            override fun onChanged(r: Resources<User>) {
+                when (r) {
                     is Resources.Loading -> {
                         fragment?.loadingVisible()
                     }
 
                     is Resources.Failure -> {
                         fragment?.loadingGone()
-                        fragment?.showError(err = resources.value)
+                        fragment?.showError(err = r.value)
                         liveData.removeObserver(this)
                     }
 
                     is Resources.Success -> {
                         fragment?.loadingGone()
                         liveData.removeObserver(this)
-                        activity.result(resources.value)
+                        activity.result(r.value)
                     }
                 }
             }

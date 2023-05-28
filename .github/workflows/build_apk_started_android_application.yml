@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: "17"
-          distribution: "temurin"
+          distribution: "adopt"
 
       - name: Gradle cache
         uses: actions/cache@v3
@@ -32,26 +32,26 @@ jobs:
 
       - name: assembleDebug
         run: |
-          ./gradlew clean :started-android-application:assembleDebug
+          ./gradlew clean :template:android-application:assembleDebug
 
       - name: Uploading apk debug
         uses: actions/upload-artifact@v3
         with:
           name: apk-debug
-          path: started-android-application/build/outputs/apk/debug/started-android-application-debug.apk
+          path: template/android-application/build/outputs/apk/debug/android-application-debug.apk
 
       - name: assembleRelease
         run: |
-          ./gradlew clean :started-android-application:assembleRelease
+          ./gradlew clean :template:android-application:assembleRelease
 
       - name: Uploading apk release
         uses: actions/upload-artifact@v3
         with:
           name: apk-release-unsigned
-          path: started-android-application/build/outputs/apk/release/started-android-application-release-unsigned.apk
+          path: template/android-application/build/outputs/apk/release/android-application-release-unsigned.apk
 
       - name: Uploading apk release
         uses: actions/upload-artifact@v3
         with:
           name: apk-release
-          path: started-android-application/build/outputs/apk/release/started-android-application-release.apk
+          path: template/android-application/build/outputs/apk/release/android-application-release.apk

@@ -2,6 +2,7 @@ package id.xxx.module.auth.activity
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.asLiveData
@@ -22,9 +23,11 @@ import id.xxx.module.auth.model.SignInType
 import id.xxx.module.auth.model.SignUpType
 import id.xxx.module.auth.model.User
 import id.xxx.module.auth.usecase.AuthUseCase
+import id.xxx.module.auth.viewmodel.AuthViewModel
+import id.xxx.module.auth.viewmodel.AuthViewModelProviderFactory
 import id.xxx.module.auth_presentation.R
 
-open class AuthActivity(private val useCase: AuthUseCase) : AppCompatActivity(),
+open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
     ISignUpPasswordFragment,
     ISignInPasswordFragment,
     ISignUpPhoneFragment,
@@ -32,7 +35,11 @@ open class AuthActivity(private val useCase: AuthUseCase) : AppCompatActivity(),
     IOTPFragment {
 
     companion object {
-        val CONTAINER_ID = R.id.content
+        internal val CONTAINER_ID = R.id.content
+    }
+
+    private val viewModel by viewModels<AuthViewModel> {
+        AuthViewModelProviderFactory(useCase)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +71,7 @@ open class AuthActivity(private val useCase: AuthUseCase) : AppCompatActivity(),
         SignUpPasswordFragmentUtils(
             activity = this,
             action = action,
-            block = useCase::signUp
+            block = viewModel::signUp
         )
     }
 
@@ -72,7 +79,7 @@ open class AuthActivity(private val useCase: AuthUseCase) : AppCompatActivity(),
         SignInPasswordFragmentUtils(
             activity = this,
             action = action,
-            block = useCase::signIn
+            block = viewModel::signIn
         )
     }
 
@@ -80,7 +87,7 @@ open class AuthActivity(private val useCase: AuthUseCase) : AppCompatActivity(),
         SignUpPhoneFragmentUtils(
             activity = this,
             action = action,
-            block = useCase::sendVerificationCode,
+            block = viewModel::sendVerificationCode,
         )
     }
 
@@ -88,7 +95,7 @@ open class AuthActivity(private val useCase: AuthUseCase) : AppCompatActivity(),
         SignInPhoneFragmentUtils(
             action = action,
             activity = this,
-            block = useCase::sendVerificationCode
+            block = viewModel::sendVerificationCode
         )
     }
 
@@ -98,11 +105,11 @@ open class AuthActivity(private val useCase: AuthUseCase) : AppCompatActivity(),
             action = action,
             block = { _action ->
                 if (_action.isNewUser) {
-                    useCase.signUp(
+                    viewModel.signUp(
                         SignUpType.Phone(sessionInfo = _action.sessionInfo, otp = _action.otp)
                     )
                 } else {
-                    useCase.signIn(
+                    viewModel.signIn(
                         SignInType.Phone(sessionInfo = _action.sessionInfo, otp = _action.otp)
                     )
                 }.asLiveData()
