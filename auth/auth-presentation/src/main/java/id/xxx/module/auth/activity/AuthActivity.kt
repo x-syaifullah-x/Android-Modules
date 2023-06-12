@@ -1,5 +1,6 @@
 package id.xxx.module.auth.activity
 
+import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
