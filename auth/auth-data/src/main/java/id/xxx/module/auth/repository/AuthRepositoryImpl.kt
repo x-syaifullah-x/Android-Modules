@@ -37,20 +37,6 @@ class AuthRepositoryImpl private constructor(
             }
     }
 
-    private var _user: User? = null
-
-    override fun currentUser(): Flow<Resources<User>> {
-        return flow {
-            emit(Resources.Loading())
-            delay(1000)
-            val user = _user
-            if (user != null)
-                emit(Resources.Success(user))
-            else
-                emit(Resources.Failure(Throwable("user not login")))
-        }
-    }
-
     override fun signIn(type: SignInType) = asResources(
         request = { remoteDataSource.signIn(type) },
         result = { _, response ->
@@ -88,15 +74,6 @@ class AuthRepositoryImpl private constructor(
             VerificationCodeResult(sessionInfo = sessionInfo)
         }
     )
-
-    override fun signOut(): Flow<Resources<Boolean>> {
-        return flow {
-            emit(Resources.Loading())
-            delay(100)
-            _user = null
-            emit(Resources.Success(true))
-        }
-    }
 
     override fun sendOobCode(type: OobType) = asResources(
         request = { remoteDataSource.sendOobCode(type) },

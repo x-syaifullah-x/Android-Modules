@@ -56,7 +56,8 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
         setContentView(R.layout.auth_activity)
 
         if (!isDarkThemeOn()) {
-            val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
+            val windowInsetsController =
+                WindowInsetsControllerCompat(window, window.decorView)
             if (!windowInsetsController.isAppearanceLightStatusBars)
                 windowInsetsController.isAppearanceLightStatusBars = true
         }

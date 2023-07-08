@@ -30,42 +30,6 @@ internal class AuthUseCaseImplTest {
     }
 
     @Test
-    fun getCurrentUserSuccessTest() = runBlocking {
-        val user = getMockUser()
-        val result = flow {
-            emit(Resources.Loading())
-            delay(100)
-            emit(Resources.Success(user))
-        }
-        Mockito.`when`(repo.currentUser()).thenReturn(result)
-
-        val currentUser = useCase.currentUser()
-        val loading = currentUser.firstOrNull()
-        Assert.assertTrue("Resources Loading", loading is Resources.Loading)
-        val success = currentUser.lastOrNull()
-        Assert.assertTrue("Resources Success", success is Resources.Success)
-        Assert.assertTrue("Data", user == (success as Resources.Success).value)
-    }
-
-    @Test
-    fun getCurrentUserFailureTest() = runBlocking {
-        val throwable = Throwable("error")
-        val result = flow {
-            emit(Resources.Loading())
-            delay(100)
-            emit(Resources.Failure(throwable))
-        }
-        Mockito.`when`(repo.currentUser()).thenReturn(result)
-
-        val currentUser = useCase.currentUser()
-        val loading = currentUser.firstOrNull()
-        Assert.assertTrue("Resources Loading", loading is Resources.Loading)
-        val failure = currentUser.lastOrNull()
-        Assert.assertTrue("Resources Failure", failure is Resources.Failure)
-        Assert.assertTrue("Data", throwable == (failure as Resources.Failure).value)
-    }
-
-    @Test
     fun signInCostumeTokenSuccessTest() = runBlocking {
         val user = getMockUser()
         val result = flow {

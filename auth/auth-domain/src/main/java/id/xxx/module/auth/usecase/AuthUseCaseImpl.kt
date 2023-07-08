@@ -12,17 +12,14 @@ class AuthUseCaseImpl private constructor(
 
     companion object {
         @Volatile
-        private var INSTANCE: AuthUseCaseImpl? = null
+        private var INSTANCE: AuthUseCase? = null
 
-        fun getInstance(repo: AuthRepository): AuthUseCase =
+        fun getInstance(repo: AuthRepository) =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: AuthUseCaseImpl(repo)
                     .also { INSTANCE = it }
             }
     }
-
-    override fun currentUser() =
-        repo.currentUser()
 
     override fun signIn(type: SignInType) =
         repo.signIn(type)
@@ -32,9 +29,6 @@ class AuthUseCaseImpl private constructor(
 
     override fun sendVerificationCode(phoneNumber: String, recaptchaResponse: String) =
         repo.sendVerificationCode(phoneNumber, recaptchaResponse)
-
-    override fun signOut() =
-        repo.signOut()
 
     override fun sendOobCode(type: OobType) =
         repo.sendOobCode(type)

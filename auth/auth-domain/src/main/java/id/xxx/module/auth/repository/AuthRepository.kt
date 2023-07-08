@@ -11,8 +11,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
-    fun currentUser(): Flow<Resources<User>>
-
     fun signIn(type: SignInType): Flow<Resources<User>>
 
     fun signUp(type: SignUpType): Flow<Resources<User>>
@@ -21,8 +19,6 @@ interface AuthRepository {
         phoneNumber: String,
         recaptchaResponse: String
     ): Flow<Resources<VerificationCodeResult>>
-
-    fun signOut(): Flow<Resources<Boolean>>
 
     fun sendOobCode(type: OobType): Flow<Resources<String>>
 
