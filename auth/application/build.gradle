@@ -1,0 +1,29 @@
+apply from: "$rootDir/common_android_application.gradle"
+
+android {
+    String packageName = "id.xxx.module.auth"
+    namespace packageName
+    testNamespace "${packageName}.test"
+
+    defaultConfig {
+        resConfigs "en"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            debuggable false
+            jniDebuggable false
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
+
+    implementation project(":auth:auth")
+
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$vLeakcanaryAndroid"
+}

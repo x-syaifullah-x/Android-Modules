@@ -1,8 +1,8 @@
 package id.xxx.module.auth.activity
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsControllerCompat
@@ -37,6 +37,8 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
 
     companion object {
         internal val CONTAINER_ID = R.id.content
+
+        const val RESULT_USER = "a_s_d_f_g_h_j_k_L"
     }
 
     private val viewModel by viewModels<AuthViewModel> {
@@ -119,6 +121,9 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
     }
 
     fun result(user: User) {
-        Toast.makeText(this, "$user", Toast.LENGTH_LONG).show()
+        val result = Intent()
+        result.putExtra(RESULT_USER, user)
+        setResult(Activity.RESULT_OK, result)
+        finishAfterTransition()
     }
 }

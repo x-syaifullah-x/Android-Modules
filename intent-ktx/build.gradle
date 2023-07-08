@@ -1,0 +1,6 @@
+apply from: "$rootDir/common_android_library.gradle"
+apply from: "$rootDir/maven_publish_android.gradle"
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+}
