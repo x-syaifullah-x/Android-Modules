@@ -85,8 +85,11 @@ allprojects {
 
     String userName = System.getProperty("user.name")
     if (userName == "xxx") {
-        String userHomePath = System.getProperty("user.home")
-        buildDir = "${userHomePath}/.cache/android/studio/project/${rootProject.name}/${project.name}/build"
+        String tmpPath = "/tmp"
+        boolean projectIsInCacheDir = projectDir.path.contains(tmpPath)
+        if (!projectIsInCacheDir) {
+            buildDir = "${tmpPath}/android/studio/project/${rootProject.name}/${project.name}/build"
+        }
     }
 
     // handle warning This class can only be used with the compiler argument '-opt-in=kotlin.RequiresOptIn'
