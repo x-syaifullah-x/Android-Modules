@@ -1,11 +1,16 @@
 package id.xxx.module.auth.activity
 
 import android.app.Activity
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
 import id.xxx.module.auth.activity.utils.IOTPFragmentUtils
@@ -28,12 +33,8 @@ import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.auth.viewmodel.AuthViewModelProviderFactory
 import id.xxx.module.auth_presentation.R
 
-open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
-    ISignUpPasswordFragment,
-    ISignInPasswordFragment,
-    ISignUpPhoneFragment,
-    ISignInPhoneFragment,
-    IOTPFragment {
+open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPasswordFragment,
+    ISignInPasswordFragment, ISignUpPhoneFragment, ISignInPhoneFragment, IOTPFragment {
 
     companion object {
         internal val CONTAINER_ID = R.id.content
@@ -48,42 +49,50 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        onBackPressedDispatcher
-            .addCallback(this, OnBackPressedCallbackImpl(this))
+        val onBackPressedCallbackImpl = OnBackPressedCallbackImpl(this)
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallbackImpl)
 
         setTheme(R.style.Theme_Auth)
 
         setContentView(R.layout.auth_activity)
 
+        val am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val isTop = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            am.appTasks[0].taskInfo.numActivities
+        } else {
+            @Suppress("DEPRECATION")
+            am.getRunningTasks(Int.MAX_VALUE)[0].numActivities
+        } == 1
+
+        val ivArrowBack = findViewById<ImageView>(R.id.iv_arrow_back)
+        ivArrowBack.isVisible = !isTop
+        ivArrowBack.setOnClickListener {
+            onBackPressedCallbackImpl.handleOnBackPressed()
+        }
+
         if (!isDarkThemeOn()) {
-            val windowInsetsController =
-                WindowInsetsControllerCompat(window, window.decorView)
-            if (!windowInsetsController.isAppearanceLightStatusBars)
-                windowInsetsController.isAppearanceLightStatusBars = true
+            val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
+            if (!windowInsetsController.isAppearanceLightStatusBars) windowInsetsController.isAppearanceLightStatusBars =
+                true
         }
 
         val fragmentHome = SignInPasswordFragment()
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(CONTAINER_ID, fragmentHome, null)
+            supportFragmentManager.beginTransaction().replace(CONTAINER_ID, fragmentHome, null)
                 .commit()
         }
     }
 
     override fun onAction(action: ISignUpPasswordFragment.Action) {
         SignUpPasswordFragmentUtils(
-            activity = this,
-            action = action,
-            block = viewModel::signUp
+            activity = this, action = action, block = viewModel::signUp
         )
     }
 
     override fun onAction(action: ISignInPasswordFragment.Action) {
         SignInPasswordFragmentUtils(
-            activity = this,
-            action = action,
-            block = viewModel::signIn
+            activity = this, action = action, block = viewModel::signIn
         )
     }
 
@@ -97,28 +106,22 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
 
     override fun onAction(action: ISignInPhoneFragment.Action) {
         SignInPhoneFragmentUtils(
-            action = action,
-            activity = this,
-            block = viewModel::sendVerificationCode
+            action = action, activity = this, block = viewModel::sendVerificationCode
         )
     }
 
     override fun onAction(action: IOTPFragment.Action) {
-        IOTPFragmentUtils(
-            activity = this,
-            action = action,
-            block = { _action ->
-                if (_action.isNewUser) {
-                    viewModel.signUp(
-                        SignUpType.Phone(sessionInfo = _action.sessionInfo, otp = _action.otp)
-                    )
-                } else {
-                    viewModel.signIn(
-                        SignInType.Phone(sessionInfo = _action.sessionInfo, otp = _action.otp)
-                    )
-                }.asLiveData()
-            }
-        )
+        IOTPFragmentUtils(activity = this, action = action, block = { _action ->
+            if (_action.isNewUser) {
+                viewModel.signUp(
+                    SignUpType.Phone(sessionInfo = _action.sessionInfo, otp = _action.otp)
+                )
+            } else {
+                viewModel.signIn(
+                    SignInType.Phone(sessionInfo = _action.sessionInfo, otp = _action.otp)
+                )
+            }.asLiveData()
+        })
     }
 
     fun result(user: User) {
