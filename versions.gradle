@@ -11,13 +11,13 @@ build_versions.name = "$major.$minor.$patch"
 ext.build_versions = build_versions
 
 ext {
-    vGradle = "8.0.2"
-    vKotlin = "1.8.20"
+    vGradle = "8.1.0"
+    vKotlin = "1.8.22"
 
     vAndroidxActivity = "1.7.2"
-    vAndroidxAppCompat = "1.6.1"
     vAndroidxAnnotation = "1.6.0"
     vAndroidxAnnotationExperimental = "1.3.0"
+    vAndroidxAppCompat = "1.6.1"
     vAndroidxArchCore = "2.2.0"
     vAndroidxConcurrent = "1.1.0"
     vAndroidxCore = "1.10.0"
