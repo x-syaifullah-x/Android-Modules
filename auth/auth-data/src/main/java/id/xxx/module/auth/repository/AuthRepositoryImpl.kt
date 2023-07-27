@@ -12,8 +12,6 @@ import id.xxx.module.auth.repository.source.remote.response.Response
 import id.xxx.module.common.Resources
 import id.xxx.module.io.ktx.read
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -41,8 +39,10 @@ class AuthRepositoryImpl private constructor(
         request = { remoteDataSource.signIn(type) },
         result = { _, response ->
             val j = JSONObject(response)
+            val isRemember = if (type is SignInType.Password) type.isRemember else true
             User(
                 uid = j.getString("localId"),
+                isRemember = isRemember
 //                token = j.getString("idToken"),
 //                refreshToken = j.getString("refreshToken"),
 //                expiresIn = (j.getLong("expiresIn") * 1000) + header.date

@@ -111,22 +111,22 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
     }
 
     override fun onAction(action: IOTPFragment.Action) {
-        IOTPFragmentUtils(activity = this, action = action, block = { _action ->
-            if (_action.isNewUser) {
+        IOTPFragmentUtils(activity = this, action = action, block = { value ->
+            if (value.isNewUser) {
                 viewModel.signUp(
-                    SignUpType.Phone(sessionInfo = _action.sessionInfo, otp = _action.otp)
+                    SignUpType.Phone(sessionInfo = value.sessionInfo, otp = value.otp)
                 )
             } else {
                 viewModel.signIn(
-                    SignInType.Phone(sessionInfo = _action.sessionInfo, otp = _action.otp)
+                    SignInType.Phone(sessionInfo = value.sessionInfo, otp = value.otp)
                 )
             }.asLiveData()
         })
     }
 
-    fun result(user: User) {
+    internal fun result(user: User) {
         val result = Intent()
-        result.putExtra(RESULT_USER, user)
+            .putExtra(RESULT_USER, user)
         setResult(Activity.RESULT_OK, result)
         finishAfterTransition()
     }
