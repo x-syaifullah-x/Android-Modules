@@ -10,7 +10,7 @@
         android:id="@+id/text_view_security_challenge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Security Challange"
+        android:text="Security Challenge"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -17,7 +17,7 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="28dp"
         android:contentDescription="arrow_back"
-        android:src="@drawable/arrow_back_24"
+        android:src="@drawable/auth_logo_arrow_back"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

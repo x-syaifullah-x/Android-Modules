@@ -8,10 +8,10 @@ import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.IOTPFragment
 import id.xxx.module.auth.ktx.get
 import id.xxx.module.auth_presentation.R
-import id.xxx.module.auth_presentation.databinding.OtpFragmentBinding
+import id.xxx.module.auth_presentation.databinding.OtpPhoneFragmentBinding
 import java.security.InvalidParameterException
 
-class OTPFragment : BaseFragment(R.layout.otp_fragment) {
+class OTPPhoneFragment : BaseFragment(R.layout.otp_phone_fragment) {
 
     companion object {
         const val KEY_IS_NEW_USER = "KEY_IS_NEW_USER"
@@ -21,7 +21,7 @@ class OTPFragment : BaseFragment(R.layout.otp_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = OtpFragmentBinding.bind(view)
+        val binding = OtpPhoneFragmentBinding.bind(view)
 
         binding.buttonNext.setOnClickListener {
             val otp = "${binding.textInputEditTextOtp.text}"
@@ -55,7 +55,7 @@ class OTPFragment : BaseFragment(R.layout.otp_fragment) {
     private fun loadingSetVisible(isVisible: Boolean) {
         val viewFinal = view
         if (viewFinal != null) {
-            val binding = OtpFragmentBinding.bind(viewFinal)
+            val binding = OtpPhoneFragmentBinding.bind(viewFinal)
             binding.buttonNext.isEnabled = !isVisible
             binding.progressBar.isVisible = isVisible
         }
@@ -64,7 +64,7 @@ class OTPFragment : BaseFragment(R.layout.otp_fragment) {
     fun setCancelProcess(block: () -> Unit) {
         val viewFinal = view
         if (viewFinal != null) {
-            val binding = OtpFragmentBinding.bind(viewFinal)
+            val binding = OtpPhoneFragmentBinding.bind(viewFinal)
             binding.progressBar.setOnClickListener { block.invoke() }
         }
     }

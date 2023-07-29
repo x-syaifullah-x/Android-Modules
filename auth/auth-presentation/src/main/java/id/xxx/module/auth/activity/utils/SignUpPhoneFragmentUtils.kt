@@ -3,7 +3,7 @@ package id.xxx.module.auth.activity.utils
 import androidx.core.os.bundleOf
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.AuthActivity
-import id.xxx.module.auth.fragment.OTPFragment
+import id.xxx.module.auth.fragment.OTPPhoneFragment
 import id.xxx.module.auth.fragment.SignInPhoneFragment
 import id.xxx.module.auth.fragment.SignUpPasswordFragment
 import id.xxx.module.auth.fragment.SignUpPhoneFragment
@@ -56,11 +56,11 @@ class SignUpPhoneFragmentUtils(
                 is Resources.Success -> {
                     fragment?.loadingGone()
                     val bundle = bundleOf(
-                        OTPFragment.KEY_SESSION_INFO to it.value.sessionInfo,
-                        OTPFragment.KEY_IS_NEW_USER to true,
+                        OTPPhoneFragment.KEY_SESSION_INFO to it.value.sessionInfo,
+                        OTPPhoneFragment.KEY_IS_NEW_USER to true,
                     )
                     activity.supportFragmentManager.beginTransaction()
-                        .add(AuthActivity.CONTAINER_ID, OTPFragment::class.java, bundle)
+                        .add(AuthActivity.CONTAINER_ID, OTPPhoneFragment::class.java, bundle)
                         .commit()
                 }
                 is Resources.Failure -> {

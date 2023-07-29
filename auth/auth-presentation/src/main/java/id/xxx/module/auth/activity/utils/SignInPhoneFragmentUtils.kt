@@ -4,7 +4,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.AuthActivity
-import id.xxx.module.auth.fragment.OTPFragment
+import id.xxx.module.auth.fragment.OTPPhoneFragment
 import id.xxx.module.auth.fragment.SignInPasswordFragment
 import id.xxx.module.auth.fragment.SignInPhoneFragment
 import id.xxx.module.auth.fragment.SignUpPhoneFragment
@@ -63,12 +63,12 @@ class SignInPhoneFragmentUtils(
                     is Resources.Success -> {
                         val sessionInfo = value.value.sessionInfo
                         val bundle = bundleOf(
-                            OTPFragment.KEY_SESSION_INFO to sessionInfo,
-                            OTPFragment.KEY_IS_NEW_USER to false
+                            OTPPhoneFragment.KEY_SESSION_INFO to sessionInfo,
+                            OTPPhoneFragment.KEY_IS_NEW_USER to false
                         )
                         val transaction = activity.supportFragmentManager
                             .beginTransaction()
-                            .add(AuthActivity.CONTAINER_ID, OTPFragment::class.java, bundle)
+                            .add(AuthActivity.CONTAINER_ID, OTPPhoneFragment::class.java, bundle)
                         fragment?.loadingGone()
                         transaction.commit()
                         liveData.removeObserver(this)
