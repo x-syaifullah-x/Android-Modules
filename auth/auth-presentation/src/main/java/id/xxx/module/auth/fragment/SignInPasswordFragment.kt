@@ -102,7 +102,6 @@ class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) 
         return ISignInPasswordFragment.Action.ClickSignIn(
             email = "${binding.textInputLayoutEmail.editText?.text}",
             password = "${binding.textInputLayoutPassword.editText?.text}",
-            isRemember = binding.checkBoxRememberMe.isChecked
         )
     }
 

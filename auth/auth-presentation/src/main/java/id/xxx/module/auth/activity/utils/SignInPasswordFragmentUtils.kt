@@ -63,7 +63,6 @@ class SignInPasswordFragmentUtils(
         val type = SignInType.Password(
             email = action.email,
             password = action.password,
-            isRemember = action.isRemember
         )
         val liveData = block(type).asLiveData(job)
         val observer = object : Observer<Resources<User>> {

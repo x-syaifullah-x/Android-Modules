@@ -9,7 +9,6 @@ sealed interface SignInType {
     data class Password(
         val email: String,
         val password: String,
-        val isRemember: Boolean = true,
     ) : SignInType
 
     data class Phone(

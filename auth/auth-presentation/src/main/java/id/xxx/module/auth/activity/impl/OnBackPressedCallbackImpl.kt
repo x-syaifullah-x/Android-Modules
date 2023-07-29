@@ -13,9 +13,14 @@ class OnBackPressedCallbackImpl(
         if (isTopFragment) {
             activity.finishAfterTransition()
         } else {
-            activity.supportFragmentManager.beginTransaction()
-                .remove(fragments.last())
-                .commit()
+            val fragment = fragments.lastOrNull()
+            if (fragment != null) {
+                activity.supportFragmentManager.beginTransaction()
+                    .remove(fragment)
+                    .commit()
+            } else {
+                activity.finishAfterTransition()
+            }
         }
     }
 }

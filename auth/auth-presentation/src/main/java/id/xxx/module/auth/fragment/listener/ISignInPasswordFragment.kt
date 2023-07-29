@@ -11,7 +11,6 @@ interface ISignInPasswordFragment {
         data class ClickSignIn(
             val email: String,
             val password: String,
-            val isRemember: Boolean
         ) : Action
 
         data class ClickSignUp(
