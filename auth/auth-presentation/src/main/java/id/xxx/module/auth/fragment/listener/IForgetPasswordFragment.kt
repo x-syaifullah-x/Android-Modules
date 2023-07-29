@@ -4,9 +4,9 @@ interface IForgetPasswordFragment {
 
     data class Action(
         val email: String,
-        val loading: () -> Unit,
-        val error: (Throwable) -> Unit,
-        val success: () -> Unit
+        val onLoading: () -> Unit,
+        val onError: (Throwable) -> Unit,
+        val onSuccess: () -> Unit
     )
 
     fun onAction(action: Action)

@@ -8,12 +8,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
 import id.xxx.module.auth.activity.utils.IOTPFragmentUtils
@@ -150,23 +149,22 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
     }
 
     override fun onAction(action: IForgetPasswordFragment.Action) {
-        viewModel.sendOobCode(action.email)
-            .asLiveData()
-            .observe(this) { resources ->
-                when (resources) {
-                    is Resources.Loading -> {
-                        action.loading()
-                    }
-
-                    is Resources.Success -> {
-                        action.success()
-                    }
-
-                    is Resources.Failure -> {
-                        action.error(resources.value)
-                    }
+        val liveData = viewModel.sendOobCode(action.email).asLiveData()
+        var observer: Observer<Resources<String>>? = null
+        observer = Observer { resources ->
+            when (resources) {
+                is Resources.Loading -> action.onLoading()
+                is Resources.Success -> {
+                    action.onSuccess()
+                    val observerFinal = observer
+                    if (observerFinal != null)
+                        liveData.removeObserver(observerFinal)
                 }
+
+                is Resources.Failure -> action.onError(resources.value)
             }
+        }
+        liveData.observe(this, observer)
     }
 
     override fun onAction(action: INewPasswordFragment.Action) {

@@ -1,10 +1,10 @@
 package id.xxx.module.auth.fragment
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
-import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.IForgetPasswordFragment
 import id.xxx.module.auth.ktx.get
@@ -38,15 +38,20 @@ class ForgetPasswordFragment : BaseFragment(R.layout.forget_password_fragment) {
                 return@setOnClickListener
             }
             val listener = get<IForgetPasswordFragment>()
+            val progress = ProgressDialog(it.context)
+                .apply { setCancelable(false) }
             val action = IForgetPasswordFragment.Action(
                 email = email,
-                loading = {
-                    Toast.makeText(it.context, "Loading ...", Toast.LENGTH_LONG).show()
+                onLoading = {
+                    progress.setMessage("Loading ...")
+                    progress.show()
                 },
-                error = { err ->
+                onError = { err ->
+                    progress.cancel()
                     Toast.makeText(it.context, err.message, Toast.LENGTH_LONG).show()
                 },
-                success = {
+                onSuccess = {
+                    progress.cancel()
                     Toast.makeText(
                         it.context,
                         "Email verification code sent successfully",
