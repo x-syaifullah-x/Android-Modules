@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
-import id.xxx.module.auth.ktx.get
+import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.utils.RichTextUtils
 import id.xxx.module.auth.utils.ValidationUtils
@@ -63,14 +63,14 @@ class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) 
     }
 
     private fun moveToSignInWithPhone(binding: SignInPasswordFragmentBinding) {
-        get<ISignInPasswordFragment>()?.onAction(
+        getListener<ISignInPasswordFragment>()?.onAction(
             ISignInPasswordFragment.Action
                 .ClickSignInWithPhone(email = "${binding.textInputEditTextEmail.text}")
         )
     }
 
     private fun moveToSignUp(binding: SignInPasswordFragmentBinding) {
-        get<ISignInPasswordFragment>()?.onAction(
+        getListener<ISignInPasswordFragment>()?.onAction(
             ISignInPasswordFragment.Action.ClickSignUp(
                 email = "${binding.textInputEditTextEmail.text}",
             )
@@ -79,7 +79,7 @@ class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) 
 
     private fun signIn(binding: SignInPasswordFragmentBinding) {
         validateFields(binding)
-            ?.let { action -> get<ISignInPasswordFragment>()?.onAction(action) }
+            ?.let { action -> getListener<ISignInPasswordFragment>()?.onAction(action) }
     }
 
     private fun validateFields(
@@ -106,7 +106,7 @@ class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) 
     }
 
     private fun moveToForgetPassword(binding: SignInPasswordFragmentBinding) {
-        get<ISignInPasswordFragment>()?.onAction(
+        getListener<ISignInPasswordFragment>()?.onAction(
             ISignInPasswordFragment.Action.ClickForgetPassword(
                 email = "${binding.textInputEditTextEmail.text}",
             )

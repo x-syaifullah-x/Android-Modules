@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISecurityChallengeDialogFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
-import id.xxx.module.auth.ktx.get
+import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.model.SecurityChallengeResult
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.utils.ValidationUtils
@@ -36,13 +36,13 @@ class SignUpPhoneFragment : BaseFragment(R.layout.sign_up_phone_fragment),
     private fun signUpWithEmailButtonClicked(binding: SignUpPhoneFragmentBinding) {
         ISignUpPhoneFragment.Action.ClickSignUpWithEmail(
             phoneNumber = "${binding.textInputEditTextPhoneNumber.text}"
-        ).apply { get<ISignUpPhoneFragment>()?.onAction(this) }
+        ).apply { getListener<ISignUpPhoneFragment>()?.onAction(this) }
     }
 
     private fun signInTextClicked(binding: SignUpPhoneFragmentBinding) {
         ISignUpPhoneFragment.Action.ClickSignIn(
             phoneNumber = "${binding.textInputEditTextPhoneNumber.text}"
-        ).apply { get<ISignUpPhoneFragment>()?.onAction(this) }
+        ).apply { getListener<ISignUpPhoneFragment>()?.onAction(this) }
     }
 
     private fun nextButtonClicked(binding: SignUpPhoneFragmentBinding) {
@@ -70,7 +70,7 @@ class SignUpPhoneFragment : BaseFragment(R.layout.sign_up_phone_fragment),
                         phoneNumber = result.phoneNumber,
                         recaptchaResponse = result.response
                     )
-                    get<ISignUpPhoneFragment>()?.onAction(action)
+                    getListener<ISignUpPhoneFragment>()?.onAction(action)
                 } else {
                     val viewFinal = view
                     val messageError = "The user is already registered"

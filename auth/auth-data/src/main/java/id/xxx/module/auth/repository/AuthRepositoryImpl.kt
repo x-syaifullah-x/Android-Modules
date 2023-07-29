@@ -12,6 +12,7 @@ import id.xxx.module.auth.repository.source.remote.response.Response
 import id.xxx.module.common.Resources
 import id.xxx.module.io.ktx.read
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -92,7 +93,7 @@ class AuthRepositoryImpl private constructor(
     )
 
     private fun <T> asResources(
-        request: () -> Response<InputStream>,
+        request: suspend () -> Response<InputStream>,
         result: (header: Header, response: String) -> T
     ) = flow {
         try {

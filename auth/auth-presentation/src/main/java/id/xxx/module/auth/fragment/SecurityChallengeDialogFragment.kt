@@ -12,7 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import id.xxx.module.auth.fragment.listener.ISecurityChallengeDialogFragment
-import id.xxx.module.auth.ktx.get
+import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.model.SecurityChallengeResult
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.RecaptchaFragmentBinding
@@ -48,7 +48,7 @@ class SecurityChallengeDialogFragment : DialogFragment() {
                         "${error.description}"
                     else
                         "Error"
-                get<ISecurityChallengeDialogFragment>()
+                getListener<ISecurityChallengeDialogFragment>()
                     ?.onResult(SecurityChallengeResult.Error(Throwable(message)))
                 dismiss()
             }
@@ -75,7 +75,7 @@ class SecurityChallengeDialogFragment : DialogFragment() {
             @JavascriptInterface
             fun onSubmit(isNewUser: Boolean, response: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
-                    get<ISecurityChallengeDialogFragment>()?.onResult(
+                    getListener<ISecurityChallengeDialogFragment>()?.onResult(
                         SecurityChallengeResult.Success(
                             isNewUser = isNewUser,
                             response = response,

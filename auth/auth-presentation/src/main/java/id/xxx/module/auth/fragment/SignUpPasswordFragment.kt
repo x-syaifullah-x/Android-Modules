@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
-import id.xxx.module.auth.ktx.get
+import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.utils.RichTextUtils
 import id.xxx.module.auth.utils.ValidationUtils
@@ -62,19 +62,19 @@ class SignUpPasswordFragment : BaseFragment(R.layout.sign_up_password_fragment) 
     private fun signUpWithPhoneButtonClicked(binding: SignUpPasswordFragmentBinding) {
         ISignUpPasswordFragment.Action.ClickSignUpWithPhone(
             email = "${binding.textInputEditTextEmail.text}",
-        ).apply { get<ISignUpPasswordFragment>()?.onAction(this) }
+        ).apply { getListener<ISignUpPasswordFragment>()?.onAction(this) }
     }
 
     private fun signInTextClicked(binding: SignUpPasswordFragmentBinding) {
         ISignUpPasswordFragment.Action.ClickSignIn(
             email = "${binding.textInputEditTextEmail.text}",
-        ).apply { get<ISignUpPasswordFragment>()?.onAction(this) }
+        ).apply { getListener<ISignUpPasswordFragment>()?.onAction(this) }
 
     }
 
     private fun signUpButtonClicked(binding: SignUpPasswordFragmentBinding) {
         validateFields(binding)
-            ?.let { get<ISignUpPasswordFragment>()?.onAction(it) }
+            ?.let { getListener<ISignUpPasswordFragment>()?.onAction(it) }
     }
 
     private fun validateFields(

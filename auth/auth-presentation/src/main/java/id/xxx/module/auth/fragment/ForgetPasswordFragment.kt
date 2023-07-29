@@ -7,61 +7,61 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.IForgetPasswordFragment
-import id.xxx.module.auth.ktx.get
-import id.xxx.module.auth.preferences.SignInputPreferences
+import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.ForgetPasswordFragmentBinding
 
 class ForgetPasswordFragment : BaseFragment(R.layout.forget_password_fragment) {
 
+    private val progress by lazy { ProgressDialog(context) }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = ForgetPasswordFragmentBinding.bind(view)
 
-        val inputEmail = binding.textInputEditTextEmail
-        if (inputEmail.text.isNullOrBlank()) {
-            val email = SignInputPreferences.getInputEmail(context)
-            inputEmail.setText(email)
-            inputEmail.requestFocus()
-        }
-        binding.textInputEditTextEmail.doOnTextChanged { _, _, _, _ ->
-            if (binding.textInputLayoutEmail.error != null) {
-                binding.textInputLayoutEmail.error = null
+        val textInputEditTextEmail = binding.textInputEditTextEmail
+        val textInputLayoutEmail = binding.textInputLayoutEmail
+        textInputEditTextEmail.doOnTextChanged { _, _, _, _ ->
+            if (textInputLayoutEmail.error != null) {
+                textInputLayoutEmail.error = null
             }
+        }
+        val listener = getListener<IForgetPasswordFragment>()
+        progress.setOnCancelListener {
+            listener?.onAction(IForgetPasswordFragment.Action.Cancel)
         }
         binding.buttonNext.setOnClickListener {
-            val email = inputEmail.text.toString()
+            val email = textInputEditTextEmail.text.toString()
             if (!ValidationUtils.isValidEmail(email)) {
-                binding.textInputLayoutEmail.error = "Please enter a valid email"
+                textInputLayoutEmail.error = "Please enter a valid email"
                 return@setOnClickListener
             }
-            val listener = get<IForgetPasswordFragment>()
-            val progress = ProgressDialog(it.context)
-                .apply { setCancelable(false) }
-            val action = IForgetPasswordFragment.Action(
-                email = email,
-                onLoading = {
-                    progress.setMessage("Loading ...")
-                    progress.show()
-                },
-                onError = { err ->
-                    progress.cancel()
-                    Toast.makeText(it.context, err.message, Toast.LENGTH_LONG).show()
-                },
-                onSuccess = {
-                    progress.cancel()
-                    Toast.makeText(
-                        it.context,
-                        "Email verification code sent successfully",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    activity?.onBackPressedDispatcher?.onBackPressed()
-                }
-
+            val action = IForgetPasswordFragment.Action.Next(
+                email = email
             )
             listener?.onAction(action)
         }
+    }
+
+    internal fun onLoading(message: String = "Loading ...") {
+        progress.setMessage(message)
+        progress.show()
+    }
+
+    internal fun onError(err: Throwable) {
+        progress.cancel()
+        Toast.makeText(context, err.message, Toast.LENGTH_LONG).show()
+    }
+
+    internal fun onSuccess() {
+        progress.cancel()
+        Toast.makeText(
+            context,
+            "Email verification code sent successfully",
+            Toast.LENGTH_LONG
+        ).show()
+        activity?.onBackPressedDispatcher?.onBackPressed()
     }
 }

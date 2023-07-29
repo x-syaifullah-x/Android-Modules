@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISecurityChallengeDialogFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
-import id.xxx.module.auth.ktx.get
+import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.model.SecurityChallengeResult
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth_presentation.R
@@ -59,14 +59,14 @@ class SignInPhoneFragment : BaseFragment(R.layout.sign_in_phone_fragment),
         val action = ISignInPhoneFragment.Action.ClickSignInWithEmail(
             phoneNumber = "${binding.textInputEditTextPhoneNumber.text}"
         )
-        get<ISignInPhoneFragment>()?.onAction(action)
+        getListener<ISignInPhoneFragment>()?.onAction(action)
     }
 
     private fun signUpTextClicked(binding: SignInPhoneFragmentBinding) {
         val action = ISignInPhoneFragment.Action.ClickSignUp(
             phoneNumber = "${binding.textInputEditTextPhoneNumber.text}"
         )
-        get<ISignInPhoneFragment>()?.onAction(action)
+        getListener<ISignInPhoneFragment>()?.onAction(action)
     }
 
     private fun nextButtonClicked(binding: SignInPhoneFragmentBinding) {
@@ -95,7 +95,7 @@ class SignInPhoneFragment : BaseFragment(R.layout.sign_in_phone_fragment),
                         phoneNumber = result.phoneNumber,
                         recaptchaResponse = result.response
                     )
-                    get<ISignInPhoneFragment>()?.onAction(action)
+                    getListener<ISignInPhoneFragment>()?.onAction(action)
                 }
             }
             is SecurityChallengeResult.Error -> showError(result.err)

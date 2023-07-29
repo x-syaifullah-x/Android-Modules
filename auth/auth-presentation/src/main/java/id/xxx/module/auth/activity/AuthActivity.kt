@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
@@ -12,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
@@ -20,6 +20,7 @@ import id.xxx.module.auth.activity.utils.SignInPasswordFragmentUtils
 import id.xxx.module.auth.activity.utils.SignInPhoneFragmentUtils
 import id.xxx.module.auth.activity.utils.SignUpPasswordFragmentUtils
 import id.xxx.module.auth.activity.utils.SignUpPhoneFragmentUtils
+import id.xxx.module.auth.fragment.ForgetPasswordFragment
 import id.xxx.module.auth.fragment.NewPasswordFragment
 import id.xxx.module.auth.fragment.SignInPasswordFragment
 import id.xxx.module.auth.fragment.listener.IForgetPasswordFragment
@@ -29,6 +30,7 @@ import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
+import id.xxx.module.auth.ktx.getFragment
 import id.xxx.module.auth.ktx.isDarkThemeOn
 import id.xxx.module.auth.model.SignInType
 import id.xxx.module.auth.model.SignUpType
@@ -56,6 +58,12 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
     private val viewModel by viewModels<AuthViewModel> {
         AuthViewModelProviderFactory(useCase)
     }
+
+    private var liveDataForgetPassword: LiveData<Resources<String>>? = null
+    private var observerForgetPassword: Observer<Resources<String>>? = null
+
+    private var liveDataResetPassword: LiveData<Resources<String>>? = null
+    private var observerResetPassword: Observer<Resources<String>>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,18 +96,24 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
                 windowInsetsController.isAppearanceLightStatusBars = true
         }
 
-        val data = intent.data?.toString()
-        if (data != null) {
-            val uri = Uri.parse(data)
-            val mode = uri.getQueryParameter("mode")
+        val uri = intent.data
+        if (uri != null) {
+//            val mode = uri.getQueryParameter("mode")
             val oobCode = uri.getQueryParameter("oobCode")
-            val apiKey = uri.getQueryParameter("apiKey")
-            val lang = uri.getQueryParameter("lang")
-            val args = Bundle()
-            args.putString(NewPasswordFragment.KEY_OOB_CODE, oobCode)
-            supportFragmentManager.beginTransaction()
-                .replace(CONTAINER_ID, NewPasswordFragment::class.java, args, null)
-                .commit()
+//            val apiKey = uri.getQueryParameter("apiKey")
+//            val lang = uri.getQueryParameter("lang")
+            if (!oobCode.isNullOrBlank()) {
+                val args = Bundle()
+                args.putString(NewPasswordFragment.KEY_OOB_CODE, oobCode)
+                supportFragmentManager.beginTransaction()
+                    .replace(CONTAINER_ID, NewPasswordFragment::class.java, args, null)
+                    .commit()
+            } else {
+                val fragmentHome = SignInPasswordFragment()
+                supportFragmentManager.beginTransaction()
+                    .replace(CONTAINER_ID, fragmentHome, null)
+                    .commit()
+            }
         } else if (savedInstanceState == null) {
             val fragmentHome = SignInPasswordFragment()
             supportFragmentManager.beginTransaction()
@@ -149,44 +163,69 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
     }
 
     override fun onAction(action: IForgetPasswordFragment.Action) {
-        val liveData = viewModel.sendOobCode(action.email).asLiveData()
-        var observer: Observer<Resources<String>>? = null
-        observer = Observer { resources ->
-            when (resources) {
-                is Resources.Loading -> action.onLoading()
-                is Resources.Success -> {
-                    action.onSuccess()
-                    val observerFinal = observer
-                    if (observerFinal != null)
-                        liveData.removeObserver(observerFinal)
+        fun resetLiveDataAndObserver() {
+            observerForgetPassword?.apply { liveDataForgetPassword?.removeObserver(this) }
+            liveDataForgetPassword = null
+            observerForgetPassword = null
+        }
+        when (action) {
+            is IForgetPasswordFragment.Action.Next -> {
+                liveDataForgetPassword = viewModel.sendOobCode(action.email).asLiveData()
+                observerForgetPassword = Observer { resources ->
+                    val forgetPasswordFragment = getFragment<ForgetPasswordFragment>()
+                    when (resources) {
+                        is Resources.Loading -> forgetPasswordFragment?.onLoading()
+                        is Resources.Failure -> forgetPasswordFragment?.onError(resources.value)
+                        is Resources.Success -> {
+                            forgetPasswordFragment?.onSuccess()
+                            resetLiveDataAndObserver()
+                        }
+                    }
                 }
+                observerForgetPassword?.apply {
+                    liveDataForgetPassword?.observe(this@AuthActivity, this)
+                }
+            }
 
-                is Resources.Failure -> action.onError(resources.value)
+            is IForgetPasswordFragment.Action.Cancel -> {
+                resetLiveDataAndObserver()
             }
         }
-        liveData.observe(this, observer)
     }
 
     override fun onAction(action: INewPasswordFragment.Action) {
-        viewModel.resetPassword(
-            oobCode = action.oobCode,
-            newPassword = action.newPassword
-        ).asLiveData().observe(this) { resources ->
-            println(resources)
-            when (resources) {
-                is Resources.Loading -> {
-
+        fun resetLiveDataAndObserver() {
+            observerResetPassword?.apply { liveDataResetPassword?.removeObserver(this) }
+            liveDataResetPassword = null
+            observerResetPassword = null
+        }
+        when (action) {
+            is INewPasswordFragment.Action.Next -> {
+                liveDataResetPassword = viewModel.resetPassword(
+                    oobCode = action.oobCode,
+                    newPassword = action.newPassword
+                ).asLiveData()
+                observerResetPassword = Observer { resources ->
+                    val newPasswordFragment = getFragment<NewPasswordFragment>()
+                    when (resources) {
+                        is Resources.Loading -> newPasswordFragment?.onLoading()
+                        is Resources.Failure -> newPasswordFragment?.onError(resources.value)
+                        is Resources.Success -> {
+                            newPasswordFragment?.onSuccess()
+                            resetLiveDataAndObserver()
+                            supportFragmentManager.beginTransaction()
+                                .replace(CONTAINER_ID, SignInPasswordFragment::class.java, null)
+                                .commit()
+                        }
+                    }
                 }
-
-                is Resources.Failure -> {
-
+                observerResetPassword?.apply {
+                    liveDataResetPassword?.observe(this@AuthActivity, this)
                 }
+            }
 
-                is Resources.Success -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(CONTAINER_ID, SignInPasswordFragment::class.java, null)
-                        .commit()
-                }
+            is INewPasswordFragment.Action.Cancel -> {
+                resetLiveDataAndObserver()
             }
         }
     }

@@ -2,12 +2,14 @@ package id.xxx.module.auth.fragment.listener
 
 interface IForgetPasswordFragment {
 
-    data class Action(
-        val email: String,
-        val onLoading: () -> Unit,
-        val onError: (Throwable) -> Unit,
-        val onSuccess: () -> Unit
-    )
+    sealed interface Action {
+
+        data class Next(
+            val email: String,
+        ) : Action
+
+        object Cancel : Action
+    }
 
     fun onAction(action: Action)
 }
