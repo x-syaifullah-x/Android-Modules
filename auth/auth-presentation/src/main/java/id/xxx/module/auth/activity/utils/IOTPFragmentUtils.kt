@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.OTPPhoneFragment
-import id.xxx.module.auth.fragment.listener.IOTPFragment
+import id.xxx.module.auth.fragment.listener.IOTPPhoneFragment
 import id.xxx.module.auth.ktx.getFragment
 import id.xxx.module.auth.model.User
 import id.xxx.module.common.Resources
@@ -12,12 +12,12 @@ import kotlinx.coroutines.Job
 
 class IOTPFragmentUtils(
     private val activity: AuthActivity,
-    action: IOTPFragment.Action,
-    val block: (IOTPFragment.Action.ClickNext) -> LiveData<Resources<User>>
+    action: IOTPPhoneFragment.Action,
+    val block: (IOTPPhoneFragment.Action.ClickNext) -> LiveData<Resources<User>>
 ) {
     init {
         when (action) {
-            is IOTPFragment.Action.ClickNext -> {
+            is IOTPPhoneFragment.Action.ClickNext -> {
                 val job = Job()
                 val fragment = activity.getFragment<OTPPhoneFragment>()
                 val observer = Observer<Resources<User>> {

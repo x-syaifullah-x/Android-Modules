@@ -2,11 +2,14 @@ package id.xxx.module.auth.utils
 
 object ValidationUtils {
 
-    fun isValidEmail(email: String): String? {
+    fun isValidEmail(email: String): Boolean {
         val pattern = Regex("^[A-Za-z\\d._%+-]+@[A-Za-z\\d.-]+\\.[A-Za-z]{2,}$")
-        val isValid = pattern.matches(email)
+        return pattern.matches(email)
+    }
+
+    fun validateEmail(email: String): String? {
         var result: String? = null
-        if (!isValid)
+        if (!isValidEmail(email))
             result = "Please enter a valid email address."
         return result
     }

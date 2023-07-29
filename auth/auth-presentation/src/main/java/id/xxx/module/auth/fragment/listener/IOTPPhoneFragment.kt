@@ -1,6 +1,6 @@
 package id.xxx.module.auth.fragment.listener
 
-interface IOTPFragment {
+interface IOTPPhoneFragment {
 
     sealed interface Action {
 

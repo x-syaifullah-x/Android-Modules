@@ -42,13 +42,13 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         )
     }
 
-    fun lookup(idToken: String): Response<InputStream> {
-        return client.execute(
-            URL = Firebase.Auth.Endpoint.lookup(),
-            methode = RequestMethode.POST,
-            requestBody = "{\"idToken\":\"$idToken\"}".toRequestBody()
-        )
-    }
+//    fun lookup(idToken: String): Response<InputStream> {
+//        return client.execute(
+//            URL = Firebase.Auth.Endpoint.lookup(),
+//            methode = RequestMethode.POST,
+//            requestBody = "{\"idToken\":\"$idToken\"}".toRequestBody()
+//        )
+//    }
 
     fun resetPassword(oobCode: String, newPassword: String): Response<InputStream> {
         val payload = JSONObject()
@@ -61,15 +61,15 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         )
     }
 
-    fun sendOobCode(OOBType: OobType): Response<InputStream> {
+    fun sendOobCode(oobType: OobType): Response<InputStream> {
         val payload = JSONObject()
-        payload.put("requestType", OOBType.requestType)
-        when (OOBType) {
+        payload.put("requestType", oobType.requestType)
+        when (oobType) {
             is OobType.PasswordReset -> {
-                payload.put("email", OOBType.email)
+                payload.put("email", oobType.email)
             }
             is OobType.VerifyEmail -> {
-                payload.put("idToken", OOBType.idToken)
+                payload.put("idToken", oobType.idToken)
             }
         }
         return client.execute(

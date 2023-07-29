@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
-import id.xxx.module.auth.fragment.listener.IOTPFragment
+import id.xxx.module.auth.fragment.listener.IOTPPhoneFragment
 import id.xxx.module.auth.ktx.get
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.OtpPhoneFragmentBinding
@@ -32,10 +32,10 @@ class OTPPhoneFragment : BaseFragment(R.layout.otp_phone_fragment) {
             }
             val sessionInfo = arguments?.getString(KEY_SESSION_INFO)
                 ?: throw Throwable("required session info")
-            val listener = get<IOTPFragment>()
+            val listener = get<IOTPPhoneFragment>()
             val isNewUser = arguments?.getBoolean(KEY_IS_NEW_USER)
                 ?: throw InvalidParameterException()
-            val action = IOTPFragment.Action.ClickNext(
+            val action = IOTPPhoneFragment.Action.ClickNext(
                 isNewUser = isNewUser,
                 otp = "${binding.textInputEditTextOtp.text}",
                 sessionInfo = sessionInfo

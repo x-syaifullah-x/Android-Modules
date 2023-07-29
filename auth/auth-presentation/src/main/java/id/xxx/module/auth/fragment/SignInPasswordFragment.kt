@@ -86,7 +86,7 @@ class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) 
         binding: SignInPasswordFragmentBinding
     ): ISignInPasswordFragment.Action? {
         val email = "${binding.textInputEditTextEmail.text}"
-        var validateMessage = ValidationUtils.isValidEmail(email)
+        var validateMessage = ValidationUtils.validateEmail(email)
         if (validateMessage != null) {
             binding.textInputLayoutEmail.requestFocus()
             binding.textInputEditTextEmail.error = validateMessage

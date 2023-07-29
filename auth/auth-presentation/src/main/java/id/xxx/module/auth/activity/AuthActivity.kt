@@ -4,13 +4,16 @@ import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
 import id.xxx.module.auth.activity.utils.IOTPFragmentUtils
@@ -18,8 +21,11 @@ import id.xxx.module.auth.activity.utils.SignInPasswordFragmentUtils
 import id.xxx.module.auth.activity.utils.SignInPhoneFragmentUtils
 import id.xxx.module.auth.activity.utils.SignUpPasswordFragmentUtils
 import id.xxx.module.auth.activity.utils.SignUpPhoneFragmentUtils
+import id.xxx.module.auth.fragment.NewPasswordFragment
 import id.xxx.module.auth.fragment.SignInPasswordFragment
-import id.xxx.module.auth.fragment.listener.IOTPFragment
+import id.xxx.module.auth.fragment.listener.IForgetPasswordFragment
+import id.xxx.module.auth.fragment.listener.INewPasswordFragment
+import id.xxx.module.auth.fragment.listener.IOTPPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
@@ -32,9 +38,15 @@ import id.xxx.module.auth.usecase.AuthUseCase
 import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.auth.viewmodel.AuthViewModelProviderFactory
 import id.xxx.module.auth_presentation.R
+import id.xxx.module.common.Resources
 
 open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPasswordFragment,
-    ISignInPasswordFragment, ISignUpPhoneFragment, ISignInPhoneFragment, IOTPFragment {
+    ISignInPasswordFragment,
+    ISignUpPhoneFragment,
+    ISignInPhoneFragment,
+    IOTPPhoneFragment,
+    IForgetPasswordFragment,
+    INewPasswordFragment {
 
     companion object {
         internal val CONTAINER_ID = R.id.content
@@ -68,7 +80,7 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
         val ivArrowBack = findViewById<ImageView>(R.id.iv_arrow_back)
         ivArrowBack.isVisible = !isTop
         ivArrowBack.setOnClickListener {
-            onBackPressedCallbackImpl.handleOnBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         if (!isDarkThemeOn()) {
@@ -77,9 +89,20 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
                 windowInsetsController.isAppearanceLightStatusBars = true
         }
 
-        val fragmentHome = SignInPasswordFragment()
-
-        if (savedInstanceState == null) {
+        val data = intent.data?.toString()
+        if (data != null) {
+            val uri = Uri.parse(data)
+            val mode = uri.getQueryParameter("mode")
+            val oobCode = uri.getQueryParameter("oobCode")
+            val apiKey = uri.getQueryParameter("apiKey")
+            val lang = uri.getQueryParameter("lang")
+            val args = Bundle()
+            args.putString(NewPasswordFragment.KEY_OOB_CODE, oobCode)
+            supportFragmentManager.beginTransaction()
+                .replace(CONTAINER_ID, NewPasswordFragment::class.java, args, null)
+                .commit()
+        } else if (savedInstanceState == null) {
+            val fragmentHome = SignInPasswordFragment()
             supportFragmentManager.beginTransaction()
                 .replace(CONTAINER_ID, fragmentHome, null)
                 .commit()
@@ -112,7 +135,7 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
         )
     }
 
-    override fun onAction(action: IOTPFragment.Action) {
+    override fun onAction(action: IOTPPhoneFragment.Action) {
         IOTPFragmentUtils(activity = this, action = action, block = { value ->
             if (value.isNewUser) {
                 viewModel.signUp(
@@ -124,6 +147,50 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
                 )
             }.asLiveData()
         })
+    }
+
+    override fun onAction(action: IForgetPasswordFragment.Action) {
+        viewModel.sendOobCode(action.email)
+            .asLiveData()
+            .observe(this) { resources ->
+                when (resources) {
+                    is Resources.Loading -> {
+                        action.loading()
+                    }
+
+                    is Resources.Success -> {
+                        action.success()
+                    }
+
+                    is Resources.Failure -> {
+                        action.error(resources.value)
+                    }
+                }
+            }
+    }
+
+    override fun onAction(action: INewPasswordFragment.Action) {
+        viewModel.resetPassword(
+            oobCode = action.oobCode,
+            newPassword = action.newPassword
+        ).asLiveData().observe(this) { resources ->
+            println(resources)
+            when (resources) {
+                is Resources.Loading -> {
+
+                }
+
+                is Resources.Failure -> {
+
+                }
+
+                is Resources.Success -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(CONTAINER_ID, SignInPasswordFragment::class.java, null)
+                        .commit()
+                }
+            }
+        }
     }
 
     internal fun result(user: User) {

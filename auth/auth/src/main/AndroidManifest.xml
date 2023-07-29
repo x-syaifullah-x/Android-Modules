@@ -4,6 +4,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
-        <activity android:name="id.xxx.module.auth.MainActivity" />
+        <activity
+            android:name="id.xxx.module.auth.MainActivity"
+            android:exported="true">
+            <intent-filter android:label="Auth Forget Password">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="x-x-x-test.co.id"
+                    android:pathPrefix="/__/auth/action"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
