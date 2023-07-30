@@ -40,6 +40,7 @@ ext {
     vMockitoInline = "5.2.0"
     vModule = "0.0.001"
     vOrgGson = "20230227"
+    vPlayServicesAuth = "20.6.0"
     vSquareupOkhttp3 = "4.11.0"
 }
 

@@ -4,17 +4,34 @@ import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.preferences.SignInputPreferences
+import id.xxx.module.auth.utils.GoogleSignIn
 import id.xxx.module.auth.utils.RichTextUtils
 import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.SignInPasswordFragmentBinding
 
 class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) {
+
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            val data = activityResult.data
+            if (data != null) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                if (task.isSuccessful) {
+                    getListener<ISignInPasswordFragment>()?.onAction(
+                        ISignInPasswordFragment.Action.ClickSignInWithGoogle(
+                            token = "${task.result.idToken}"
+                        )
+                    )
+                }
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,6 +53,12 @@ class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) 
         )
         binding.textViewDonTHaveAnAccount.movementMethod = LinkMovementMethod.getInstance()
         binding.buttonUsePhone.setOnClickListener { moveToSignInWithPhone(binding) }
+        binding.buttonUseGoogle.setOnClickListener {
+            val googleSignInClient = GoogleSignIn.getClient(requireActivity())
+            googleSignInClient.signOut()
+            val intent = googleSignInClient.signInIntent
+            activityResultLauncher.launch(intent)
+        }
     }
 
     fun loadingVisible() = loadingSetVisible(true)

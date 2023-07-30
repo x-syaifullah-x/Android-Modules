@@ -1,7 +1,10 @@
 package id.xxx.module.auth.activity.utils
 
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.ForgetPasswordFragment
 import id.xxx.module.auth.fragment.SignInPasswordFragment
@@ -35,7 +38,36 @@ class SignInPasswordFragmentUtils(
 
             is ISignInPasswordFragment.Action.ClickSignInWithPhone ->
                 handleActionSignWithEmail(action)
+
+            is ISignInPasswordFragment.Action.ClickSignInWithGoogle ->
+                handleActionSignWithGoogle(action)
         }
+    }
+
+    private fun handleActionSignWithGoogle(action: ISignInPasswordFragment.Action.ClickSignInWithGoogle) {
+        val signInType = SignInType.Google(
+            token = action.token
+        )
+        block(signInType)
+            .asLiveData()
+            .observe(activity) { value ->
+                val fragment = activity.getFragment<SignInPasswordFragment>()
+                when (value) {
+                    is Resources.Loading -> {
+                        fragment?.loadingVisible()
+                    }
+
+                    is Resources.Failure -> {
+                        fragment?.loadingGone()
+                        fragment?.showError(err = value.value)
+                    }
+
+                    is Resources.Success -> {
+                        fragment?.loadingGone()
+                        activity.result(value.value)
+                    }
+                }
+            }
     }
 
     private fun handleActionSignWithEmail(action: ISignInPasswordFragment.Action.ClickSignInWithPhone) {

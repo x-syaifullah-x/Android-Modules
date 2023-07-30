@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import id.xxx.module.auth.MainActivity
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
 import id.xxx.module.auth.model.User
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         val b = findViewById<Button>(id.xxx.module.auth.application.R.id.btn_test_sign)
 
         if (intent.data != null) {
-            val i = Intent(this, id.xxx.module.auth.MainActivity::class.java)
+            val i = Intent(this, MainActivity::class.java)
             i.data = intent.data
             intent.data = null
             authActivityResultLauncher.launch(i)

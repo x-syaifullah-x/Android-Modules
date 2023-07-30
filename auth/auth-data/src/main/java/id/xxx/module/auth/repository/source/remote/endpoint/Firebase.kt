@@ -1,4 +1,4 @@
-package id.xxx.module.auth.repository.source.remote.constant
+package id.xxx.module.auth.repository.source.remote.endpoint
 
 internal object Firebase {
 
@@ -35,6 +35,9 @@ internal object Firebase {
             private val SIGN_WITH_PHONE_NUMBER =
                 "$BASE_URL/accounts:signInWithPhoneNumber?key=${apiKey()}"
 
+            private val SIGN_WITH_O_AUTH_CREDENTIAL =
+                "$BASE_URL/accounts:signInWithIdp?key=${apiKey()}"
+
             fun signUp() = SIGN_UP
 
             fun signWithPassword() = SIGN_WITH_PASSWORD
@@ -42,6 +45,8 @@ internal object Firebase {
             fun signWithPhoneNumber() = SIGN_WITH_PHONE_NUMBER
 
             fun signWithCostumeToken() = SIGN_WITH_COSTUME_TOKEN
+
+            fun signWithOAuthCredential() = SIGN_WITH_O_AUTH_CREDENTIAL
 
             fun sendOobCode() = SEND_OOB_CODE
 

@@ -6,7 +6,7 @@ import id.xxx.module.auth.model.SignUpType
 import id.xxx.module.auth.model.UpdateType
 import id.xxx.module.auth.repository.source.remote.client.HttpClient
 import id.xxx.module.auth.repository.source.remote.client.RequestMethode
-import id.xxx.module.auth.repository.source.remote.constant.Firebase
+import id.xxx.module.auth.repository.source.remote.endpoint.Firebase
 import id.xxx.module.auth.repository.source.remote.response.Response
 import okhttp3.MediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -33,6 +33,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
             is UpdateType.ConfirmEmailVerification -> {
                 payload.put("oobCode", type.oobCode)
             }
+
             else -> throw NotImplementedError("please see the documentation for $type")
         }
         return client.execute(
@@ -68,6 +69,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
             is OobType.PasswordReset -> {
                 payload.put("email", oobType.email)
             }
+
             is OobType.VerifyEmail -> {
                 payload.put("idToken", oobType.idToken)
             }
@@ -94,6 +96,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
                     payload.toRequestBody()
                 )
             }
+
             is SignUpType.Phone -> {
                 val payload = JSONObject()
                 payload.put("sessionInfo", type.sessionInfo)
@@ -138,16 +141,23 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         val payload = JSONObject()
         payload.put("returnSecureToken", true)
         val url = when (type) {
+            is SignInType.Google -> {
+                payload.put("requestUri", "http://localhost")
+                payload.put("postBody", type.postBody)
+                Firebase.Auth.Endpoint.signWithOAuthCredential()
+            }
+
             is SignInType.Phone -> {
                 payload.put("sessionInfo", type.sessionInfo)
                 payload.put("code", type.otp)
-                val result = Firebase.Auth.Endpoint.signWithPhoneNumber()
-                result
+                Firebase.Auth.Endpoint.signWithPhoneNumber()
             }
+
             is SignInType.CostumeToken -> {
                 payload.put("token", type.token)
                 Firebase.Auth.Endpoint.signWithCostumeToken()
             }
+
             is SignInType.Password -> {
                 payload.put("email", type.email)
                 payload.put("password", type.password)

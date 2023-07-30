@@ -12,7 +12,12 @@ sealed interface SignInType {
     ) : SignInType
 
     data class Phone(
-        val sessionInfo: String,
-        val otp: String
+        val sessionInfo: String, val otp: String
     ) : SignInType
+
+    data class Google(
+        private val token: String,
+    ) : SignInType {
+        val postBody = "id_token=${token}&providerId=google.com"
+    }
 }

@@ -2,7 +2,7 @@ package id.xxx.module.auth.repository.source.remote.auth.exchange
 
 import id.xxx.module.auth.repository.source.remote.client.HttpClient
 import id.xxx.module.auth.repository.source.remote.client.RequestMethode
-import id.xxx.module.auth.repository.source.remote.constant.Firebase
+import id.xxx.module.auth.repository.source.remote.endpoint.Firebase
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 
