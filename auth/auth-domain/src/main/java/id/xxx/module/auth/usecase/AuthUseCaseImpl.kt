@@ -1,10 +1,13 @@
 package id.xxx.module.auth.usecase
 
-import id.xxx.module.auth.model.Code
-import id.xxx.module.auth.model.SignInType
-import id.xxx.module.auth.model.SignUpType
-import id.xxx.module.auth.model.UpdateType
+import id.xxx.module.auth.model.PasswordResetModel
+import id.xxx.module.auth.model.parms.Code
+import id.xxx.module.auth.model.parms.SignInType
+import id.xxx.module.auth.model.parms.SignUpType
+import id.xxx.module.auth.model.parms.UpdateType
 import id.xxx.module.auth.repository.AuthRepository
+import id.xxx.module.common.Resources
+import kotlinx.coroutines.flow.Flow
 
 class AuthUseCaseImpl private constructor(
     private val repo: AuthRepository
@@ -32,6 +35,12 @@ class AuthUseCaseImpl private constructor(
 
     override fun sendCode(code: Code.PasswordReset) =
         repo.sendCode(code)
+
+    override fun sendCode(code: Code.VerifyEmail) =
+        repo.sendCode(code)
+
+    override fun lookup(idToken: String) =
+        repo.lookup(idToken)
 
     override fun update(type: UpdateType) =
         repo.update(type)

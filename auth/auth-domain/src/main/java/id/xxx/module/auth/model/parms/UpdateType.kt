@@ -1,4 +1,4 @@
-package id.xxx.module.auth.model
+package id.xxx.module.auth.model.parms
 
 sealed interface UpdateType {
 

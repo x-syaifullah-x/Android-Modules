@@ -1,9 +1,9 @@
 package id.xxx.module.auth.repository.source.remote.auth.email
 
-import id.xxx.module.auth.model.Code
-import id.xxx.module.auth.model.SignInType
-import id.xxx.module.auth.model.SignUpType
-import id.xxx.module.auth.model.UpdateType
+import id.xxx.module.auth.model.parms.Code
+import id.xxx.module.auth.model.parms.SignInType
+import id.xxx.module.auth.model.parms.SignUpType
+import id.xxx.module.auth.model.parms.UpdateType
 import id.xxx.module.auth.repository.source.remote.client.HttpClient
 import id.xxx.module.auth.repository.source.remote.client.RequestMethode
 import id.xxx.module.auth.repository.source.remote.endpoint.Firebase
@@ -65,6 +65,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
     fun sendOobCode(code: Code): Response<InputStream> {
         val payload = JSONObject()
         payload.put("requestType", code.requestType)
+        var url = Firebase.Auth.Endpoint.sendOobCode()
         when (code) {
             is Code.PasswordReset -> {
                 payload.put("email", code.email)
@@ -90,15 +91,11 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
 //        }
                 payload.put("phoneNumber", code.phoneNumber)
                 payload.put("recaptchaToken", code.recaptchaResponse)
-                return client.execute(
-                    URL = Firebase.Auth.Endpoint.sendVerificationCode(),
-                    methode = RequestMethode.POST,
-                    requestBody = payload.toRequestBody()
-                )
+                url = Firebase.Auth.Endpoint.sendVerificationCode()
             }
         }
         return client.execute(
-            URL = Firebase.Auth.Endpoint.sendOobCode(),
+            URL = url,
             methode = RequestMethode.POST,
             payload.toRequestBody()
         )
@@ -162,6 +159,16 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         }
         return client.execute(
             URL = url,
+            methode = RequestMethode.POST,
+            requestBody = payload.toRequestBody()
+        )
+    }
+
+    fun lookup(idToken: String): Response<InputStream> {
+        val payload = JSONObject()
+        payload.put("idToken", idToken)
+        return client.execute(
+            URL = Firebase.Auth.Endpoint.lookup(),
             methode = RequestMethode.POST,
             requestBody = payload.toRequestBody()
         )

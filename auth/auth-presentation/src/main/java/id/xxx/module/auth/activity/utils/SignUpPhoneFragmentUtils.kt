@@ -9,7 +9,7 @@ import id.xxx.module.auth.fragment.SignUpPasswordFragment
 import id.xxx.module.auth.fragment.SignUpPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.auth.ktx.getFragment
-import id.xxx.module.auth.model.Code
+import id.xxx.module.auth.model.parms.Code
 import id.xxx.module.auth.model.PhoneVerificationModel
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.common.Resources

@@ -6,21 +6,21 @@ import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.OTPPhoneFragment
 import id.xxx.module.auth.fragment.listener.IOTPPhoneFragment
 import id.xxx.module.auth.ktx.getFragment
-import id.xxx.module.auth.model.User
+import id.xxx.module.auth.model.SignModel
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
 
 class IOTPFragmentUtils(
     private val activity: AuthActivity,
     action: IOTPPhoneFragment.Action,
-    val block: (IOTPPhoneFragment.Action.ClickNext) -> LiveData<Resources<User>>
+    val block: (IOTPPhoneFragment.Action.ClickNext) -> LiveData<Resources<SignModel>>
 ) {
     init {
         when (action) {
             is IOTPPhoneFragment.Action.ClickNext -> {
                 val job = Job()
                 val fragment = activity.getFragment<OTPPhoneFragment>()
-                val observer = Observer<Resources<User>> {
+                val observer = Observer<Resources<SignModel>> {
                     when (it) {
                         is Resources.Loading -> {
                             fragment?.loadingVisible()

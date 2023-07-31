@@ -2,11 +2,13 @@ package id.xxx.module.auth.activity
 
 import android.app.Activity
 import android.app.ActivityManager
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsControllerCompat
@@ -30,22 +32,20 @@ import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.auth.ktx.getFragment
 import id.xxx.module.auth.ktx.isDarkThemeOn
-import id.xxx.module.auth.model.Code
+import id.xxx.module.auth.model.parms.Code
 import id.xxx.module.auth.model.PasswordResetModel
-import id.xxx.module.auth.model.SignInType
-import id.xxx.module.auth.model.SignUpType
-import id.xxx.module.auth.model.User
+import id.xxx.module.auth.model.parms.SignInType
+import id.xxx.module.auth.model.parms.SignUpType
+import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.usecase.AuthUseCase
 import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.auth.viewmodel.AuthViewModelProviderFactory
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.common.Resources
+import org.json.JSONObject
 
 open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPasswordFragment,
-    ISignInPasswordFragment,
-    ISignUpPhoneFragment,
-    ISignInPhoneFragment,
-    IOTPPhoneFragment,
+    ISignInPasswordFragment, ISignUpPhoneFragment, ISignInPhoneFragment, IOTPPhoneFragment,
     IForgetPasswordFragment {
 
     companion object {
@@ -72,13 +72,11 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
         setContentView(R.layout.auth_activity)
 
         val am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val isTop =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                am.appTasks[0].taskInfo.numActivities
-            } else {
-                @Suppress("DEPRECATION")
-                am.getRunningTasks(Int.MAX_VALUE)[0].numActivities
-            } == 1
+        val isTop = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            am.appTasks[0].taskInfo.numActivities
+        } else {
+            @Suppress("DEPRECATION") am.getRunningTasks(Int.MAX_VALUE)[0].numActivities
+        } == 1
 
         val ivArrowBack = findViewById<ImageView>(R.id.iv_arrow_back)
         ivArrowBack.isVisible = !isTop
@@ -88,14 +86,13 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
 
         if (!isDarkThemeOn()) {
             val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
-            if (!windowInsetsController.isAppearanceLightStatusBars)
-                windowInsetsController.isAppearanceLightStatusBars = true
+            if (!windowInsetsController.isAppearanceLightStatusBars) windowInsetsController.isAppearanceLightStatusBars =
+                true
         }
 
         if (savedInstanceState == null) {
             val fragmentHome = SignInPasswordFragment()
-            supportFragmentManager.beginTransaction()
-                .replace(CONTAINER_ID, fragmentHome, null)
+            supportFragmentManager.beginTransaction().replace(CONTAINER_ID, fragmentHome, null)
                 .commit()
         }
     }
@@ -173,10 +170,50 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
         }
     }
 
-    internal fun result(user: User) {
-        val result = Intent()
-            .putExtra(RESULT_USER, user)
-        setResult(Activity.RESULT_OK, result)
-        finishAfterTransition()
+    internal fun result(model: SignModel) {
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setCancelable(false)
+        viewModel.lookup(model.token).asLiveData().observe(this) { resLookup ->
+            when (resLookup) {
+                is Resources.Loading -> {
+                    progressDialog.setMessage("Loading ...")
+                    progressDialog.show()
+                }
+
+                is Resources.Failure -> {
+                    Toast.makeText(this, resLookup.value.message, Toast.LENGTH_LONG).show()
+                    progressDialog.dismiss()
+                }
+
+                is Resources.Success -> {
+                    progressDialog.dismiss()
+                    if (resLookup.value.isEmailVerify) {
+                        val result = Intent().putExtra(RESULT_USER, model)
+                        setResult(Activity.RESULT_OK, result)
+                        finishAfterTransition()
+                    } else {
+                        viewModel.sendCode(Code.VerifyEmail(model.token))
+                            .asLiveData()
+                            .observe(this) { resVerifyEmail ->
+                                if (resVerifyEmail is Resources.Success) {
+                                    progressDialog.dismiss()
+                                    Toast.makeText(
+                                        this,
+                                        "Please verify your account, a verification email has been sent to your email",
+                                        Toast.LENGTH_LONG,
+                                    ).show()
+                                } else if (resVerifyEmail is Resources.Failure) {
+                                    progressDialog.dismiss()
+                                    Toast.makeText(
+                                        this,
+                                        resVerifyEmail.value.message,
+                                        Toast.LENGTH_LONG,
+                                    ).show()
+                                }
+                            }
+                    }
+                }
+            }
+        }
     }
 }

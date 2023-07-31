@@ -1,10 +1,7 @@
 package id.xxx.module.auth.activity.utils
 
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.ForgetPasswordFragment
 import id.xxx.module.auth.fragment.SignInPasswordFragment
@@ -12,8 +9,8 @@ import id.xxx.module.auth.fragment.SignInPhoneFragment
 import id.xxx.module.auth.fragment.SignUpPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.ktx.getFragment
-import id.xxx.module.auth.model.SignInType
-import id.xxx.module.auth.model.User
+import id.xxx.module.auth.model.parms.SignInType
+import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
@@ -22,7 +19,7 @@ import kotlinx.coroutines.flow.Flow
 class SignInPasswordFragmentUtils(
     private val activity: AuthActivity,
     action: ISignInPasswordFragment.Action,
-    private val block: (SignInType) -> Flow<Resources<User>>,
+    private val block: (SignInType) -> Flow<Resources<SignModel>>,
 ) {
 
     init {
@@ -97,8 +94,8 @@ class SignInPasswordFragmentUtils(
             password = action.password,
         )
         val liveData = block(type).asLiveData(job)
-        val observer = object : Observer<Resources<User>> {
-            override fun onChanged(value: Resources<User>) {
+        val observer = object : Observer<Resources<SignModel>> {
+            override fun onChanged(value: Resources<SignModel>) {
                 when (value) {
                     is Resources.Loading -> {
                         fragment?.loadingVisible()

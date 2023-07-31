@@ -25,7 +25,7 @@ ext {
     vAndroidxCustomview = "1.1.0"
     vAndroidxDrawerLayout = "1.2.0"
     vAndroidxEspresso = "3.5.1"
-    vAndroidxFragment = "1.5.7"
+    vAndroidxFragment = "1.6.1"
     vAndroidxLifecycle = "2.6.1"
     vAndroidxTestCore = "1.5.0"
     vAndroidxTestRules = "1.5.0"

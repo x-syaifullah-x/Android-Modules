@@ -8,9 +8,9 @@ import id.xxx.module.auth.fragment.SignUpPasswordFragment
 import id.xxx.module.auth.fragment.SignUpPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
 import id.xxx.module.auth.ktx.getFragment
-import id.xxx.module.auth.model.SignUpType
-import id.xxx.module.auth.model.User
-import id.xxx.module.auth.model.UserData
+import id.xxx.module.auth.model.parms.SignUpType
+import id.xxx.module.auth.model.SignModel
+import id.xxx.module.auth.model.parms.UserData
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.Flow
 class SignUpPasswordFragmentUtils(
     private val activity: AuthActivity,
     action: ISignUpPasswordFragment.Action,
-    private val block: (SignUpType) -> Flow<Resources<User>>,
+    private val block: (SignUpType) -> Flow<Resources<SignModel>>,
 ) {
 
     init {
@@ -55,8 +55,8 @@ class SignUpPasswordFragmentUtils(
             )
         )
         val liveData = block(type).asLiveData(job)
-        val observer = object : Observer<Resources<User>> {
-            override fun onChanged(value: Resources<User>) {
+        val observer = object : Observer<Resources<SignModel>> {
+            override fun onChanged(value: Resources<SignModel>) {
                 when (value) {
                     is Resources.Loading -> {
                         fragment?.loadingVisible()

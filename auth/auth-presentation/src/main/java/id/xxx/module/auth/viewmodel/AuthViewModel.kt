@@ -1,9 +1,9 @@
 package id.xxx.module.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
-import id.xxx.module.auth.model.Code
-import id.xxx.module.auth.model.SignInType
-import id.xxx.module.auth.model.SignUpType
+import id.xxx.module.auth.model.parms.Code
+import id.xxx.module.auth.model.parms.SignInType
+import id.xxx.module.auth.model.parms.SignUpType
 import id.xxx.module.auth.usecase.AuthUseCase
 
 class AuthViewModel(
@@ -21,4 +21,10 @@ class AuthViewModel(
 
     fun sendCode(code: Code.PasswordReset) =
         useCase.sendCode(code)
+
+    fun sendCode(code: Code.VerifyEmail) =
+        useCase.sendCode(code)
+
+    fun lookup(idToken: String) =
+        useCase.lookup(idToken)
 }

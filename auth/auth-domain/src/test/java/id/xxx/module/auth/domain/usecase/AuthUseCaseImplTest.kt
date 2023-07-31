@@ -1,9 +1,9 @@
 package id.xxx.module.auth.domain.usecase
 
-import id.xxx.module.auth.model.SignInType
-import id.xxx.module.auth.model.SignUpType
-import id.xxx.module.auth.model.User
-import id.xxx.module.auth.model.UserData
+import id.xxx.module.auth.model.parms.SignInType
+import id.xxx.module.auth.model.parms.SignUpType
+import id.xxx.module.auth.model.SignModel
+import id.xxx.module.auth.model.parms.UserData
 import id.xxx.module.auth.repository.AuthRepository
 import id.xxx.module.auth.usecase.AuthUseCase
 import id.xxx.module.auth.usecase.AuthUseCaseImpl
@@ -150,7 +150,10 @@ internal class AuthUseCaseImplTest {
 
     }
 
-    private fun getMockUser() = User(
-        uid = "uid:test"
+    private fun getMockUser() = SignModel(
+        uid = "uid:test",
+        token = "token",
+        refreshToken = "refreshToken",
+        expiresIn = System.currentTimeMillis()
     )
 }

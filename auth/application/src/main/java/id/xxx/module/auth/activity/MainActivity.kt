@@ -10,7 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import id.xxx.module.auth.MainActivity
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
-import id.xxx.module.auth.model.User
+import id.xxx.module.auth.model.SignModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,11 +22,11 @@ class MainActivity : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     data?.getParcelableExtra(
                         MainActivity.RESULT_USER,
-                        User::class.java
+                        SignModel::class.java
                     )
                 } else {
                     @Suppress("DEPRECATION")
-                    data?.getSerializableExtra(MainActivity.RESULT_USER) as? User
+                    data?.getSerializableExtra(MainActivity.RESULT_USER) as? SignModel
                 }
             println(result)
         }

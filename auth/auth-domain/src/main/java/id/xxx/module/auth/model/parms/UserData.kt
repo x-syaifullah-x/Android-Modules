@@ -1,4 +1,4 @@
-package id.xxx.module.auth.model
+package id.xxx.module.auth.model.parms
 
 data class UserData(
     val email: String,

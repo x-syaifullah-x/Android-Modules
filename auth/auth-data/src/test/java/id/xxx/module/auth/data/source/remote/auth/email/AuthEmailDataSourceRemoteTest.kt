@@ -1,5 +1,9 @@
 package id.xxx.module.auth.data.source.remote.auth.email
 
+import id.xxx.module.auth.model.parms.Code
+import id.xxx.module.auth.model.parms.SignInType
+import id.xxx.module.auth.model.parms.SignUpType
+import id.xxx.module.auth.model.parms.UserData
 import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
 import id.xxx.module.auth.repository.source.remote.response.Response
 import id.xxx.module.io.ktx.read
@@ -27,7 +31,7 @@ internal class AuthEmailDataSourceRemoteTest {
 //        signInWithPhoneNumber(sessionInfo, "123456")
     }
 
-//    @Suppress("SameParameterValue")
+    //    @Suppress("SameParameterValue")
 //    private fun signInWithPhoneNumber(
 //        sessionInfo: String,
 //        code: String
@@ -44,15 +48,17 @@ internal class AuthEmailDataSourceRemoteTest {
 //        val response = dataSource.update(type)
 //        read(response)
 //    }
-//
+
+
 //    @Test
 //    fun lookup() = runBlocking<Unit> {
 //        val response = dataSource.lookup(
-//            "eyJhbGciOiJSUzI1NiIsImtpZCI6IjNmNjcyNDYxOTk4YjJiMzMyYWQ4MTY0ZTFiM2JlN2VkYTY4NDZiMzciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYXV0aC1hMjJlNiIsImF1ZCI6ImF1dGgtYTIyZTYiLCJhdXRoX3RpbWUiOjE2NjcxMDU2MDIsInVzZXJfaWQiOiIxIiwic3ViIjoiMSIsImlhdCI6MTY2NzEwNTYwMiwiZXhwIjoxNjY3MTA5MjAyLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7fSwic2lnbl9pbl9wcm92aWRlciI6ImN1c3RvbSJ9fQ.Z5QUBfD78fvQ94Upm8D6kiHVWZ8v_RjClGFiRm-AJ3Eq-ANXFRpNjizXtM3FHm1x2uE14z6sWCVSDUx5mSxsHMcKvMSjr59EpKn0MEkJ_f4-vgW7maw1mEYzuGmkUodg4hOra2FVzkLyooE0h21XLGzpcZI0v3QpXPqU2rX1fMoQnNXIhRs3drsGxOB0Jf1fsEq1or2j3Va1JkD_WFaf3YhU3QrxFs1NuAUv0crmzF1-kJZ3I-l7qj_Xcq9RLF8Tzdj7m-fiAiVd3MzFvcvHZDTiGTD1wCq7Bo1Gn3g3kix9ScD5kyRjL2eaXF_CvrOpsBbI4iV-9og73MpFzP2uEA"
+//            "eyJhbGciOiJSUzI1NiIsImtpZCI6IjYyM2YzNmM4MTZlZTNkZWQ2YzU0NTkyZTM4ZGFlZjcyZjE1YTBmMTMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiU3lhaWZ1bGxhaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQWNIVHRleHlMMWtKZ1U3UXZuSHBMYzR4OWY5MlF3VDdMd244Y01YQzNucEhjay1mQT1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS94LXgteC10ZXN0IiwiYXVkIjoieC14LXgtdGVzdCIsImF1dGhfdGltZSI6MTY5MDc4ODQ4MywidXNlcl9pZCI6Ilh5UEx0b05IQVBPV2t3Y1dNNE5zbVg4UnBNRjMiLCJzdWIiOiJYeVBMdG9OSEFQT1drd2NXTTROc21YOFJwTUYzIiwiaWF0IjoxNjkwNzg4NDgzLCJleHAiOjE2OTA3OTIwODMsImVtYWlsIjoieC5zeWFpZnVsbGFoLnhAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsieC5zeWFpZnVsbGFoLnhAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.od-w_SG7OtJsWmXY7CT8XCSHRvuGVopMq2QHEZl4KrvhQKIYnQHu_NQOvYwxaiJ7fVIRPXT2FcGjnItl9G0hKn7PxCWP246DYO45Z4zCyqkF5EpADsQPl7aSF6LPzKeQ6BMKudiFhvKmTTjpE18X5ZnRgRAqyAtO94WqIuLwfgzP3RQ2BRK7Ll7orqNwMl54IaiLn4agHJRsBUaYdT-ZVXev_QAQKIMeCWZvF4eJQMmzLkGdyGNnvgDZdwISOh9YlP3C-L-U5BzkAfS4T9D-ndMF3kjw_dJdH7NG2Nd1pga5nOcmaoWOUiXbXF2kp48DBHR4T74JSo5nIaydncr-HQ"
 //        )
 //        read(response)
 //    }
-//
+
+    //
 //    @Test
 //    fun confirmResetPassword() = runBlocking<Unit> {
 //        val uri =
@@ -66,12 +72,12 @@ internal class AuthEmailDataSourceRemoteTest {
 //    @Test
 //    fun sendOobCodeVerifyEmail() = runBlocking<Unit> {
 //        val token =
-//            "eyJhbGciOiJSUzI1NiIsImtpZCI6ImRjMzdkNTkzNjVjNjIyOGI4Y2NkYWNhNTM2MGFjMjRkMDQxNWMxZWEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYXV0aC1hMjJlNiIsImF1ZCI6ImF1dGgtYTIyZTYiLCJhdXRoX3RpbWUiOjE2NjcyMzI0ODQsInVzZXJfaWQiOiI4bUVya3FXZm5SVjNSNXF3Zlk4RFlURFRQNWEyIiwic3ViIjoiOG1FcmtxV2ZuUlYzUjVxd2ZZOERZVERUUDVhMiIsImlhdCI6MTY2NzIzMjQ4NCwiZXhwIjoxNjY3MjM2MDg0LCJlbWFpbCI6InJvb3R0aW5nYW5kcm9pZEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJyb290dGluZ2FuZHJvaWRAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.vZLqTR4Cb0GHIPy1tx6voQs7ZCAdGIIhpAs-jQIeZenxTdXVEcWomkvtNOzdE5nzxBaC0IO5zg07G_H9sxjk9qHnHD5LYQo75CvnY69D3JVQUVX9m_lJIPrnSY3s3ckfrJo8XGXQ4Uq98NV61PYPqb_g6NDZMSgCcqBs5EJVNbt76koTpGgXJob_ZFYWri1kCHeipjnPCRoCLpXVFK0htFCm06YrwyWvqV7oE_JrIAPYWIDYfrJblZSwJbb_Jn7OtGI4XJApu72MCHW6WHmxQpXplRNkGUxbCXoBcwjMIGCk80liGy2sRwHxNMjHXz_-Ki-t4vYtwuXGKn77tGDAFA"
-//        val response = dataSource
-//            .sendOobCode(OobType.VerifyEmail(token))
+//            "eyJhbGciOiJSUzI1NiIsImtpZCI6IjYyM2YzNmM4MTZlZTNkZWQ2YzU0NTkyZTM4ZGFlZjcyZjE1YTBmMTMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiU3lhaWZ1bGxhaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQWNIVHRleHlMMWtKZ1U3UXZuSHBMYzR4OWY5MlF3VDdMd244Y01YQzNucEhjay1mQT1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS94LXgteC10ZXN0IiwiYXVkIjoieC14LXgtdGVzdCIsImF1dGhfdGltZSI6MTY5MDc4MjA4MywidXNlcl9pZCI6IklTM1RId3BxVFRRa1gxYjF2Q2FXd3VtUEs0YTIiLCJzdWIiOiJJUzNUSHdwcVRUUWtYMWIxdkNhV3d1bVBLNGEyIiwiaWF0IjoxNjkwNzgyMDgzLCJleHAiOjE2OTA3ODU2ODMsImVtYWlsIjoieC5zeWFpZnVsbGFoLnhAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZ29vZ2xlLmNvbSI6WyIxMTczNzY2NDkwNjY2OTkyMDU5MDMiXSwiZW1haWwiOlsieC5zeWFpZnVsbGFoLnhAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.KtxHq-rPNKeLTxSizX5W1ovYrNynFd7fph3heH3zMErs2lSY1aokeHg70yVqSc4akixGKDc80DWXADxesLAaWdOABSfL_bRKmAyT7FQtOXyQRxMlA5M9vF6QGaWEoU3FkYtKWk78buBK7XlTodcv96cE80ehEk7NVEy57fKy8BdCp1aVa1tQAqEkqnWoyOqYYZr80FBiW2TXN2DY-z6YjHlt4FNBLKHg8pnn8ycgWC4bl9FvTjAafg8Kw9mGj2yh2MS8Uzce_bwnw78P1ut_LvejdjCdrvqrBAdxunnqa4lfjpHfiXwnwC1AAdiLP4xyurPzepA7kNTn969NUYOIvw"
+//        val response = dataSource.sendOobCode(Code.VerifyEmail(token))
 //        read(response)
 //    }
-//
+
+    //
 //    @Test
 //    fun sendOobCodePasswordReset() = runBlocking<Unit> {
 //        val response = dataSource
@@ -82,13 +88,13 @@ internal class AuthEmailDataSourceRemoteTest {
 //    @Test
 //    fun signUp() = runBlocking<Unit> {
 //        val type = SignUpType.Password(
-//            password = "123456",
-//            data = UserData(email = "a@gmail.com", phoneNumber = "+628")
+//            password = "123456", data = UserData(email = "x.syaifullah.x@gmail.com", phoneNumber = "+628")
 //        )
 //        val response = dataSource.signUp(type)
 //        read(response)
 //    }
-//
+
+    //
 //    @Test
 //    fun signInWithCostumeToken() = runBlocking<Unit> {
 //        val token =
@@ -96,11 +102,11 @@ internal class AuthEmailDataSourceRemoteTest {
 //        val response = dataSource.signIn(SignInType.CostumeToken(token))
 //        read(response)
 //    }
-//
+
 //    @Test
 //    fun signInWithPassword() = runBlocking<Unit> {
 //        val response = dataSource.signIn(
-//            SignInType.Password("roottingandroid@gmail.com", "123456")
+//            SignInType.Password("x.syaifullah.x@gmail.com", "123456")
 //        )
 //        read(response)
 //    }
@@ -110,18 +116,13 @@ internal class AuthEmailDataSourceRemoteTest {
 
         val out = ByteArrayOutputStream()
 
-        response.body.read(
-            bufferSize = 10,
-            onRead = { bytes ->
-                out.write(bytes, 0, bytes.size)
-            },
-            onReadComplete = {
-                println("onComplete: $out")
-            },
-            onError = { err ->
-                err.printStackTrace()
-            }
-        )
+        response.body.read(bufferSize = 10, onRead = { bytes ->
+            out.write(bytes, 0, bytes.size)
+        }, onReadComplete = {
+            println("onComplete: $out")
+        }, onError = { err ->
+            err.printStackTrace()
+        })
         return out.toString()
     }
 }

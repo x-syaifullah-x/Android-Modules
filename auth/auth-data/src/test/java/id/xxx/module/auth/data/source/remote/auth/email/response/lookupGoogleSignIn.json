@@ -1,0 +1,36 @@
+{
+  "kind": "identitytoolkit#GetAccountInfoResponse",
+  "users": [
+    {
+      "localId": "XyPLtoNHAPOWkwcWM4NsmX8RpMF3",
+      "email": "x.syaifullah.x@gmail.com",
+      "displayName": "Syaifullah",
+      "photoUrl": "https://lh3.googleusercontent.com/a/AAcHTtexyL1kJgU7QvnHpLc4x9f92QwT7Lwn8cMXC3npHck-fA=s96-c",
+      "passwordHash": "UkVEQUNURUQ=",
+      "emailVerified": true,
+      "passwordUpdatedAt": 1690788432461,
+      "providerUserInfo": [
+        {
+          "providerId": "google.com",
+          "displayName": "Syaifullah",
+          "photoUrl": "https://lh3.googleusercontent.com/a/AAcHTtexyL1kJgU7QvnHpLc4x9f92QwT7Lwn8cMXC3npHck-fA=s96-c",
+          "federatedId": "117376649066699205903",
+          "email": "x.syaifullah.x@gmail.com",
+          "rawId": "117376649066699205903"
+        },
+        {
+          "providerId": "password",
+          "displayName": "Syaifullah",
+          "photoUrl": "https://lh3.googleusercontent.com/a/AAcHTtexyL1kJgU7QvnHpLc4x9f92QwT7Lwn8cMXC3npHck-fA=s96-c",
+          "federatedId": "x.syaifullah.x@gmail.com",
+          "email": "x.syaifullah.x@gmail.com",
+          "rawId": "x.syaifullah.x@gmail.com"
+        }
+      ],
+      "validSince": "1690788432",
+      "lastLoginAt": "1690789201875",
+      "createdAt": "1690788278708",
+      "lastRefreshAt": "2023-07-31T07:40:01.875Z"
+    }
+  ]
+}

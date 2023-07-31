@@ -1,12 +1,14 @@
 package id.xxx.module.auth.repository
 
-import id.xxx.module.auth.model.Code
+import id.xxx.module.auth.model.LookupModel
 import id.xxx.module.auth.model.PasswordResetModel
-import id.xxx.module.auth.model.SignInType
-import id.xxx.module.auth.model.SignUpType
-import id.xxx.module.auth.model.UpdateType
-import id.xxx.module.auth.model.User
 import id.xxx.module.auth.model.PhoneVerificationModel
+import id.xxx.module.auth.model.SignModel
+import id.xxx.module.auth.model.VerifyEmailModel
+import id.xxx.module.auth.model.parms.Code
+import id.xxx.module.auth.model.parms.SignInType
+import id.xxx.module.auth.model.parms.SignUpType
+import id.xxx.module.auth.model.parms.UpdateType
 import id.xxx.module.auth.repository.ktx.getString
 import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
 import id.xxx.module.auth.repository.source.remote.response.Header
@@ -28,39 +30,39 @@ class AuthRepositoryImpl private constructor(
 
     companion object {
         @Volatile
-        private var INSTANCE: AuthRepositoryImpl? = null
+        private var INSTANCE: AuthRepository? = null
 
-        fun getInstance(): AuthRepository =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: AuthRepositoryImpl(AuthEmailDataSourceRemote.getInstance())
-                    .also { INSTANCE = it }
-            }
+        fun getInstance() = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: AuthRepositoryImpl(
+                AuthEmailDataSourceRemote.getInstance(),
+            ).also { INSTANCE = it }
+        }
     }
 
     override fun signIn(type: SignInType) = asResources(
         request = { remoteDataSource.signIn(type) },
-        result = { _, response ->
+        result = { header, response ->
             val j = JSONObject(response)
-            User(
+            SignModel(
                 uid = j.getString("localId"),
-//                token = j.getString("idToken"),
-//                refreshToken = j.getString("refreshToken"),
-//                expiresIn = (j.getLong("expiresIn") * 1000) + header.date
+                token = j.getString("idToken"),
+                refreshToken = j.getString("refreshToken"),
+                expiresIn = (j.getLong("expiresIn") * 1000) + header.date,
             )
-        }
+        },
     )
 
     override fun signUp(type: SignUpType) = asResources(
         request = { remoteDataSource.signUp(type) },
-        result = { _, response ->
+        result = { header, response ->
             val j = JSONObject(response)
-            User(
+            SignModel(
                 uid = j.getString("localId"),
-//                token = j.getString("idToken"),
-//                refreshToken = j.getString("refreshToken"),
-//                expiresIn = (j.getLong("expiresIn") * 1000) + header.date
+                token = j.getString("idToken"),
+                refreshToken = j.getString("refreshToken"),
+                expiresIn = (j.getLong("expiresIn") * 1000) + header.date,
             )
-        }
+        },
     )
 
     override fun sendCode(code: Code.PhoneVerification) = asResources(
@@ -69,7 +71,7 @@ class AuthRepositoryImpl private constructor(
             val j = JSONObject(response)
             val sessionInfo = j.getString("sessionInfo")
             PhoneVerificationModel(sessionInfo = sessionInfo)
-        }
+        },
     )
 
     override fun sendCode(code: Code.PasswordReset) = asResources(
@@ -77,15 +79,38 @@ class AuthRepositoryImpl private constructor(
         result = { _, response ->
             val j = JSONObject(response)
             PasswordResetModel(
-                kind = j.getString("kind", ""),
-                email = j.getString("email", "")
+                kind = j.getString("kind", ""), email = j.getString("email", "")
             )
-        }
+        },
+    )
+
+    override fun sendCode(code: Code.VerifyEmail) = asResources(
+        request = { remoteDataSource.sendOobCode(code) },
+        result = { _, response ->
+            val j = JSONObject(response)
+            VerifyEmailModel(
+                kind = j.getString("kind", ""),
+                email = j.getString("email", ""),
+            )
+        },
+    )
+
+    override fun lookup(idToken: String) = asResources(
+        request = { remoteDataSource.lookup(idToken) },
+        result = { _, response ->
+            val j = JSONObject(response)
+            val users = j.getJSONArray("users")
+            val user = users.getJSONObject(0)
+            val isEmailVerify = user.getBoolean("emailVerified")
+            LookupModel(
+                isEmailVerify = isEmailVerify
+            )
+        },
     )
 
     override fun update(type: UpdateType) = asResources(
         request = { remoteDataSource.update(type) },
-        result = { _, response -> response }
+        result = { _, response -> response },
     )
 
     private fun <T> asResources(
@@ -123,11 +148,10 @@ class AuthRepositoryImpl private constructor(
                         throw Throwable(message)
                     }
                 },
-                onError = { e -> throw e }
+                onError = { e -> throw e },
             )
         } catch (e: Throwable) {
             emit(Resources.Failure(e))
         }
-    }.flowOn(Dispatchers.IO)
-        .catch { emit(Resources.Failure(it)) }
+    }.flowOn(Dispatchers.IO).catch { emit(Resources.Failure(it)) }
 }
