@@ -1,11 +1,12 @@
 package id.xxx.module.auth.repository
 
-import id.xxx.module.auth.model.OobType
+import id.xxx.module.auth.model.Code
+import id.xxx.module.auth.model.PasswordResetModel
 import id.xxx.module.auth.model.SignInType
 import id.xxx.module.auth.model.SignUpType
 import id.xxx.module.auth.model.UpdateType
 import id.xxx.module.auth.model.User
-import id.xxx.module.auth.model.VerificationCodeResult
+import id.xxx.module.auth.model.PhoneVerificationModel
 import id.xxx.module.auth.repository.ktx.getString
 import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
 import id.xxx.module.auth.repository.source.remote.response.Header
@@ -13,7 +14,6 @@ import id.xxx.module.auth.repository.source.remote.response.Response
 import id.xxx.module.common.Resources
 import id.xxx.module.io.ktx.read
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -63,21 +63,24 @@ class AuthRepositoryImpl private constructor(
         }
     )
 
-    override fun sendVerificationCode(
-        phoneNumber: String,
-        recaptchaResponse: String
-    ) = asResources(
-        request = { remoteDataSource.sendVerificationCode(phoneNumber, recaptchaResponse) },
+    override fun sendCode(code: Code.PhoneVerification) = asResources(
+        request = { remoteDataSource.sendOobCode(code) },
         result = { _, response ->
             val j = JSONObject(response)
             val sessionInfo = j.getString("sessionInfo")
-            VerificationCodeResult(sessionInfo = sessionInfo)
+            PhoneVerificationModel(sessionInfo = sessionInfo)
         }
     )
 
-    override fun sendOobCode(type: OobType) = asResources(
-        request = { remoteDataSource.sendOobCode(type) },
-        result = { _, response -> response }
+    override fun sendCode(code: Code.PasswordReset) = asResources(
+        request = { remoteDataSource.sendOobCode(code) },
+        result = { _, response ->
+            val j = JSONObject(response)
+            PasswordResetModel(
+                kind = j.getString("kind", ""),
+                email = j.getString("email", "")
+            )
+        }
     )
 
     override fun update(type: UpdateType) = asResources(

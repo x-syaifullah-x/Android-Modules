@@ -30,6 +30,8 @@ import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.auth.ktx.getFragment
 import id.xxx.module.auth.ktx.isDarkThemeOn
+import id.xxx.module.auth.model.Code
+import id.xxx.module.auth.model.PasswordResetModel
 import id.xxx.module.auth.model.SignInType
 import id.xxx.module.auth.model.SignUpType
 import id.xxx.module.auth.model.User
@@ -56,8 +58,8 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
         AuthViewModelProviderFactory(useCase)
     }
 
-    private var liveDataForgetPassword: LiveData<Resources<String>>? = null
-    private var observerForgetPassword: Observer<Resources<String>>? = null
+    private var liveDataForgetPassword: LiveData<Resources<PasswordResetModel>>? = null
+    private var observerForgetPassword: Observer<Resources<PasswordResetModel>>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,13 +116,13 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
         SignUpPhoneFragmentUtils(
             activity = this,
             action = action,
-            block = viewModel::sendVerificationCode,
+            block = viewModel::sendCode,
         )
     }
 
     override fun onAction(action: ISignInPhoneFragment.Action) {
         SignInPhoneFragmentUtils(
-            action = action, activity = this, block = viewModel::sendVerificationCode
+            action = action, activity = this, block = viewModel::sendCode
         )
     }
 
@@ -146,7 +148,9 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(), ISignUpPass
         }
         when (action) {
             is IForgetPasswordFragment.Action.Next -> {
-                liveDataForgetPassword = viewModel.sendOobCode(action.email).asLiveData()
+                liveDataForgetPassword = viewModel.sendCode(
+                    Code.PasswordReset(email = action.email)
+                ).asLiveData()
                 observerForgetPassword = Observer { resources ->
                     val forgetPasswordFragment = getFragment<ForgetPasswordFragment>()
                     when (resources) {

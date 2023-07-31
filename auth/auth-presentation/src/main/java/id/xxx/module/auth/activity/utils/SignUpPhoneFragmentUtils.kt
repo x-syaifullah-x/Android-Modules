@@ -9,7 +9,8 @@ import id.xxx.module.auth.fragment.SignUpPasswordFragment
 import id.xxx.module.auth.fragment.SignUpPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.auth.ktx.getFragment
-import id.xxx.module.auth.model.VerificationCodeResult
+import id.xxx.module.auth.model.Code
+import id.xxx.module.auth.model.PhoneVerificationModel
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
@@ -18,7 +19,7 @@ import kotlinx.coroutines.flow.Flow
 class SignUpPhoneFragmentUtils(
     private val activity: AuthActivity,
     action: ISignUpPhoneFragment.Action,
-    private val block: (phoneNumber: String, recaptchaToken: String) -> Flow<Resources<VerificationCodeResult>>,
+    private val block: (Code.PhoneVerification) -> Flow<Resources<PhoneVerificationModel>>,
 ) {
 
     init {
@@ -46,13 +47,18 @@ class SignUpPhoneFragmentUtils(
     private fun actionClickNext(action: ISignUpPhoneFragment.Action.ClickNext) {
         val fragment = activity.getFragment<SignUpPhoneFragment>()
         val job = Job()
-        val liveData = block(action.phoneNumber, action.recaptchaResponse)
+        val code = Code.PhoneVerification(
+            phoneNumber = action.phoneNumber,
+            recaptchaResponse = action.recaptchaResponse
+        )
+        val liveData = block(code)
             .asLiveData(job)
         liveData.observe(activity) {
             when (it) {
                 is Resources.Loading -> {
                     fragment?.loadingVisible()
                 }
+
                 is Resources.Success -> {
                     fragment?.loadingGone()
                     val bundle = bundleOf(
@@ -63,6 +69,7 @@ class SignUpPhoneFragmentUtils(
                         .add(AuthActivity.CONTAINER_ID, OTPPhoneFragment::class.java, bundle)
                         .commit()
                 }
+
                 is Resources.Failure -> {
                     fragment?.loadingGone()
                     fragment?.showError(it.value)

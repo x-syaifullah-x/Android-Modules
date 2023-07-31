@@ -1,6 +1,6 @@
 package id.xxx.module.auth.usecase
 
-import id.xxx.module.auth.model.OobType
+import id.xxx.module.auth.model.Code
 import id.xxx.module.auth.model.SignInType
 import id.xxx.module.auth.model.SignUpType
 import id.xxx.module.auth.model.UpdateType
@@ -27,11 +27,11 @@ class AuthUseCaseImpl private constructor(
     override fun signUp(type: SignUpType) =
         repo.signUp(type)
 
-    override fun sendVerificationCode(phoneNumber: String, recaptchaResponse: String) =
-        repo.sendVerificationCode(phoneNumber, recaptchaResponse)
+    override fun sendCode(code: Code.PhoneVerification) =
+        repo.sendCode(code)
 
-    override fun sendOobCode(type: OobType) =
-        repo.sendOobCode(type)
+    override fun sendCode(code: Code.PasswordReset) =
+        repo.sendCode(code)
 
     override fun update(type: UpdateType) =
         repo.update(type)

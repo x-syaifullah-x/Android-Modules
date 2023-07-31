@@ -1,6 +1,6 @@
 package id.xxx.module.auth.repository.source.remote.auth.email
 
-import id.xxx.module.auth.model.OobType
+import id.xxx.module.auth.model.Code
 import id.xxx.module.auth.model.SignInType
 import id.xxx.module.auth.model.SignUpType
 import id.xxx.module.auth.model.UpdateType
@@ -62,16 +62,39 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         )
     }
 
-    fun sendOobCode(oobType: OobType): Response<InputStream> {
+    fun sendOobCode(code: Code): Response<InputStream> {
         val payload = JSONObject()
-        payload.put("requestType", oobType.requestType)
-        when (oobType) {
-            is OobType.PasswordReset -> {
-                payload.put("email", oobType.email)
+        payload.put("requestType", code.requestType)
+        when (code) {
+            is Code.PasswordReset -> {
+                payload.put("email", code.email)
             }
 
-            is OobType.VerifyEmail -> {
-                payload.put("idToken", oobType.idToken)
+            is Code.VerifyEmail -> {
+                payload.put("idToken", code.idToken)
+            }
+
+            is Code.PhoneVerification -> {
+                //        {
+//            "phoneNumber": string,
+//            "iosReceipt": string,
+//            "iosSecret": string,
+//            "recaptchaToken": string,
+//            "tenantId": string,
+//            "autoRetrievalInfo": {
+//                  "appSignatureHash": {
+//                      "00:4c:8d:56:fa:27:5d:b3:63:3a:8e:0e:86:d3:12:9b:a5:1c:a1:cf:f7:21:a1:1f:bd:a1:c8:ce:d0:08:c8:32"
+//                  }
+//        },
+//            "safetyNetToken": string
+//        }
+                payload.put("phoneNumber", code.phoneNumber)
+                payload.put("recaptchaToken", code.recaptchaResponse)
+                return client.execute(
+                    URL = Firebase.Auth.Endpoint.sendVerificationCode(),
+                    methode = RequestMethode.POST,
+                    requestBody = payload.toRequestBody()
+                )
             }
         }
         return client.execute(
@@ -108,33 +131,6 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
                 )
             }
         }
-    }
-
-    fun sendVerificationCode(
-        phoneNumber: String,
-        recaptchaResponse: String
-    ): Response<InputStream> {
-//        {
-//            "phoneNumber": string,
-//            "iosReceipt": string,
-//            "iosSecret": string,
-//            "recaptchaToken": string,
-//            "tenantId": string,
-//            "autoRetrievalInfo": {
-//                  "appSignatureHash": {
-//                      "00:4c:8d:56:fa:27:5d:b3:63:3a:8e:0e:86:d3:12:9b:a5:1c:a1:cf:f7:21:a1:1f:bd:a1:c8:ce:d0:08:c8:32"
-//                  }
-//        },
-//            "safetyNetToken": string
-//        }
-        val payload = JSONObject()
-        payload.put("phoneNumber", phoneNumber)
-        payload.put("recaptchaToken", recaptchaResponse)
-        return client.execute(
-            URL = Firebase.Auth.Endpoint.sendVerificationCode(),
-            methode = RequestMethode.POST,
-            requestBody = payload.toRequestBody()
-        )
     }
 
     fun signIn(type: SignInType): Response<InputStream> {

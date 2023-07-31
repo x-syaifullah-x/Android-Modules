@@ -1,7 +1,7 @@
 package id.xxx.module.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
-import id.xxx.module.auth.model.OobType
+import id.xxx.module.auth.model.Code
 import id.xxx.module.auth.model.SignInType
 import id.xxx.module.auth.model.SignUpType
 import id.xxx.module.auth.usecase.AuthUseCase
@@ -16,12 +16,9 @@ class AuthViewModel(
     fun signIn(type: SignInType) =
         useCase.signIn(type)
 
-    fun sendVerificationCode(phoneNumber: String, recaptchaToken: String) =
-        useCase.sendVerificationCode(phoneNumber, recaptchaToken)
+    fun sendCode(code: Code.PhoneVerification) =
+        useCase.sendCode(code)
 
-    fun sendOobCode(email: String) = useCase.sendOobCode(
-        OobType.PasswordReset(
-            email = email
-        )
-    )
+    fun sendCode(code: Code.PasswordReset) =
+        useCase.sendCode(code)
 }

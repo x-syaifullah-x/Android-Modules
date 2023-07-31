@@ -10,7 +10,8 @@ import id.xxx.module.auth.fragment.SignInPhoneFragment
 import id.xxx.module.auth.fragment.SignUpPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.ktx.getFragment
-import id.xxx.module.auth.model.VerificationCodeResult
+import id.xxx.module.auth.model.Code
+import id.xxx.module.auth.model.PhoneVerificationModel
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
@@ -19,7 +20,7 @@ import kotlinx.coroutines.flow.Flow
 class SignInPhoneFragmentUtils(
     private val activity: AuthActivity,
     action: ISignInPhoneFragment.Action,
-    private val block: (phoneNumber: String, recaptchaToken: String) -> Flow<Resources<VerificationCodeResult>>,
+    private val block: (Code.PhoneVerification) -> Flow<Resources<PhoneVerificationModel>>,
 ) {
 
     init {
@@ -53,11 +54,12 @@ class SignInPhoneFragmentUtils(
         SignInputPreferences.setInputPhone(activity, action.phoneNumber)
         val fragment = activity.getFragment<SignInPhoneFragment>()
         val job = Job()
-        val liveData = block(
-            action.phoneNumber, action.recaptchaResponse
-        ).asLiveData(job)
-        val observer = object : Observer<Resources<VerificationCodeResult>> {
-            override fun onChanged(value: Resources<VerificationCodeResult>) {
+        val code = Code.PhoneVerification(
+            phoneNumber = action.phoneNumber, recaptchaResponse = action.recaptchaResponse
+        )
+        val liveData = block(code).asLiveData(job)
+        val observer = object : Observer<Resources<PhoneVerificationModel>> {
+            override fun onChanged(value: Resources<PhoneVerificationModel>) {
                 when (value) {
                     is Resources.Loading -> fragment?.loadingVisible()
                     is Resources.Success -> {
