@@ -21,7 +21,5 @@ interface AuthUseCase {
 
     fun sendOobCode(type: OobType): Flow<Resources<String>>
 
-    fun resetPassword(oobCode: String, newPassword: String): Flow<Resources<String>>
-
     fun update(type: UpdateType): Flow<Resources<String>>
 }

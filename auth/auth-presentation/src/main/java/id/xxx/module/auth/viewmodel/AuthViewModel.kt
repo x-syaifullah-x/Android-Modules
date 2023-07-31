@@ -24,8 +24,4 @@ class AuthViewModel(
             email = email
         )
     )
-
-    fun resetPassword(oobCode: String, newPassword: String) = useCase.resetPassword(
-        oobCode = oobCode, newPassword = newPassword
-    )
 }

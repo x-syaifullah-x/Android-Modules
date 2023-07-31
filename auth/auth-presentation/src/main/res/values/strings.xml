@@ -10,7 +10,6 @@
     <string name="sign_in_password_sign_in_with_google">SIGN IN WITH GOOGLE</string>
     <string name="sign_in_password_don_t_have_an_account">Don\'t have an account?</string>
     <string name="sign_in_password_sign_up">Sign Up</string>
-    <string name="sign_in_password_remember_me">Remember me</string>
     <string name="sign_in_password_forget_password">Forget Password?</string>
 
     <string name="sign_up_password_sign_in_with_phone">SIGN UP WITH PHONE</string>

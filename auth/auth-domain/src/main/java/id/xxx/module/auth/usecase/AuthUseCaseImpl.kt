@@ -33,9 +33,6 @@ class AuthUseCaseImpl private constructor(
     override fun sendOobCode(type: OobType) =
         repo.sendOobCode(type)
 
-    override fun resetPassword(oobCode: String, newPassword: String) =
-        repo.resetPassword(oobCode, newPassword)
-
     override fun update(type: UpdateType) =
         repo.update(type)
 }

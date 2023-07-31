@@ -6,6 +6,7 @@ import id.xxx.module.auth.model.SignUpType
 import id.xxx.module.auth.model.UpdateType
 import id.xxx.module.auth.model.User
 import id.xxx.module.auth.model.VerificationCodeResult
+import id.xxx.module.auth.repository.ktx.getString
 import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
 import id.xxx.module.auth.repository.source.remote.response.Header
 import id.xxx.module.auth.repository.source.remote.response.Response
@@ -79,14 +80,6 @@ class AuthRepositoryImpl private constructor(
         result = { _, response -> response }
     )
 
-    override fun resetPassword(
-        oobCode: String,
-        newPassword: String
-    ) = asResources(
-        request = { remoteDataSource.resetPassword(oobCode, newPassword) },
-        result = { _, response -> response }
-    )
-
     override fun update(type: UpdateType) = asResources(
         request = { remoteDataSource.update(type) },
         result = { _, response -> response }
@@ -134,13 +127,4 @@ class AuthRepositoryImpl private constructor(
         }
     }.flowOn(Dispatchers.IO)
         .catch { emit(Resources.Failure(it)) }
-
-    private fun JSONObject.getString(
-        name: String, defaultValue: String
-    ): String =
-        try {
-            getString(name)
-        } catch (err: Throwable) {
-            defaultValue
-        }
 }

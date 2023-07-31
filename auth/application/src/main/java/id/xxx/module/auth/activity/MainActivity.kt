@@ -21,12 +21,12 @@ class MainActivity : AppCompatActivity() {
             val result =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     data?.getParcelableExtra(
-                        id.xxx.module.auth.MainActivity.RESULT_USER,
+                        MainActivity.RESULT_USER,
                         User::class.java
                     )
                 } else {
                     @Suppress("DEPRECATION")
-                    data?.getSerializableExtra(id.xxx.module.auth.MainActivity.RESULT_USER) as? User
+                    data?.getSerializableExtra(MainActivity.RESULT_USER) as? User
                 }
             println(result)
         }
@@ -40,15 +40,8 @@ class MainActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, onBackPressedCallbackImpl)
 
         val b = findViewById<Button>(id.xxx.module.auth.application.R.id.btn_test_sign)
-
-        if (intent.data != null) {
-            val i = Intent(this, MainActivity::class.java)
-            i.data = intent.data
-            intent.data = null
-            authActivityResultLauncher.launch(i)
-        }
         b.setOnClickListener {
-            val i = Intent(this, id.xxx.module.auth.MainActivity::class.java)
+            val i = Intent(this, MainActivity::class.java)
             authActivityResultLauncher.launch(i)
         }
     }
