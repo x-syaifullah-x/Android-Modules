@@ -11,8 +11,8 @@ build_versions.name = "$major.$minor.$patch"
 ext.build_versions = build_versions
 
 ext {
-    vGradle = "8.1.0"
-    vKotlin = "1.8.22"
+    vGradle = "8.1.1"
+    vKotlin = "1.9.0"
 
     vAndroidxActivity = "1.7.2"
     vAndroidxAnnotation = "1.6.0"
