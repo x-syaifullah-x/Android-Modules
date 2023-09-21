@@ -42,7 +42,7 @@ dependencies {
 
     testImplementation project(":common-test")
 
-    androidTestImplementation "androidx.test.espresso:espresso-core:$vAndroidxEspresso"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$vAndroidxTestEspresso"
     androidTestImplementation "androidx.test.ext:junit-ktx:$vAndroidxTestExtJunit"
     androidTestImplementation "androidx.test:rules:$vAndroidxTestRules"
 }

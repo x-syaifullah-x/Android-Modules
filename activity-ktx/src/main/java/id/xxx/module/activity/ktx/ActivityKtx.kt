@@ -30,14 +30,6 @@ fun Activity.hideSystemUI() {
     }
 }
 
-inline fun <reified T : Activity> Activity.startActivityForResult(
-    requestCode: Int, noinline init: Intent.() -> Unit = {}
-) {
-    val intent = Intent(this, T::class.java)
-    init(intent)
-    startActivityForResult(intent, requestCode)
-}
-
 inline fun Activity.setResult(block: Intent.() -> Unit = {}) {
     val intent = Intent()
     block(intent)

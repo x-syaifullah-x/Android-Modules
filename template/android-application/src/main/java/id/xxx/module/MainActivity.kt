@@ -10,9 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         Toast.makeText(
-            this,
-            "This is Main Activity",
-            Toast.LENGTH_LONG
+            this, "This is Main Activity", Toast.LENGTH_LONG
         ).show()
     }
 }
