@@ -1,0 +1,11 @@
+apply from: "$rootDir/common_android_library.gradle"
+apply from: "$rootDir/maven_publish_android.gradle"
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    implementation project(":modules:auth:auth-domain")
+    implementation project(":modules:io")
+
+    implementation "com.squareup.okhttp3:okhttp:$vSquareupOkhttp3"
+}

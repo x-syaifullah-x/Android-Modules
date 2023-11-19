@@ -32,26 +32,26 @@ jobs:
 
       - name: assembleDebug
         run: |
-          ./gradlew clean :auth:application:assembleDebug
+          ./gradlew clean :modules:auth:application:assembleDebug
 
       - name: Uploading apk debug
         uses: actions/upload-artifact@v3
         with:
           name: apk-debug
-          path: auth/application/build/outputs/apk/debug/application-debug.apk
+          path: modules/auth/application/build/outputs/apk/debug/application-debug.apk
 
       - name: assembleRelease
         run: |
-          ./gradlew clean :auth:application:assembleRelease
+          ./gradlew clean :modules:auth:application:assembleRelease
 
       - name: Uploading apk release
         uses: actions/upload-artifact@v3
         with:
           name: apk-release-unsigned
-          path: auth/application/build/outputs/apk/release/application-release-unsigned.apk
+          path: modules/auth/application/build/outputs/apk/release/application-release-unsigned.apk
 
       - name: Uploading apk release
         uses: actions/upload-artifact@v3
         with:
           name: apk-release
-          path: auth/application/build/outputs/apk/release/application-release.apk
+          path: modules/auth/application/build/outputs/apk/release/application-release.apk

@@ -1,0 +1,10 @@
+apply from: "$rootDir/common_java_library.gradle"
+apply from: "$rootDir/maven_publish_java.gradle"
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    api project(":modules:common-model")
+
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$vKotlinCoroutines"
+}
