@@ -8,9 +8,9 @@
     <!--        path="." />-->
 
     <!-- /data/data/package_name/cache  == Context.getCacheDir() -->
-    <cache-path
-        name="cache"
-        path="." />
+<!--    <cache-path-->
+    <!--        name="cache"-->
+    <!--        path="." />-->
     <!-- INTERNAL END -->
 
     <!-- EXTERNAL START -->
