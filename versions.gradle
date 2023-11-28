@@ -46,6 +46,7 @@ ext {
     vAndroidxVersionedparcelable = "1.1.1"
     vAndroidxViewPager = "1.0.0"
     vAndroidxViewPager2 = "1.0.0"
+    vFirebaseBoom = "32.6.0"
     vJacoco = "0.8.11"
     vJunit = "4.13.2"
     vKotlinCoroutines = "1.7.3"

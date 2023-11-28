@@ -1,9 +1,9 @@
-package id.xxx.example.providers
+package id.xxx.android.storage.providers
 
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
-import id.xxx.template.BuildConfig
+import id.xxx.android.storage.BuildConfig
 import java.io.File
 
 class MyFileProvider : FileProvider() {

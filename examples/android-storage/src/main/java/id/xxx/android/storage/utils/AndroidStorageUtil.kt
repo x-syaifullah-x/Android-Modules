@@ -1,4 +1,4 @@
-package id.xxx.example.utils
+package id.xxx.android.storage.utils
 
 import android.content.ContentResolver
 import android.content.ContentUris

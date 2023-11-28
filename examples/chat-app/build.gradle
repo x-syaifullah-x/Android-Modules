@@ -1,7 +1,8 @@
 apply from: "$rootDir/common_android_application.gradle"
+apply plugin: "com.google.gms.google-services"
 
 android {
-    String packageName = "id.xxx.android.storage"
+    String packageName = "id.xxx.chat"
     namespace packageName
     testNamespace "${packageName}.test"
 
@@ -35,11 +36,20 @@ android {
 
     buildFeatures {
         buildConfig true
+        viewBinding true
     }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
 
+    // ANDROIDX
     implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
+    implementation "androidx.constraintlayout:constraintlayout:$vAndroidxConstrainLayout"
+    implementation "androidx.recyclerview:recyclerview:$vAndroidxRecyclerview"
+
+    // FIREBASE
+    implementation platform("com.google.firebase:firebase-bom:$vFirebaseBoom")
+    implementation "com.google.firebase:firebase-messaging-ktx"
+    implementation "com.google.firebase:firebase-firestore-ktx"
 }
