@@ -16,8 +16,6 @@ sealed interface SignInType {
     ) : SignInType
 
     data class Google(
-        private val token: String,
-    ) : SignInType {
-        val postBody = "id_token=${token}&providerId=google.com"
-    }
+        val token: String,
+    ) : SignInType
 }

@@ -1,23 +1,21 @@
 package id.xxx.module.auth.data.source.remote.auth.email
 
-import id.xxx.module.auth.model.parms.Code
-import id.xxx.module.auth.model.parms.SignInType
-import id.xxx.module.auth.model.parms.SignUpType
-import id.xxx.module.auth.model.parms.UserData
 import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
-import id.xxx.module.auth.repository.source.remote.response.Response
-import id.xxx.module.io.ktx.read
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert
 import org.junit.Test
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
 
 internal class AuthEmailDataSourceRemoteTest {
 
     private val dataSource = AuthEmailDataSourceRemote.getInstance()
 
     @Test
-    fun sendVerificationCode() = runBlocking {
+    fun test() {
+        Assert.assertEquals(true, true)
+    }
+
+//    @Test
+//    fun sendVerificationCode() = runBlocking {
 
 //        val response = dataSource.sendVerificationCode(
 ////                "+111111111111",
@@ -29,7 +27,7 @@ internal class AuthEmailDataSourceRemoteTest {
 //        val sessionInfo = j.getString("sessionInfo")
 //        println(sessionInfo)
 //        signInWithPhoneNumber(sessionInfo, "123456")
-    }
+//    }
 
     //    @Suppress("SameParameterValue")
 //    private fun signInWithPhoneNumber(
@@ -110,19 +108,4 @@ internal class AuthEmailDataSourceRemoteTest {
 //        )
 //        read(response)
 //    }
-
-    private suspend fun read(response: Response<InputStream>): String {
-        println(response.header)
-
-        val out = ByteArrayOutputStream()
-
-        response.body.read(bufferSize = 10, onRead = { bytes ->
-            out.write(bytes, 0, bytes.size)
-        }, onReadComplete = {
-            println("onComplete: $out")
-        }, onError = { err ->
-            err.printStackTrace()
-        })
-        return out.toString()
-    }
 }

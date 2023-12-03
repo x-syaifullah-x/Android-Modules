@@ -2,14 +2,19 @@ package id.xxx.module.auth.repository.source.remote.endpoint
 
 internal object Firebase {
 
-    private const val API_KEY = "AIzaSyB2xm59WDvXEQDyWxqiDVwZExt3OOmlMh8"
+    /**
+     * Firebase console -> Project settings -> Web API Key
+     * or
+     * Firebase console -> Project settings -> Android apps -> google-services.json -> api_key -> current_key
+     */
+    private const val API_KEY = "AIzaSyDVB5Yivc3wAR20o5kMLDfb9gLNQBaUWaM"
 
     fun apiKey() = API_KEY
 
     object Auth {
 
         const val BASE_URL = "https://identitytoolkit.googleapis.com/v1"
-//        const val BASE_URL = "http://localhost:9099/identitytoolkit.googleapis.com/v1"
+//        const val BASE_URL = "http://192.168.0.4:9099/identitytoolkit.googleapis.com/v1"
 
         object Endpoint {
 

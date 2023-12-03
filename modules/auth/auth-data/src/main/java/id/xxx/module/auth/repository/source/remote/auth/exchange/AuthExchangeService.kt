@@ -9,7 +9,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 internal class AuthExchangeService {
 
     fun token(refreshToken: String) = HttpClient.getInstance().execute(
-        URL = "https://securetoken.googleapis.com/v1/token?key=${Firebase.apiKey()}",
+        url = "https://securetoken.googleapis.com/v1/token?key=${Firebase.apiKey()}",
         methode = RequestMethode.POST,
         requestBody = "grant_type=refresh_token&refresh_token=$refreshToken".toRequestBody("application/x-www-form-urlencoded".toMediaType())
     )

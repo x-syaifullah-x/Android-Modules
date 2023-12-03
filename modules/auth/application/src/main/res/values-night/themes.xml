@@ -1,4 +1,6 @@
 <resources>
 
-    <style name="Theme.Application" parent="Theme.AppCompat.DayNight" />
+    <style name="Theme.Application" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimaryDark">?android:colorBackground</item>
+    </style>
 </resources>

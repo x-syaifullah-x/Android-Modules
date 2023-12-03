@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
-import id.xxx.module.auth.fragment.listener.ISecurityChallengeDialogFragment
+import id.xxx.module.auth.fragment.listener.ISecurityChallengeFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.model.SecurityChallengeResult
@@ -16,7 +16,7 @@ import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.SignUpPhoneFragmentBinding
 
 class SignUpPhoneFragment : BaseFragment(R.layout.sign_up_phone_fragment),
-    ISecurityChallengeDialogFragment {
+    ISecurityChallengeFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,10 +56,12 @@ class SignUpPhoneFragment : BaseFragment(R.layout.sign_up_phone_fragment),
     }
 
     private fun showSecurityChallenge(phoneNumber: String) {
-        val dialog = SecurityChallengeDialogFragment()
-        dialog.arguments =
-            bundleOf(SecurityChallengeDialogFragment.KEY_PHONE_NUMBER to phoneNumber)
-        dialog.show(childFragmentManager, null)
+        val bundle =
+            bundleOf(SecurityChallengeFragment.KEY_PHONE_NUMBER to phoneNumber)
+        childFragmentManager
+            .beginTransaction()
+            .add(SecurityChallengeFragment::class.java, bundle, null)
+            .commit()
     }
 
     override fun onResult(result: SecurityChallengeResult) {
@@ -83,6 +85,7 @@ class SignUpPhoneFragment : BaseFragment(R.layout.sign_up_phone_fragment),
                     }
                 }
             }
+
             is SecurityChallengeResult.Error -> {
                 showError(result.err)
             }

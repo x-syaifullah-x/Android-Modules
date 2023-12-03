@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "x-x-x-projects"
+  },
+  "targets": {
+    "x-x-x-projects": {
+      "hosting": {
+        "x-recaptcha-x": [
+          "x-recaptcha-x"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

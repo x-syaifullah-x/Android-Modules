@@ -34,10 +34,10 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
                 payload.put("oobCode", type.oobCode)
             }
 
-            else -> throw NotImplementedError("please see the documentation for $type")
+            else -> throw NotImplementedError("Please see the documentation for $type")
         }
         return client.execute(
-            URL = Firebase.Auth.Endpoint.update(),
+            url = Firebase.Auth.Endpoint.update(),
             methode = RequestMethode.POST,
             requestBody = payload.toRequestBody()
         )
@@ -56,7 +56,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         payload.put("oobCode", oobCode)
         payload.put("newPassword", newPassword)
         return client.execute(
-            URL = Firebase.Auth.Endpoint.resetPassword(),
+            url = Firebase.Auth.Endpoint.resetPassword(),
             methode = RequestMethode.POST,
             payload.toRequestBody()
         )
@@ -95,7 +95,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
             }
         }
         return client.execute(
-            URL = url,
+            url = url,
             methode = RequestMethode.POST,
             payload.toRequestBody()
         )
@@ -111,7 +111,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
                 payload.put("password", password)
                 payload.put("returnSecureToken", true)
                 return client.execute(
-                    URL = Firebase.Auth.Endpoint.signUp(),
+                    url = Firebase.Auth.Endpoint.signUp(),
                     methode = RequestMethode.POST,
                     payload.toRequestBody()
                 )
@@ -122,7 +122,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
                 payload.put("sessionInfo", type.sessionInfo)
                 payload.put("code", type.otp)
                 return client.execute(
-                    URL = Firebase.Auth.Endpoint.signWithPhoneNumber(),
+                    url = Firebase.Auth.Endpoint.signWithPhoneNumber(),
                     methode = RequestMethode.POST,
                     payload.toRequestBody()
                 )
@@ -136,7 +136,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         val url = when (type) {
             is SignInType.Google -> {
                 payload.put("requestUri", "http://localhost")
-                payload.put("postBody", type.postBody)
+                payload.put("postBody", "id_token=${type.token}&providerId=google.com")
                 Firebase.Auth.Endpoint.signWithOAuthCredential()
             }
 
@@ -158,7 +158,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
             }
         }
         return client.execute(
-            URL = url,
+            url = url,
             methode = RequestMethode.POST,
             requestBody = payload.toRequestBody()
         )
@@ -168,7 +168,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         val payload = JSONObject()
         payload.put("idToken", idToken)
         return client.execute(
-            URL = Firebase.Auth.Endpoint.lookup(),
+            url = Firebase.Auth.Endpoint.lookup(),
             methode = RequestMethode.POST,
             requestBody = payload.toRequestBody()
         )

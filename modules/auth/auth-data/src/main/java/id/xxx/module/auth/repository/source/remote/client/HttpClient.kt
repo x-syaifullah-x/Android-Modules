@@ -26,12 +26,12 @@ internal class HttpClient private constructor(private val client: OkHttpClient) 
     }
 
     fun execute(
-        URL: String,
+        url: String,
         methode: RequestMethode = RequestMethode.GET,
         requestBody: RequestBody? = null
     ): Response<InputStream> {
         val request = Request.Builder()
-            .url(URL)
+            .url(url)
             .method(methode.value, requestBody)
             .build()
         val response: okhttp3.Response = client.newCall(request).execute()

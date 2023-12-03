@@ -5,7 +5,6 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
 
     implementation project(":modules:auth:auth-domain")
-    implementation project(":modules:io")
 
     implementation "com.squareup.okhttp3:okhttp:$vSquareupOkhttp3"
 }

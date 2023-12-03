@@ -5,15 +5,13 @@ import java.util.concurrent.atomic.AtomicLong
 interface Resources<out O> {
 
     data class Loading(
-        val progress: Progress? = null
+        private val progress: AtomicLong? = null,
+        private val length: AtomicLong? = null,
     ) : Resources<Nothing> {
 
-        data class Progress(private val count: AtomicLong, private val length: AtomicLong) {
+        fun getProgress() = progress?.get()
 
-            fun count() = count.get()
-
-            fun length() = length.get()
-        }
+        fun getLength() = length?.get()
     }
 
     data class Success<T>(

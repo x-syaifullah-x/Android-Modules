@@ -18,7 +18,8 @@ getAllModuleDirs(rootDir).each { moduleDir ->
     def modulePath = moduleDir.getAbsolutePath().substring(rootDir.getAbsolutePath().length() + 1)
     def end = "$modulePath".lastIndexOf("/src")
     if (end != -1) {
-        def module = "$modulePath".substring(0, end)
+        def module = "$modulePath"
+                .substring(0, end)
                 .replaceAll("/", ":")
         include ":$module"
     }

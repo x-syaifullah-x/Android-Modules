@@ -14,9 +14,7 @@ import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourc
 import id.xxx.module.auth.repository.source.remote.response.Header
 import id.xxx.module.auth.repository.source.remote.response.Response
 import id.xxx.module.common.Resources
-import id.xxx.module.io.ktx.read
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.json.JSONObject
@@ -29,13 +27,14 @@ class AuthRepositoryImpl private constructor(
 ) : AuthRepository {
 
     companion object {
-        @Volatile
-        private var INSTANCE: AuthRepository? = null
 
-        fun getInstance() = INSTANCE ?: synchronized(this) {
-            INSTANCE ?: AuthRepositoryImpl(
+        @Volatile
+        private var _instance: AuthRepository? = null
+
+        fun getInstance() = _instance ?: synchronized(this) {
+            _instance ?: AuthRepositoryImpl(
                 AuthEmailDataSourceRemote.getInstance(),
-            ).also { INSTANCE = it }
+            ).also { _instance = it }
         }
     }
 
@@ -118,40 +117,41 @@ class AuthRepositoryImpl private constructor(
         result: (header: Header, response: String) -> T
     ) = flow {
         try {
-            val countAtomic = AtomicLong(0)
-            val lengthAtomic = AtomicLong(0)
-            val progress = Resources.Loading.Progress(countAtomic, lengthAtomic)
-            val loading = Resources.Loading(progress)
+            val progressAtomic = AtomicLong(-1)
+            val lengthAtomic = AtomicLong(-1)
+            val loading = Resources.Loading(progress = progressAtomic, length = lengthAtomic)
             emit(loading)
             val response = request.invoke()
             val header = response.header
             lengthAtomic.set(header.contentLength)
             val data = response.body
             val out = ByteArrayOutputStream()
-            data.read(
-                onRead = { bytes ->
-                    val size = bytes.size
-                    out.write(bytes, 0, size)
-                    if (lengthAtomic.get() != -1L) {
-                        countAtomic.set(countAtomic.get() + size)
-                        emit(loading)
-                    }
-                },
-                onReadComplete = {
-                    val outString = out.toString()
-                    if (header.code in 200..299) {
-                        emit(Resources.Success(result.invoke(header, outString)))
-                    } else {
-                        val error = JSONObject(outString).getJSONObject("error")
-                        val message = error.getString("message", "Error")
+            val buffersSize = 1024 * 512
+            val buffers = ByteArray(buffersSize)
+            while (true) {
+                val readCount = data.read(buffers, 0, buffers.size)
+                if (readCount != -1) {
+                    val bytes =
+                        if (readCount == buffersSize) buffers else buffers.copyOf(readCount)
+                    out.write(bytes, 0, bytes.size)
+                } else {
+                    break
+                }
+                progressAtomic.set(out.size().toLong())
+                emit(loading)
+            }
+
+            val outString = out.toString()
+            if (header.code in 200..299) {
+                emit(Resources.Success(result.invoke(header, outString)))
+            } else {
+                val error = JSONObject(outString).getJSONObject("error")
+                val message = error.getString("message", "Error")
 //                    val code = error.getInt("code")
-                        throw Throwable(message)
-                    }
-                },
-                onError = { e -> throw e },
-            )
+                throw Throwable(message)
+            }
         } catch (e: Throwable) {
             emit(Resources.Failure(e))
         }
-    }.flowOn(Dispatchers.IO).catch { emit(Resources.Failure(it)) }
+    }.flowOn(Dispatchers.IO)
 }

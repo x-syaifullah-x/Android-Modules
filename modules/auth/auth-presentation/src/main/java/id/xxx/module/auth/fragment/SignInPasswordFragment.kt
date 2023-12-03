@@ -54,10 +54,9 @@ class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) 
         binding.textViewDonTHaveAnAccount.movementMethod = LinkMovementMethod.getInstance()
         binding.buttonUsePhone.setOnClickListener { moveToSignInWithPhone(binding) }
         binding.buttonUseGoogle.setOnClickListener {
-            val googleSignInClient = GoogleSignIn.getClient(requireActivity())
+            val googleSignInClient = GoogleSignIn.getClient(requireContext())
             googleSignInClient.signOut()
-            val intent = googleSignInClient.signInIntent
-            activityResultLauncher.launch(intent)
+            activityResultLauncher.launch(googleSignInClient.signInIntent)
         }
     }
 

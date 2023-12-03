@@ -12,7 +12,6 @@ import id.xxx.module.auth.MainActivity
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
 import id.xxx.module.auth.model.SignModel
 
-
 class MainActivity : AppCompatActivity() {
 
     private val authActivityResultLauncher =
