@@ -20,7 +20,7 @@ android {
     }
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     jacoco.includeNoLocationClasses = true
     jacoco.excludes = ['jdk.internal.*']
 }
@@ -34,6 +34,7 @@ project.afterEvaluate {
         def variantName = variant.name
         def testVariantNameCodeCoverageTask = "${variantName.toLowerCase()}CodeCoverage"
 
+        //noinspection ConfigurationAvoidance
         tasks.create(
                 name: "${testVariantNameCodeCoverageTask}",
                 type: JacocoReport,

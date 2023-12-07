@@ -2,6 +2,8 @@
 
 package id.xxx.module.auth.repository.ktx
 
+import okhttp3.MediaType
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
 internal fun JSONObject.getString(
@@ -12,3 +14,7 @@ internal fun JSONObject.getString(
     } catch (err: Throwable) {
         defaultValue
     }
+
+internal fun JSONObject.toRequestBody(
+    contentType: MediaType? = null
+) = toString().toRequestBody(contentType)

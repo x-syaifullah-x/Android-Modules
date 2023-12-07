@@ -1,11 +1,12 @@
 apply from: "$rootDir/common_android_application.gradle"
 
 android {
-    String packageName = "id.xxx.example.android.storage"
+    String packageName = "id.xxx.template"
     namespace packageName
     testNamespace "${packageName}.test"
 
     defaultConfig {
+
         resConfigs "en"
     }
 

@@ -1,0 +1,43 @@
+name: build_template_application
+
+on:
+  push:
+    branches: [ master ]
+#  pull_request:
+#    branches: [ master ]
+
+jobs:
+  build_template_application:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "adopt"
+
+      - name: Grant execute gradlew
+        run: chmod +x gradlew
+
+      - name: assembleDebug
+        run: |
+          ./gradlew clean :templates:application:assembleDebug
+
+      - name: Uploading apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: templateApplicationDebug
+          path: templates/application/build/outputs/apk/debug/application-debug.apk
+
+      - name: assembleRelease
+        run: |
+          ./gradlew clean :templates:application:assembleRelease
+
+      - name: Uploading apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: templateApplicationRelease
+          path: templates/application/build/outputs/apk/release/application-release.apk

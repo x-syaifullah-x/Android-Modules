@@ -4,8 +4,9 @@ import id.xxx.module.auth.model.parms.Code
 import id.xxx.module.auth.model.parms.SignInType
 import id.xxx.module.auth.model.parms.SignUpType
 import id.xxx.module.auth.model.parms.UpdateType
-import id.xxx.module.auth.repository.source.remote.client.HttpClient
-import id.xxx.module.auth.repository.source.remote.client.RequestMethode
+import id.xxx.module.auth.repository.ktx.toRequestBody
+import id.xxx.module.auth.repository.source.remote.http.HttpClient
+import id.xxx.module.auth.repository.source.remote.http.RequestMethode
 import id.xxx.module.auth.repository.source.remote.endpoint.Firebase
 import id.xxx.module.auth.repository.source.remote.response.Response
 import okhttp3.MediaType
@@ -173,8 +174,4 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
             requestBody = payload.toRequestBody()
         )
     }
-
-    private fun JSONObject.toRequestBody(
-        contentType: MediaType? = null
-    ) = toString().toRequestBody(contentType)
 }

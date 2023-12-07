@@ -2,7 +2,7 @@ apply from: "$rootDir/common_android_application.gradle"
 apply plugin: "com.google.gms.google-services"
 
 android {
-    String packageName = "id.xxx.chat"
+    String packageName = "id.xxx.example.chat"
     namespace packageName
     testNamespace "${packageName}.test"
 
