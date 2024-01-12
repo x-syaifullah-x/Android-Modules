@@ -6,9 +6,9 @@ import id.xxx.module.auth.model.PhoneVerificationModel
 import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.model.VerifyEmailModel
 import id.xxx.module.auth.model.parms.Code
-import id.xxx.module.auth.model.parms.SignInType
-import id.xxx.module.auth.model.parms.SignUpType
+import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.model.parms.UpdateType
+import id.xxx.module.auth.repository.ktx.getBoolean
 import id.xxx.module.auth.repository.ktx.getString
 import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
 import id.xxx.module.auth.repository.source.remote.response.Header
@@ -38,7 +38,7 @@ class AuthRepositoryImpl private constructor(
         }
     }
 
-    override fun signIn(type: SignInType) = asResources(
+    override fun sign(type: SignType) = asResources(
         request = { remoteDataSource.signIn(type) },
         result = { header, response ->
             val j = JSONObject(response)
@@ -46,20 +46,11 @@ class AuthRepositoryImpl private constructor(
                 uid = j.getString("localId"),
                 token = j.getString("idToken"),
                 refreshToken = j.getString("refreshToken"),
-                expiresIn = (j.getLong("expiresIn") * 1000) + header.date,
-            )
-        },
-    )
-
-    override fun signUp(type: SignUpType) = asResources(
-        request = { remoteDataSource.signUp(type) },
-        result = { header, response ->
-            val j = JSONObject(response)
-            SignModel(
-                uid = j.getString("localId"),
-                token = j.getString("idToken"),
-                refreshToken = j.getString("refreshToken"),
-                expiresIn = (j.getLong("expiresIn") * 1000) + header.date,
+                expiresInTimeMillis = (j.getLong("expiresIn") * 1000) + header.date,
+                isNewUser = when (type) {
+                    is SignType.PasswordUp -> true
+                    else -> j.getBoolean("isNewUser", false)
+                }
             )
         },
     )

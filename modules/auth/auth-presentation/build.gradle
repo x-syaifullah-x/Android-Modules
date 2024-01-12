@@ -12,7 +12,8 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
 
     implementation project(":modules:auth:auth-domain")
-    implementation project(":modules:common-android")
+    api project(":modules:common-android")
+    implementation project(":modules:google-sign")
 
     api "androidx.activity:activity-ktx:$vAndroidxActivity"
     api "androidx.appcompat:appcompat:$vAndroidxAppCompat"

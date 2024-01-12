@@ -1,8 +1,7 @@
 package id.xxx.module.auth.domain.usecase
 
-import id.xxx.module.auth.model.parms.SignInType
-import id.xxx.module.auth.model.parms.SignUpType
 import id.xxx.module.auth.model.SignModel
+import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.model.parms.UserData
 import id.xxx.module.auth.repository.AuthRepository
 import id.xxx.module.auth.usecase.AuthUseCase
@@ -37,9 +36,9 @@ internal class AuthUseCaseImplTest {
             delay(100)
             emit(Resources.Success(user))
         }
-        val type = SignInType.CostumeToken("token")
-        Mockito.`when`(repo.signIn(type)).thenReturn(result)
-        val signIn = useCase.signIn(type)
+        val type = SignType.CostumeToken("token")
+        Mockito.`when`(repo.sign(type)).thenReturn(result)
+        val signIn = useCase.sign(type)
         val loading = signIn.firstOrNull()
         Assert.assertTrue("Resources Loading", loading is Resources.Loading)
         val success = signIn.lastOrNull()
@@ -55,9 +54,9 @@ internal class AuthUseCaseImplTest {
             delay(100)
             emit(Resources.Success(user))
         }
-        val type = SignInType.Password(email = "xxx@gmail.com", password = "password")
-        Mockito.`when`(repo.signIn(type)).thenReturn(result)
-        val signIn = useCase.signIn(type)
+        val type = SignType.PasswordIn(email = "xxx@gmail.com", password = "password")
+        Mockito.`when`(repo.sign(type)).thenReturn(result)
+        val signIn = useCase.sign(type)
         val loading = signIn.firstOrNull()
         Assert.assertTrue("Resources Loading", loading is Resources.Loading)
         val success = signIn.lastOrNull()
@@ -73,9 +72,9 @@ internal class AuthUseCaseImplTest {
             delay(100)
             emit(Resources.Success(user))
         }
-        val type = SignInType.Phone("session_info", otp = "otp")
-        Mockito.`when`(repo.signIn(type)).thenReturn(result)
-        val signIn = useCase.signIn(type)
+        val type = SignType.PhoneIn("session_info", otp = "otp")
+        Mockito.`when`(repo.sign(type)).thenReturn(result)
+        val signIn = useCase.sign(type)
         val loading = signIn.firstOrNull()
         Assert.assertTrue("Resources Loading", loading is Resources.Loading)
         val success = signIn.lastOrNull()
@@ -91,11 +90,11 @@ internal class AuthUseCaseImplTest {
             delay(100)
             emit(Resources.Success(user))
         }
-        val type = SignUpType.Password(
+        val type = SignType.PasswordUp(
             password = "password", UserData(email = "xxx@gmail.com", "+628")
         )
-        Mockito.`when`(repo.signUp(type)).thenReturn(result)
-        val signIn = useCase.signUp(type)
+        Mockito.`when`(repo.sign(type)).thenReturn(result)
+        val signIn = useCase.sign(type)
         val loading = signIn.firstOrNull()
         Assert.assertTrue("Resources Loading", loading is Resources.Loading)
         val success = signIn.lastOrNull()
@@ -111,13 +110,13 @@ internal class AuthUseCaseImplTest {
             delay(100)
             emit(Resources.Success(user))
         }
-        val type = SignUpType.Phone(
+        val type = SignType.PhoneUp(
             sessionInfo = "123456789",
             otp = "12345",
             data = UserData(email = "xxx@gmail.com", "+628")
         )
-        Mockito.`when`(repo.signUp(type)).thenReturn(result)
-        val signIn = useCase.signUp(type)
+        Mockito.`when`(repo.sign(type)).thenReturn(result)
+        val signIn = useCase.sign(type)
         val loading = signIn.firstOrNull()
         Assert.assertTrue("Resources Loading", loading is Resources.Loading)
         val success = signIn.lastOrNull()
@@ -154,6 +153,7 @@ internal class AuthUseCaseImplTest {
         uid = "uid:test",
         token = "token",
         refreshToken = "refreshToken",
-        expiresIn = System.currentTimeMillis()
+        expiresInTimeMillis = System.currentTimeMillis(),
+        isNewUser = true
     )
 }

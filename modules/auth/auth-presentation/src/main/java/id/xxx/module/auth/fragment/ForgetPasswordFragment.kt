@@ -9,20 +9,17 @@ import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.IForgetPasswordFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.utils.ValidationUtils
-import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.ForgetPasswordFragmentBinding
 
-class ForgetPasswordFragment : BaseFragment(R.layout.forget_password_fragment) {
+class ForgetPasswordFragment : BaseFragment<ForgetPasswordFragmentBinding>() {
 
     private val progress by lazy { ProgressDialog(context) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = ForgetPasswordFragmentBinding.bind(view)
-
-        val textInputEditTextEmail = binding.textInputEditTextEmail
-        val textInputLayoutEmail = binding.textInputLayoutEmail
+        val textInputEditTextEmail = viewBinding.textInputEditTextEmail
+        val textInputLayoutEmail = viewBinding.textInputLayoutEmail
         textInputEditTextEmail.doOnTextChanged { _, _, _, _ ->
             if (textInputLayoutEmail.error != null) {
                 textInputLayoutEmail.error = null
@@ -32,7 +29,7 @@ class ForgetPasswordFragment : BaseFragment(R.layout.forget_password_fragment) {
         progress.setOnCancelListener {
             listener?.onAction(IForgetPasswordFragment.Action.Cancel)
         }
-        binding.buttonNext.setOnClickListener {
+        viewBinding.buttonNext.setOnClickListener {
             val email = textInputEditTextEmail.text.toString()
             if (!ValidationUtils.isValidEmail(email)) {
                 textInputLayoutEmail.error = "Please enter a valid email"

@@ -1,15 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_test_sign"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="end"
+                app:constraint_referenced_ids="tv_refresh_token" />
+
+            <TextView
+                android:id="@+id/tv_uid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UID"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_uid_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/barrier_0"
+                app:layout_constraintTop_toBottomOf="@id/tv_uid"
+                tools:text="0123456789" />
+
+            <TextView
+                android:id="@+id/tv_token"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TOKEN"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_uid_value" />
+
+            <TextView
+                android:id="@+id/tv_token_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/barrier_0"
+                app:layout_constraintTop_toBottomOf="@id/tv_token"
+                tools:text="0123456789" />
+
+            <TextView
+                android:id="@+id/tv_refresh_token"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REFRESH TOKEN"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_token_value" />
+
+            <TextView
+                android:id="@+id/tv_refresh_token_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/barrier_0"
+                app:layout_constraintTop_toBottomOf="@id/tv_refresh_token"
+                tools:text="0123456789" />
+
+            <TextView
+                android:id="@+id/tv_expires_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EXPIRES IN"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_refresh_token_value" />
+
+            <TextView
+                android:id="@+id/tv_expires_in_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/barrier_0"
+                app:layout_constraintTop_toBottomOf="@id/tv_expires_in"
+                tools:text="0123456789" />
+
+            <TextView
+                android:id="@+id/tv_is_new_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IS NEW USER"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_expires_in_value" />
+
+            <TextView
+                android:id="@+id/tv_is_new_user_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/barrier_0"
+                app:layout_constraintTop_toBottomOf="@id/tv_is_new_user"
+                tools:text="true" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_test_sign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Test Sign"
+        android:text="Open Sign Activity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

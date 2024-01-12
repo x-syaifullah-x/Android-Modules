@@ -10,9 +10,11 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.viewbinding.ViewBinding
-import id.xxx.module.activity.base.BaseAppCompatActivityViewBinding
-import id.xxx.module.common_android.databinding.ContainerMainBinding
-import id.xxx.module.fragment.ktx.viewBinding
+import id.xxx.module.activity.base.BaseAppCompatActivity
+import id.xxx.module.common_android.databinding.XMainBinding
+import id.xxx.module.viewbinding.databinding.ContainerMainBinding
+import id.xxx.module.viewbinding.fragment.ViewBindingFragment
+import id.xxx.module.viewbinding.ktx.viewBinding
 import org.junit.Rule
 import org.junit.Test
 
@@ -23,10 +25,14 @@ class BaseAppCompatActivityViewBindingTest {
         private const val DATA_CHILD = "DATA CHILD"
     }
 
-    class ExampleActivity : BaseAppCompatActivityViewBinding<ContainerMainBinding>() {
+    class ExampleActivity : BaseAppCompatActivity() {
+
+        private val viewBinding by viewBinding<XMainBinding>()
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
+
+            setContentView(viewBinding.root)
 
             viewBinding.tvHead.text = DATA_PARENT
 
@@ -36,19 +42,11 @@ class BaseAppCompatActivityViewBindingTest {
         }
     }
 
-    class Fragment : androidx.fragment.app.Fragment() {
-
-        private val binding by viewBinding<CostumeViewBinding>()
-
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ) = binding.root
+    class Fragment : ViewBindingFragment<CostumeViewBinding>() {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
-            binding.view.text = DATA_CHILD
+            viewBinding.view.text = DATA_CHILD
         }
     }
 
@@ -70,8 +68,7 @@ class BaseAppCompatActivityViewBindingTest {
     }
 
     @get:Rule
-    var activityScenarioRule =
-        ActivityScenarioRule(ExampleActivity::class.java)
+    val activityScenarioRule = ActivityScenarioRule(ExampleActivity::class.java)
 
     @Test
     fun test() {

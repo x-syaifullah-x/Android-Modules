@@ -1,0 +1,15 @@
+apply from: "$rootDir/common_android_library.gradle"
+apply from: "$rootDir/maven_publish_android.gradle"
+
+android {
+    String packageName = "id.xxx.module.google_sign"
+    namespace packageName
+    testNamespace "${packageName}.test"
+}
+
+dependencies {
+
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    implementation "com.google.android.gms:play-services-auth:$vPlayServicesAuth"
+}

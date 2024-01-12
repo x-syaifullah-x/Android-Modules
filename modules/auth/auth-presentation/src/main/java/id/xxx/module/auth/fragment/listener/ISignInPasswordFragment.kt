@@ -17,11 +17,11 @@ interface ISignInPasswordFragment {
             val email: String,
         ) : Action
 
-        data class ClickSignInWithPhone(
+        data class ClickContinueWithPhone(
             val email: String,
         ) : Action
 
-        data class ClickSignInWithGoogle(
+        data class ClickContinueWithGoogle(
             val token: String
         ) : Action
     }

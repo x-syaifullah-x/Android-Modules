@@ -10,6 +10,8 @@ android {
 
 dependencies {
 
+    api project(":modules:viewbinding")
+
     api "androidx.appcompat:appcompat:$vAndroidxAppCompat"
 
     debugImplementation "androidx.fragment:fragment-testing:$vAndroidxFragment"

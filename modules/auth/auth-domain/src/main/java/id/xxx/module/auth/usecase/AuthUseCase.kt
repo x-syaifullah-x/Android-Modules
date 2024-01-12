@@ -6,17 +6,14 @@ import id.xxx.module.auth.model.PhoneVerificationModel
 import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.model.VerifyEmailModel
 import id.xxx.module.auth.model.parms.Code
-import id.xxx.module.auth.model.parms.SignInType
-import id.xxx.module.auth.model.parms.SignUpType
+import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.model.parms.UpdateType
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.flow.Flow
 
 interface AuthUseCase {
 
-    fun signIn(type: SignInType): Flow<Resources<SignModel>>
-
-    fun signUp(type: SignUpType): Flow<Resources<SignModel>>
+    fun sign(type: SignType): Flow<Resources<SignModel>>
 
     fun sendCode(code: Code.PhoneVerification): Flow<Resources<PhoneVerificationModel>>
 

@@ -7,11 +7,10 @@ import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.IOTPPhoneFragment
 import id.xxx.module.auth.ktx.getListener
-import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.OtpPhoneFragmentBinding
 import java.security.InvalidParameterException
 
-class OTPPhoneFragment : BaseFragment(R.layout.otp_phone_fragment) {
+class OTPPhoneFragment : BaseFragment<OtpPhoneFragmentBinding>() {
 
     companion object {
         const val KEY_IS_NEW_USER = "KEY_IS_NEW_USER"
@@ -21,13 +20,11 @@ class OTPPhoneFragment : BaseFragment(R.layout.otp_phone_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = OtpPhoneFragmentBinding.bind(view)
-
-        binding.buttonNext.setOnClickListener {
-            val otp = "${binding.textInputEditTextOtp.text}"
+        viewBinding.buttonNext.setOnClickListener {
+            val otp = "${viewBinding.textInputEditTextOtp.text}"
             if (otp.length != 6) {
-                binding.textInputEditTextOtp.requestFocus()
-                binding.textInputEditTextOtp.error = "Invalid otp"
+                viewBinding.textInputEditTextOtp.requestFocus()
+                viewBinding.textInputEditTextOtp.error = "Invalid otp"
                 return@setOnClickListener
             }
             val sessionInfo = arguments?.getString(KEY_SESSION_INFO)
@@ -37,7 +34,7 @@ class OTPPhoneFragment : BaseFragment(R.layout.otp_phone_fragment) {
                 ?: throw InvalidParameterException()
             val action = IOTPPhoneFragment.Action.ClickNext(
                 isNewUser = isNewUser,
-                otp = "${binding.textInputEditTextOtp.text}",
+                otp = "${viewBinding.textInputEditTextOtp.text}",
                 sessionInfo = sessionInfo
             )
             listener?.onAction(action)
@@ -55,17 +52,15 @@ class OTPPhoneFragment : BaseFragment(R.layout.otp_phone_fragment) {
     private fun loadingSetVisible(isVisible: Boolean) {
         val viewFinal = view
         if (viewFinal != null) {
-            val binding = OtpPhoneFragmentBinding.bind(viewFinal)
-            binding.buttonNext.isEnabled = !isVisible
-            binding.progressBar.isVisible = isVisible
+            viewBinding.buttonNext.isEnabled = !isVisible
+            viewBinding.progressBar.isVisible = isVisible
         }
     }
 
     fun setCancelProcess(block: () -> Unit) {
         val viewFinal = view
         if (viewFinal != null) {
-            val binding = OtpPhoneFragmentBinding.bind(viewFinal)
-            binding.progressBar.setOnClickListener { block.invoke() }
+            viewBinding.progressBar.setOnClickListener { block.invoke() }
         }
     }
 }

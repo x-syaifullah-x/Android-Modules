@@ -8,15 +8,15 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISecurityChallengeFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.model.SecurityChallengeResult
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth_presentation.databinding.SignInPhoneFragmentBinding
-import id.xxx.module.fragment.base.BaseFragmentViewBinding
 
-class SignInPhoneFragment : BaseFragmentViewBinding<SignInPhoneFragmentBinding>(),
+class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
     ISecurityChallengeFragment {
 
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
@@ -35,9 +35,9 @@ class SignInPhoneFragment : BaseFragmentViewBinding<SignInPhoneFragmentBinding>(
         viewBinding.buttonNext
             .setOnClickListener { nextButtonClicked() }
         viewBinding.buttonSignUp
-            .setOnClickListener { signUpTextClicked(viewBinding) }
+            .setOnClickListener { signUpTextClicked() }
         viewBinding.buttonSignInWithEmail
-            .setOnClickListener { signInWithEmailButtonClicked(viewBinding) }
+            .setOnClickListener { signInWithEmailButtonClicked() }
 
         activity?.onBackPressedDispatcher?.addCallback(
             viewLifecycleOwner, onBackPressedCallback
@@ -45,8 +45,7 @@ class SignInPhoneFragment : BaseFragmentViewBinding<SignInPhoneFragmentBinding>(
     }
 
     fun setSignInOnCancel(block: () -> Unit) {
-        val binding = SignInPhoneFragmentBinding.bind(requireView())
-        binding.progressBar.setOnClickListener { block.invoke() }
+        viewBinding.progressBar.setOnClickListener { block.invoke() }
     }
 
     fun <T : Throwable> showError(err: T) {
@@ -60,24 +59,23 @@ class SignInPhoneFragment : BaseFragmentViewBinding<SignInPhoneFragmentBinding>(
     private fun loadingSetVisible(isVisible: Boolean) {
         val viewFinal = view
         if (viewFinal != null) {
-            val binding = SignInPhoneFragmentBinding.bind(viewFinal)
-            binding.buttonNext.isEnabled = !isVisible
-            binding.buttonSignUp.isEnabled = !isVisible
-            binding.buttonSignInWithEmail.isEnabled = !isVisible
-            binding.progressBar.isVisible = isVisible
+            viewBinding.buttonNext.isEnabled = !isVisible
+            viewBinding.buttonSignUp.isEnabled = !isVisible
+            viewBinding.buttonSignInWithEmail.isEnabled = !isVisible
+            viewBinding.progressBar.isVisible = isVisible
         }
     }
 
-    private fun signInWithEmailButtonClicked(binding: SignInPhoneFragmentBinding) {
+    private fun signInWithEmailButtonClicked() {
         val action = ISignInPhoneFragment.Action.ClickSignInWithEmail(
-            phoneNumber = "${binding.textInputEditTextPhoneNumber.text}"
+            phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
         )
         getListener<ISignInPhoneFragment>()?.onAction(action)
     }
 
-    private fun signUpTextClicked(binding: SignInPhoneFragmentBinding) {
+    private fun signUpTextClicked() {
         val action = ISignInPhoneFragment.Action.ClickSignUp(
-            phoneNumber = "${binding.textInputEditTextPhoneNumber.text}"
+            phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
         )
         getListener<ISignInPhoneFragment>()?.onAction(action)
     }
@@ -111,9 +109,8 @@ class SignInPhoneFragment : BaseFragmentViewBinding<SignInPhoneFragmentBinding>(
                     val viewFinal = view
                     val messageError = "Unregistered user"
                     if (viewFinal != null) {
-                        val binding = SignInPhoneFragmentBinding.bind(viewFinal)
-                        binding.textInputEditTextPhoneNumber.error = messageError
-                        binding.textInputEditTextPhoneNumber.requestFocus()
+                        viewBinding.textInputEditTextPhoneNumber.error = messageError
+                        viewBinding.textInputEditTextPhoneNumber.requestFocus()
                     } else {
                         showError(Throwable(messageError))
                     }

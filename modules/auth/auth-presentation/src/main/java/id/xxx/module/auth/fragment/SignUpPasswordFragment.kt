@@ -13,27 +13,47 @@ import id.xxx.module.auth.utils.RichTextUtils
 import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.SignUpPasswordFragmentBinding
+import id.xxx.module.google_sign.GoogleAccountContract
 
-class SignUpPasswordFragment : BaseFragment(R.layout.sign_up_password_fragment) {
+class SignUpPasswordFragment : BaseFragment<SignUpPasswordFragmentBinding>() {
+
+    private val googleAccountLauncher =
+        registerForActivityResult(GoogleAccountContract()) { result ->
+            if (result != null) {
+                getListener<ISignUpPasswordFragment>()?.onAction(
+                    ISignUpPasswordFragment.Action.ClickSignInWithGoogle(
+                        token = "${result.idToken}"
+                    )
+                )
+            } else {
+                println("google sign canceled")
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = SignUpPasswordFragmentBinding.bind(view)
 
         if (savedInstanceState == null)
-            binding.textInputEditTextEmail
+            viewBinding.textInputEditTextEmail
                 .setText(SignInputPreferences.getInputEmail(context))
-        binding.buttonSignUp.setOnClickListener { signUpButtonClicked(binding) }
+        viewBinding.buttonSignUp.setOnClickListener { signUpButtonClicked() }
         val textSignUp = getString(R.string.sign_up_password_sign_in)
-        binding.textViewAlreadyAnAccount.text = RichTextUtils.setText(
+        viewBinding.textViewAlreadyAnAccount.text = RichTextUtils.setText(
             context = requireContext(),
             firstText = textSignUp,
             lastText = "${getString(R.string.sign_up_password_already_have_an_account)} $textSignUp",
-            lastTextOnClick = { if (!binding.progressBar.isVisible) signInTextClicked(binding) }
+            lastTextOnClick = {
+                if (!viewBinding.progressBar.isVisible) signInTextClicked()
+            }
         )
-        binding.textViewAlreadyAnAccount.movementMethod = LinkMovementMethod.getInstance()
-        binding.buttonSignUpWithPhone.setOnClickListener { signUpWithPhoneButtonClicked(binding) }
+        viewBinding.textViewAlreadyAnAccount.movementMethod = LinkMovementMethod.getInstance()
+        viewBinding.buttonSignUpWithPhone.setOnClickListener {
+            signUpWithPhoneButtonClicked()
+        }
+        viewBinding.buttonUseGoogle.setOnClickListener {
+            googleAccountLauncher.launch(null)
+        }
     }
 
     fun loadingVisible() = loadingSetVisible(true)
@@ -43,10 +63,9 @@ class SignUpPasswordFragment : BaseFragment(R.layout.sign_up_password_fragment) 
     private fun loadingSetVisible(isVisible: Boolean) {
         val viewFinal = view
         if (viewFinal != null) {
-            val binding = SignUpPasswordFragmentBinding.bind(viewFinal)
-            binding.buttonSignUp.isEnabled = !isVisible
-            binding.progressBar.isVisible = isVisible
-            binding.buttonSignUpWithPhone.isEnabled = !isVisible
+            viewBinding.buttonSignUp.isEnabled = !isVisible
+            viewBinding.progressBar.isVisible = isVisible
+            viewBinding.buttonSignUpWithPhone.isEnabled = !isVisible
         }
     }
 
@@ -55,49 +74,45 @@ class SignUpPasswordFragment : BaseFragment(R.layout.sign_up_password_fragment) 
     }
 
     fun setSignUpOnCancel(block: () -> Unit) {
-        val binding = SignUpPasswordFragmentBinding.bind(requireView())
-        binding.progressBar.setOnClickListener { block.invoke() }
+        viewBinding.progressBar.setOnClickListener { block.invoke() }
     }
 
-    private fun signUpWithPhoneButtonClicked(binding: SignUpPasswordFragmentBinding) {
+    private fun signUpWithPhoneButtonClicked() {
         ISignUpPasswordFragment.Action.ClickSignUpWithPhone(
-            email = "${binding.textInputEditTextEmail.text}",
+            email = "${viewBinding.textInputEditTextEmail.text}",
         ).apply { getListener<ISignUpPasswordFragment>()?.onAction(this) }
     }
 
-    private fun signInTextClicked(binding: SignUpPasswordFragmentBinding) {
+    private fun signInTextClicked() {
         ISignUpPasswordFragment.Action.ClickSignIn(
-            email = "${binding.textInputEditTextEmail.text}",
+            email = "${viewBinding.textInputEditTextEmail.text}",
         ).apply { getListener<ISignUpPasswordFragment>()?.onAction(this) }
 
     }
 
-    private fun signUpButtonClicked(binding: SignUpPasswordFragmentBinding) {
-        validateFields(binding)
-            ?.let { getListener<ISignUpPasswordFragment>()?.onAction(it) }
+    private fun signUpButtonClicked() {
+        validateFields()?.let { getListener<ISignUpPasswordFragment>()?.onAction(it) }
     }
 
-    private fun validateFields(
-        binding: SignUpPasswordFragmentBinding
-    ): ISignUpPasswordFragment.Action? {
-        val email = "${binding.textInputEditTextEmail.text}"
+    private fun validateFields(): ISignUpPasswordFragment.Action? {
+        val email = "${viewBinding.textInputEditTextEmail.text}"
         var validateMessage = ValidationUtils.validateEmail(email)
         if (validateMessage != null) {
-            binding.textInputLayoutEmail.requestFocus()
-            binding.textInputEditTextEmail.error = validateMessage
+            viewBinding.textInputLayoutEmail.requestFocus()
+            viewBinding.textInputEditTextEmail.error = validateMessage
             return null
         }
-        val password = "${binding.textInputLayoutPassword.editText?.text}"
+        val password = "${viewBinding.textInputLayoutPassword.editText?.text}"
         validateMessage = ValidationUtils.isValidPassword(password)
         if (validateMessage != null) {
-            binding.textInputLayoutPassword.requestFocus()
-            binding.textInputEditTextPassword.error = validateMessage
+            viewBinding.textInputLayoutPassword.requestFocus()
+            viewBinding.textInputEditTextPassword.error = validateMessage
             return null
         }
 
         return ISignUpPasswordFragment.Action.ClickSignUp(
-            email = "${binding.textInputLayoutEmail.editText?.text}",
-            password = "${binding.textInputLayoutPassword.editText?.text}"
+            email = "${viewBinding.textInputLayoutEmail.editText?.text}",
+            password = "${viewBinding.textInputLayoutPassword.editText?.text}"
         )
     }
 }

@@ -8,7 +8,7 @@ interface IForgetPasswordFragment {
             val email: String,
         ) : Action
 
-        object Cancel : Action
+        data object Cancel : Action
     }
 
     fun onAction(action: Action)

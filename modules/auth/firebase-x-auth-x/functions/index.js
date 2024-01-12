@@ -1,11 +1,12 @@
-const functions = require("firebase-functions");
-const admin = require("firebase-admin");
-admin.initializeApp();
-const express = require("express");
-const { log } = require("firebase-functions/logger");
+const firebase_functions = require("firebase-functions")
+const firebase_functions_v2_identity = require("firebase-functions/v2/identity")
+const admin = require("firebase-admin")
+admin.initializeApp()
+const express = require("express")
+const { log } = require("firebase-functions/logger")
 const app = express()
 const cors = require("cors")({ origin: true })
-app.use(cors);
+app.use(cors)
 app.set("json spaces", 4)
 
 // Create and Deploy Your First Cloud Functions
@@ -25,72 +26,17 @@ app.get("/check", async (request, response) => {
   response.send(result)
 })
 
-exports.user = functions.https.onRequest(app)
+exports.user = firebase_functions.https.onRequest(app)
 
-// {
-//       email: 'a@gmail.com',
-//       emailVerified: false,
-//       displayName: 'a',
-//       photoURL: '',
-//       phoneNumber: null,
-//       disabled: false,
-//       providerData: [
-//         {
-//           providerId: 'password',
-//           email: 'a@gmail.com',
-//           federatedId: 'a@gmail.com',
-//           rawId: 'a@gmail.com',
-//           displayName: 'a',
-//           photoUrl: ''
-//         }
-//       ],
-//       customClaims: {},
-//       passwordSalt: null,
-//       passwordHash: null,
-//       tokensValidAfterTime: null,
-//       uid: 'unGFoId0sZDps3BBsLp1YlITssgF',
-//       metadata: UserRecordMetadata {
-//         creationTime: '2023-12-04T02:57:45.174Z',
-//         lastSignInTime: '2023-12-04T02:57:45.174Z'
-//       },
-//       mfaInfo: [],
-//       toJSON: [Function (anonymous)]
-//     }
-//     {"severity":"WARNING","message":"Function returned undefined, expected Promise or value"}
-exports.userOnCreate = functions.auth.user().onCreate((user) => {
-  console.log(user)
-});
+// exports.onCreateUser = functions.auth.user().onCreate((user) => {
+// })
 
-// {
-//       email: 'a@gmail.com',
-//       emailVerified: false,
-//       displayName: 'a',
-//       photoURL: '',
-//       phoneNumber: null,
-//       disabled: false,
-//       providerData: [
-//         {
-//           providerId: 'password',
-//           email: 'a@gmail.com',
-//           federatedId: 'a@gmail.com',
-//           rawId: 'a@gmail.com',
-//           displayName: 'a',
-//           photoUrl: ''
-//         }
-//       ],
-//       customClaims: {},
-//       passwordSalt: null,
-//       passwordHash: null,
-//       tokensValidAfterTime: null,
-//       uid: 'unGFoId0sZDps3BBsLp1YlITssgF',
-//       metadata: UserRecordMetadata {
-//         creationTime: '2023-12-04T02:57:45.174Z',
-//         lastSignInTime: '2023-12-04T02:57:45.174Z'
-//       },
-//       mfaInfo: [],
-//       toJSON: [Function (anonymous)]
-//     }
-//     {"severity":"WARNING","message":"Function returned undefined, expected Promise or value"}
-exports.userOnDelete = functions.auth.user().onDelete((user) => {
-  console.log(user)
-});
+// exports.onDeleteUser = functions.auth.user().onDelete((user) => {
+// })
+
+// exports.beforeUserCreated = firebase_functions_v2_identity.beforeUserCreated(event => {
+//   throw new firebase_functions_v2_identity.HttpsError("already-exists", "already-exists")
+// })
+
+// exports.beforeUserSignedIn = firebase_functions_v2_identity.beforeUserSignedIn((event) => {
+// })

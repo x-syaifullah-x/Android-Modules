@@ -6,10 +6,11 @@ import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.SignInPasswordFragment
 import id.xxx.module.auth.fragment.SignUpPasswordFragment
 import id.xxx.module.auth.fragment.SignUpPhoneFragment
+import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
 import id.xxx.module.auth.ktx.getFragment
-import id.xxx.module.auth.model.parms.SignUpType
 import id.xxx.module.auth.model.SignModel
+import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.model.parms.UserData
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.common.Resources
@@ -19,7 +20,7 @@ import kotlinx.coroutines.flow.Flow
 class SignUpPasswordFragmentUtils(
     private val activity: AuthActivity,
     action: ISignUpPasswordFragment.Action,
-    private val block: (SignUpType) -> Flow<Resources<SignModel>>,
+    private val block: (SignType) -> Flow<Resources<SignModel>>,
 ) {
 
     init {
@@ -27,7 +28,34 @@ class SignUpPasswordFragmentUtils(
             is ISignUpPasswordFragment.Action.ClickSignUp -> onClickSignUp(action)
             is ISignUpPasswordFragment.Action.ClickSignIn -> onClickSignIn(action)
             is ISignUpPasswordFragment.Action.ClickSignUpWithPhone -> onClickSignUpWithPhone(action)
+            is ISignUpPasswordFragment.Action.ClickSignInWithGoogle -> handleActionSignWithGoogle(action)
         }
+    }
+
+    private fun handleActionSignWithGoogle(action: ISignUpPasswordFragment.Action.ClickSignInWithGoogle) {
+        val signInType = SignType.Google(
+            token = action.token
+        )
+        block(signInType)
+            .asLiveData()
+            .observe(activity) { value ->
+                val fragment = activity.getFragment<SignInPasswordFragment>()
+                when (value) {
+                    is Resources.Loading -> {
+                        fragment?.loadingVisible()
+                    }
+
+                    is Resources.Failure -> {
+                        fragment?.loadingGone()
+                        fragment?.showError(err = value.value)
+                    }
+
+                    is Resources.Success -> {
+                        fragment?.loadingGone()
+                        activity.result(value.value)
+                    }
+                }
+            }
     }
 
     private fun onClickSignUpWithPhone(action: ISignUpPasswordFragment.Action.ClickSignUpWithPhone) {
@@ -47,7 +75,7 @@ class SignUpPasswordFragmentUtils(
     private fun onClickSignUp(action: ISignUpPasswordFragment.Action.ClickSignUp) {
         val fragment = activity.getFragment<SignUpPasswordFragment>()
         val job = Job()
-        val type = SignUpType.Password(
+        val type = SignType.PasswordUp(
             password = action.password,
             data = UserData(
                 email = action.email,

@@ -1,0 +1,18 @@
+apply from: "$rootDir/common_android_library.gradle"
+apply from: "$rootDir/maven_publish_android.gradle"
+
+android {
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    implementation "androidx.fragment:fragment:$vAndroidxFragment"
+
+    debugImplementation "androidx.fragment:fragment-testing:$vAndroidxFragment"
+}

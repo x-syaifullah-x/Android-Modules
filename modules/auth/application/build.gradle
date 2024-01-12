@@ -16,12 +16,14 @@ android {
             jniDebuggable false
         }
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
-
-    implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
 
     implementation project(":modules:auth:auth")
 

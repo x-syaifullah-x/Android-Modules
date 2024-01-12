@@ -4,14 +4,14 @@ package id.xxx.module.auth.ktx
 
 import androidx.fragment.app.Fragment
 
-inline fun <reified T> Fragment.getListener(): T? {
+inline fun <reified Listener> Fragment.getListener(): Listener? {
     val result =
-        if (parentFragment is T)
+        if (parentFragment is Listener)
             parentFragment
-        else if (activity is T)
+        else if (activity is Listener)
             activity
         else
             null
-    return result as? T
+    return result as? Listener
 }
 

@@ -16,6 +16,10 @@ interface ISignUpPasswordFragment {
         data class ClickSignUpWithPhone(
             val email: String,
         ) : Action
+
+        data class ClickSignInWithGoogle(
+            val token: String
+        ) : Action
     }
 
     fun onAction(action: Action)

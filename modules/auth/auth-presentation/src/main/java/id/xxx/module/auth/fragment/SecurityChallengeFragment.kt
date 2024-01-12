@@ -13,15 +13,12 @@ import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISecurityChallengeFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.model.SecurityChallengeResult
-import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.RecaptchaFragmentBinding
-import id.xxx.module.fragment.base.BaseFragmentViewBinding
-import id.xxx.module.fragment.ktx.viewBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-class SecurityChallengeFragment : BaseFragmentViewBinding<RecaptchaFragmentBinding>() {
+class SecurityChallengeFragment : BaseFragment<RecaptchaFragmentBinding>() {
 
     companion object {
 

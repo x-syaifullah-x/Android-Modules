@@ -14,7 +14,7 @@ internal object Firebase {
     object Auth {
 
         const val BASE_URL = "https://identitytoolkit.googleapis.com/v1"
-//        const val BASE_URL = "http://192.168.0.4:9099/identitytoolkit.googleapis.com/v1"
+//        const val BASE_URL = "http://192.168.43.89:9099/identitytoolkit.googleapis.com/v1"
 
         object Endpoint {
 

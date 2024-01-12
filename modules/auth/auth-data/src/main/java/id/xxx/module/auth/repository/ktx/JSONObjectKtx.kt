@@ -15,6 +15,15 @@ internal fun JSONObject.getString(
         defaultValue
     }
 
+internal fun JSONObject.getBoolean(
+    name: String, defaultValue: Boolean
+): Boolean =
+    try {
+        getBoolean(name)
+    } catch (err: Throwable) {
+        defaultValue
+    }
+
 internal fun JSONObject.toRequestBody(
     contentType: MediaType? = null
 ) = toString().toRequestBody(contentType)

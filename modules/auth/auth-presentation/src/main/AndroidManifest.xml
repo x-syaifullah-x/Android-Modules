@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <meta-data
+            android:name="${applicationId}.google_sign.server_client_id"
+            android:value="1098413132051-pj231cvpoedpc07ll1tghasb2b6fi3j7.apps.googleusercontent.com" />
+    </application>
+</manifest>

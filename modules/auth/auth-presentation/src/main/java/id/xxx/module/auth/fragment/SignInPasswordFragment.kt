@@ -4,59 +4,52 @@ import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.preferences.SignInputPreferences
-import id.xxx.module.auth.utils.GoogleSignIn
 import id.xxx.module.auth.utils.RichTextUtils
 import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.SignInPasswordFragmentBinding
+import id.xxx.module.google_sign.GoogleAccountContract
 
-class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) {
+class SignInPasswordFragment : BaseFragment<SignInPasswordFragmentBinding>() {
 
-    private val activityResultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
-            val data = activityResult.data
-            if (data != null) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                if (task.isSuccessful) {
-                    getListener<ISignInPasswordFragment>()?.onAction(
-                        ISignInPasswordFragment.Action.ClickSignInWithGoogle(
-                            token = "${task.result.idToken}"
-                        )
+    private val googleAccountLauncher =
+        registerForActivityResult(GoogleAccountContract()) { result ->
+            if (result != null) {
+                getListener<ISignInPasswordFragment>()?.onAction(
+                    ISignInPasswordFragment.Action.ClickContinueWithGoogle(
+                        token = "${result.idToken}"
                     )
-                }
+                )
+            } else {
+                println("google sign canceled")
             }
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = SignInPasswordFragmentBinding.bind(view)
-
         if (savedInstanceState == null)
-            binding.textInputEditTextEmail
+            viewBinding.textInputEditTextEmail
                 .setText(SignInputPreferences.getInputEmail(context))
 
-        binding.textViewForgetPassword.setOnClickListener { moveToForgetPassword(binding) }
-        binding.buttonSignIn.setOnClickListener { signIn(binding) }
+        viewBinding.textViewForgetPassword.setOnClickListener { moveToForgetPassword() }
+        viewBinding.buttonSignIn.setOnClickListener { signIn() }
         val textSignUp = getString(R.string.sign_in_password_sign_up)
-        binding.textViewDonTHaveAnAccount.text = RichTextUtils.setText(
+        viewBinding.textViewDonTHaveAnAccount.text = RichTextUtils.setText(
             context = requireContext(),
             firstText = textSignUp,
             lastText = "${getString(R.string.sign_in_password_don_t_have_an_account)} $textSignUp",
-            lastTextOnClick = { if (!binding.progressBar.isVisible) moveToSignUp(binding) }
+            lastTextOnClick = { if (!viewBinding.progressBar.isVisible) moveToSignUp() }
         )
-        binding.textViewDonTHaveAnAccount.movementMethod = LinkMovementMethod.getInstance()
-        binding.buttonUsePhone.setOnClickListener { moveToSignInWithPhone(binding) }
-        binding.buttonUseGoogle.setOnClickListener {
-            val googleSignInClient = GoogleSignIn.getClient(requireContext())
-            googleSignInClient.signOut()
-            activityResultLauncher.launch(googleSignInClient.signInIntent)
+        viewBinding.textViewDonTHaveAnAccount.movementMethod = LinkMovementMethod.getInstance()
+        viewBinding.buttonUsePhone.setOnClickListener { moveToSignInWithPhone() }
+        viewBinding.buttonUseGoogle.setOnClickListener {
+            googleAccountLauncher.launch(null)
         }
     }
 
@@ -67,11 +60,10 @@ class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) 
     private fun loadingSetVisible(isVisible: Boolean) {
         val viewFinal = view
         if (viewFinal != null) {
-            val binding = SignInPasswordFragmentBinding.bind(viewFinal)
-            binding.textViewForgetPassword.isEnabled = !isVisible
-            binding.buttonSignIn.isEnabled = !isVisible
-            binding.buttonUsePhone.isEnabled = !isVisible
-            binding.progressBar.isVisible = isVisible
+            viewBinding.textViewForgetPassword.isEnabled = !isVisible
+            viewBinding.buttonSignIn.isEnabled = !isVisible
+            viewBinding.buttonUsePhone.isEnabled = !isVisible
+            viewBinding.progressBar.isVisible = isVisible
         }
     }
 
@@ -80,57 +72,54 @@ class SignInPasswordFragment : BaseFragment(R.layout.sign_in_password_fragment) 
     }
 
     fun setSignInOnCancel(onCancel: () -> Unit) {
-        val binding = SignInPasswordFragmentBinding.bind(requireView())
-        binding.progressBar.setOnClickListener { onCancel.invoke() }
+        viewBinding.progressBar.setOnClickListener { onCancel.invoke() }
     }
 
-    private fun moveToSignInWithPhone(binding: SignInPasswordFragmentBinding) {
+    private fun moveToSignInWithPhone() {
         getListener<ISignInPasswordFragment>()?.onAction(
             ISignInPasswordFragment.Action
-                .ClickSignInWithPhone(email = "${binding.textInputEditTextEmail.text}")
+                .ClickContinueWithPhone(email = "${viewBinding.textInputEditTextEmail.text}")
         )
     }
 
-    private fun moveToSignUp(binding: SignInPasswordFragmentBinding) {
+    private fun moveToSignUp() {
         getListener<ISignInPasswordFragment>()?.onAction(
             ISignInPasswordFragment.Action.ClickSignUp(
-                email = "${binding.textInputEditTextEmail.text}",
+                email = "${viewBinding.textInputEditTextEmail.text}",
             )
         )
     }
 
-    private fun signIn(binding: SignInPasswordFragmentBinding) {
-        validateFields(binding)
+    private fun signIn() {
+        validateFields()
             ?.let { action -> getListener<ISignInPasswordFragment>()?.onAction(action) }
     }
 
-    private fun validateFields(
-        binding: SignInPasswordFragmentBinding
-    ): ISignInPasswordFragment.Action? {
-        val email = "${binding.textInputEditTextEmail.text}"
+    private fun validateFields(): ISignInPasswordFragment.Action? {
+        val email = "${viewBinding.textInputEditTextEmail.text}"
         var validateMessage = ValidationUtils.validateEmail(email)
         if (validateMessage != null) {
-            binding.textInputLayoutEmail.requestFocus()
-            binding.textInputEditTextEmail.error = validateMessage
+            viewBinding.textInputLayoutEmail.requestFocus()
+            viewBinding.textInputEditTextEmail.error = validateMessage
             return null
         }
-        val password = "${binding.textInputLayoutPassword.editText?.text}"
+        val password = "${viewBinding.textInputLayoutPassword.editText?.text}"
         validateMessage = ValidationUtils.isValidPassword(password)
         if (validateMessage != null) {
-            binding.textInputLayoutPassword.requestFocus()
-            binding.textInputEditTextPassword.error = validateMessage
+            viewBinding.textInputLayoutPassword.requestFocus()
+            viewBinding.textInputEditTextPassword.error = validateMessage
             return null
         }
         return ISignInPasswordFragment.Action.ClickSignIn(
-            email = "${binding.textInputLayoutEmail.editText?.text}",
-            password = "${binding.textInputLayoutPassword.editText?.text}",
+            email = "${viewBinding.textInputLayoutEmail.editText?.text}",
+            password = "${viewBinding.textInputLayoutPassword.editText?.text}",
         )
     }
 
-    private fun moveToForgetPassword(binding: SignInPasswordFragmentBinding) {
+    private fun moveToForgetPassword() {
         getListener<ISignInPasswordFragment>()?.onAction(
             ISignInPasswordFragment.Action.ClickForgetPassword(
-                email = "${binding.textInputEditTextEmail.text}",
+                email = "${viewBinding.textInputEditTextEmail.text}",
             )
         )
     }

@@ -15,53 +15,52 @@ import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.SignUpPhoneFragmentBinding
 
-class SignUpPhoneFragment : BaseFragment(R.layout.sign_up_phone_fragment),
-    ISecurityChallengeFragment {
+class SignUpPhoneFragment : BaseFragment<SignUpPhoneFragmentBinding>(), ISecurityChallengeFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = SignUpPhoneFragmentBinding.bind(view)
+        if (savedInstanceState == null) viewBinding.textInputEditTextPhoneNumber.setText(
+            SignInputPreferences.getInputPhoneNumber(context)
+        )
 
-        if (savedInstanceState == null)
-            binding.textInputEditTextPhoneNumber.setText(
-                SignInputPreferences.getInputPhoneNumber(context)
-            )
-
-        binding.buttonNext.setOnClickListener { nextButtonClicked(binding) }
-        binding.buttonSignIn.setOnClickListener { signInTextClicked(binding) }
-        binding.buttonSignUpWithEmail.setOnClickListener { signUpWithEmailButtonClicked(binding) }
+        viewBinding.buttonNext.setOnClickListener { nextButtonClicked() }
+        viewBinding.buttonSignIn.setOnClickListener { signInTextClicked() }
+        viewBinding.buttonSignUpWithEmail.setOnClickListener {
+            signUpWithEmailButtonClicked()
+        }
     }
 
-    private fun signUpWithEmailButtonClicked(binding: SignUpPhoneFragmentBinding) {
+    private fun signUpWithEmailButtonClicked() {
         ISignUpPhoneFragment.Action.ClickSignUpWithEmail(
-            phoneNumber = "${binding.textInputEditTextPhoneNumber.text}"
+            phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
         ).apply { getListener<ISignUpPhoneFragment>()?.onAction(this) }
     }
 
-    private fun signInTextClicked(binding: SignUpPhoneFragmentBinding) {
+    private fun signInTextClicked() {
         ISignUpPhoneFragment.Action.ClickSignIn(
-            phoneNumber = "${binding.textInputEditTextPhoneNumber.text}"
+            phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
         ).apply { getListener<ISignUpPhoneFragment>()?.onAction(this) }
     }
 
-    private fun nextButtonClicked(binding: SignUpPhoneFragmentBinding) {
-        val phoneNumber = "${binding.textInputEditTextPhoneNumber.text}"
+    private fun nextButtonClicked() {
+        val phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
         if (!ValidationUtils.isValidPhoneNumber(phoneNumber)) {
-            binding.textInputEditTextPhoneNumber.requestFocus()
-            binding.textInputEditTextPhoneNumber.error = "Invalid phone number."
+            viewBinding.textInputEditTextPhoneNumber.requestFocus()
+            viewBinding.textInputEditTextPhoneNumber.error = "Invalid phone number."
             return
         }
         showSecurityChallenge(phoneNumber = phoneNumber)
     }
 
     private fun showSecurityChallenge(phoneNumber: String) {
-        val bundle =
-            bundleOf(SecurityChallengeFragment.KEY_PHONE_NUMBER to phoneNumber)
-        childFragmentManager
-            .beginTransaction()
-            .add(SecurityChallengeFragment::class.java, bundle, null)
-            .commit()
+        val bundle = bundleOf(SecurityChallengeFragment.KEY_PHONE_NUMBER to phoneNumber)
+        childFragmentManager.beginTransaction().add(
+                R.id.container_security_challenge,
+                SecurityChallengeFragment::class.java,
+                bundle,
+                null
+            ).commit()
     }
 
     override fun onResult(result: SecurityChallengeResult) {
@@ -69,17 +68,15 @@ class SignUpPhoneFragment : BaseFragment(R.layout.sign_up_phone_fragment),
             is SecurityChallengeResult.Success -> {
                 if (result.isNewUser) {
                     val action = ISignUpPhoneFragment.Action.ClickNext(
-                        phoneNumber = result.phoneNumber,
-                        recaptchaResponse = result.response
+                        phoneNumber = result.phoneNumber, recaptchaResponse = result.response
                     )
                     getListener<ISignUpPhoneFragment>()?.onAction(action)
                 } else {
                     val viewFinal = view
                     val messageError = "The user is already registered"
                     if (viewFinal != null) {
-                        val binding = SignUpPhoneFragmentBinding.bind(viewFinal)
-                        binding.textInputEditTextPhoneNumber.error = messageError
-                        binding.textInputEditTextPhoneNumber.requestFocus()
+                        viewBinding.textInputEditTextPhoneNumber.error = messageError
+                        viewBinding.textInputEditTextPhoneNumber.requestFocus()
                     } else {
                         showError(Throwable(messageError))
                     }
@@ -103,18 +100,16 @@ class SignUpPhoneFragment : BaseFragment(R.layout.sign_up_phone_fragment),
     private fun loadingSetVisible(isVisible: Boolean) {
         val viewFinal = view
         if (viewFinal != null) {
-            val binding = SignUpPhoneFragmentBinding.bind(viewFinal)
-            binding.buttonNext.isEnabled = !isVisible
-            binding.progressBar.isVisible = isVisible
-            binding.buttonSignUpWithEmail.isEnabled = !isVisible
+            viewBinding.buttonNext.isEnabled = !isVisible
+            viewBinding.progressBar.isVisible = isVisible
+            viewBinding.buttonSignUpWithEmail.isEnabled = !isVisible
         }
     }
 
     fun setSignUpOnCancel(block: () -> Unit) {
         val viewFinal = view
         if (viewFinal != null) {
-            val binding = SignUpPhoneFragmentBinding.bind(viewFinal)
-            binding.progressBar.setOnClickListener { block.invoke() }
+            viewBinding.progressBar.setOnClickListener { block.invoke() }
         }
     }
 }

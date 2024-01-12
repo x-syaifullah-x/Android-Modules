@@ -33,8 +33,7 @@ import id.xxx.module.auth.ktx.isDarkThemeOn
 import id.xxx.module.auth.model.PasswordResetModel
 import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.model.parms.Code
-import id.xxx.module.auth.model.parms.SignInType
-import id.xxx.module.auth.model.parms.SignUpType
+import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.usecase.AuthUseCase
 import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.auth.viewmodel.AuthViewModelProviderFactory
@@ -103,13 +102,13 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
 
     override fun onAction(action: ISignUpPasswordFragment.Action) {
         SignUpPasswordFragmentUtils(
-            activity = this, action = action, block = viewModel::signUp
+            activity = this, action = action, block = viewModel::sign
         )
     }
 
     override fun onAction(action: ISignInPasswordFragment.Action) {
         SignInPasswordFragmentUtils(
-            activity = this, action = action, block = viewModel::signIn
+            activity = this, action = action, block = viewModel::sign
         )
     }
 
@@ -130,12 +129,12 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
     override fun onAction(action: IOTPPhoneFragment.Action) {
         IOTPFragmentUtils(activity = this, action = action, block = { value ->
             if (value.isNewUser) {
-                viewModel.signUp(
-                    SignUpType.Phone(sessionInfo = value.sessionInfo, otp = value.otp)
+                viewModel.sign(
+                    SignType.PhoneUp(sessionInfo = value.sessionInfo, otp = value.otp)
                 )
             } else {
-                viewModel.signIn(
-                    SignInType.Phone(sessionInfo = value.sessionInfo, otp = value.otp)
+                viewModel.sign(
+                    SignType.PhoneIn(sessionInfo = value.sessionInfo, otp = value.otp)
                 )
             }.asLiveData()
         })

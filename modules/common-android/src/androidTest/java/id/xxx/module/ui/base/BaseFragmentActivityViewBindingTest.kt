@@ -10,9 +10,10 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.viewbinding.ViewBinding
-import id.xxx.module.common_android.databinding.ContainerMainBinding
-import id.xxx.module.fragment.base.BaseFragmentActivityViewBinding
-import id.xxx.module.fragment.ktx.viewBinding
+import id.xxx.module.common_android.databinding.XMainBinding
+import id.xxx.module.viewbinding.ktx.viewBinding
+import id.xxx.module.fragment.base.BaseFragmentActivity
+import id.xxx.module.viewbinding.databinding.ContainerMainBinding
 import org.junit.Rule
 import org.junit.Test
 
@@ -23,10 +24,14 @@ class BaseFragmentActivityViewBindingTest {
         const val TEXT_CHILD = "TEXT CHILD"
     }
 
-    class ExampleActivity : BaseFragmentActivityViewBinding<ContainerMainBinding>() {
+    class ExampleActivity : BaseFragmentActivity() {
+
+        private val viewBinding by viewBinding<XMainBinding>()
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
+
+            setContentView(viewBinding.root)
 
             viewBinding.tvHead.text = TEXT_PARENT
 

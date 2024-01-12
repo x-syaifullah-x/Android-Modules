@@ -9,8 +9,8 @@ import id.xxx.module.auth.fragment.SignInPhoneFragment
 import id.xxx.module.auth.fragment.SignUpPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.ktx.getFragment
-import id.xxx.module.auth.model.parms.SignInType
 import id.xxx.module.auth.model.SignModel
+import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.Flow
 class SignInPasswordFragmentUtils(
     private val activity: AuthActivity,
     action: ISignInPasswordFragment.Action,
-    private val block: (SignInType) -> Flow<Resources<SignModel>>,
+    private val block: (SignType) -> Flow<Resources<SignModel>>,
 ) {
 
     init {
@@ -33,16 +33,16 @@ class SignInPasswordFragmentUtils(
             is ISignInPasswordFragment.Action.ClickSignUp ->
                 handleActionSignUp(action)
 
-            is ISignInPasswordFragment.Action.ClickSignInWithPhone ->
+            is ISignInPasswordFragment.Action.ClickContinueWithPhone ->
                 handleActionSignWithEmail(action)
 
-            is ISignInPasswordFragment.Action.ClickSignInWithGoogle ->
+            is ISignInPasswordFragment.Action.ClickContinueWithGoogle ->
                 handleActionSignWithGoogle(action)
         }
     }
 
-    private fun handleActionSignWithGoogle(action: ISignInPasswordFragment.Action.ClickSignInWithGoogle) {
-        val signInType = SignInType.Google(
+    private fun handleActionSignWithGoogle(action: ISignInPasswordFragment.Action.ClickContinueWithGoogle) {
+        val signInType = SignType.Google(
             token = action.token
         )
         block(signInType)
@@ -67,7 +67,7 @@ class SignInPasswordFragmentUtils(
             }
     }
 
-    private fun handleActionSignWithEmail(action: ISignInPasswordFragment.Action.ClickSignInWithPhone) {
+    private fun handleActionSignWithEmail(action: ISignInPasswordFragment.Action.ClickContinueWithPhone) {
         SignInputPreferences.setInputEmail(activity, action.email)
         activity.supportFragmentManager.beginTransaction().replace(
             AuthActivity.CONTAINER_ID,
@@ -89,7 +89,7 @@ class SignInPasswordFragmentUtils(
         SignInputPreferences.setInputEmail(activity, action.email)
         val fragment = activity.getFragment<SignInPasswordFragment>()
         val job = Job()
-        val type = SignInType.Password(
+        val type = SignType.PasswordIn(
             email = action.email,
             password = action.password,
         )

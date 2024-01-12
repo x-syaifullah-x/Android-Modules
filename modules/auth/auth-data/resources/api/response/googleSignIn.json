@@ -1,0 +1,18 @@
+{
+  "federatedId": "https:\/\/accounts.google.com\/113402135889388138969",
+  "providerId": "google.com",
+  "email": "xxx@gmail.com",
+  "emailVerified": true,
+  "firstName": "Account",
+  "fullName": "Account Android",
+  "lastName": "Android",
+  "photoUrl": "https:\/\/lh3.googleusercontent.com\/a\/ACg8ocLFMR2vt98dCH2c5-LzLqsM7KYUl8GaehUcy-71QPixvg=s96-c",
+  "localId": "xxx",
+  "displayName": "Account Android",
+  "idToken": "xxx",
+  "refreshToken": "xxx",
+  "expiresIn": "3600",
+  "oauthIdToken": "xxx",
+  "rawUserInfo": "{\"iss\":\"https:\/\/accounts.google.com\",\"azp\":\"1098413132051-igrsmcp2dq9hognf4t0on3cvva3s1irk.apps.googleusercontent.com\",\"aud\":\"1098413132051-pj231cvpoedpc07ll1tghasb2b6fi3j7.apps.googleusercontent.com\",\"sub\":\"113402135889388138969\",\"email\":\"xxx@gmail.com\",\"email_verified\":true,\"name\":\"Account Android\",\"picture\":\"https:\/\/lh3.googleusercontent.com\/a\/ACg8ocLFMR2vt98dCH2c5-LzLqsM7KYUl8GaehUcy-71QPixvg=s96-c\",\"given_name\":\"Account\",\"family_name\":\"Android\",\"locale\":\"id\",\"iat\":1705223483,\"exp\":1705227083}",
+  "kind": "identitytoolkit#VerifyAssertionResponse"
+}

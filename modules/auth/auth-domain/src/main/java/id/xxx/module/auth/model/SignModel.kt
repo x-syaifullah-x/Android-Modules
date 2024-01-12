@@ -4,5 +4,6 @@ data class SignModel(
     val uid: String,
     val token: String,
     val refreshToken: String,
-    val expiresIn: Long
+    val expiresInTimeMillis: Long,
+    val isNewUser: Boolean,
 ) : java.io.Serializable
