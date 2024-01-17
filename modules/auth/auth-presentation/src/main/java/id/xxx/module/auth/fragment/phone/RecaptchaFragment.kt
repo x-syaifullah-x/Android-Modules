@@ -62,7 +62,7 @@ class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
         webView.addJavascriptInterface(object : Any() {
             @Suppress("unused")
             @JavascriptInterface
-            fun onSubmit(isNewUser: Any, response: String) {
+            fun onSubmit(response: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
                     parentFragmentManager.popBackStack()
                     getListener<IRecaptchaFragment>()?.onAction(

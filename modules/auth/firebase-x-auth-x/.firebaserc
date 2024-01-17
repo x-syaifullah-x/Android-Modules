@@ -7,6 +7,9 @@
       "hosting": {
         "x-recaptcha-x": [
           "x-recaptcha-x"
+        ],
+        "x-x-x-projects": [
+          "x-x-x-projects"
         ]
       }
     }

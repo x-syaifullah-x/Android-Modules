@@ -2,7 +2,16 @@
   "hosting": [
     {
       "target": "x-recaptcha-x",
-      "public": "hosting/recaptcha/build",
+      "public": "hosting/x-recaptcha-x",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    },
+    {
+      "target": "x-x-x-projects",
+      "public": "hosting/x-x-x-projects",
       "ignore": [
         "firebase.json",
         "**/.*",
