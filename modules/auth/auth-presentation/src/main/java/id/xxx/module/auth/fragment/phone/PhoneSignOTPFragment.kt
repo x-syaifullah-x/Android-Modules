@@ -1,16 +1,16 @@
-package id.xxx.module.auth.fragment
+package id.xxx.module.auth.fragment.phone
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
-import id.xxx.module.auth.fragment.listener.IOTPPhoneFragment
+import id.xxx.module.auth.fragment.phone.listener.IPhoneSignOTPFragment
 import id.xxx.module.auth.ktx.getListener
-import id.xxx.module.auth_presentation.databinding.OtpPhoneFragmentBinding
+import id.xxx.module.auth_presentation.databinding.PhoneSignOtpFragmentBinding
 import java.security.InvalidParameterException
 
-class OTPPhoneFragment : BaseFragment<OtpPhoneFragmentBinding>() {
+class PhoneSignOTPFragment : BaseFragment<PhoneSignOtpFragmentBinding>() {
 
     companion object {
         const val KEY_IS_NEW_USER = "KEY_IS_NEW_USER"
@@ -29,10 +29,10 @@ class OTPPhoneFragment : BaseFragment<OtpPhoneFragmentBinding>() {
             }
             val sessionInfo = arguments?.getString(KEY_SESSION_INFO)
                 ?: throw Throwable("required session info")
-            val listener = getListener<IOTPPhoneFragment>()
+            val listener = getListener<IPhoneSignOTPFragment>()
             val isNewUser = arguments?.getBoolean(KEY_IS_NEW_USER)
                 ?: throw InvalidParameterException()
-            val action = IOTPPhoneFragment.Action.ClickNext(
+            val action = IPhoneSignOTPFragment.Action.ClickNext(
                 isNewUser = isNewUser,
                 otp = "${viewBinding.textInputEditTextOtp.text}",
                 sessionInfo = sessionInfo

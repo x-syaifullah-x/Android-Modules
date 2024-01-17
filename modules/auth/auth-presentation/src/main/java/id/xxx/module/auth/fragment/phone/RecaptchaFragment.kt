@@ -1,4 +1,4 @@
-package id.xxx.module.auth.fragment
+package id.xxx.module.auth.fragment.phone
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -10,15 +10,14 @@ import android.view.View
 import android.webkit.*
 import androidx.lifecycle.lifecycleScope
 import id.xxx.module.auth.fragment.base.BaseFragment
-import id.xxx.module.auth.fragment.listener.ISecurityChallengeFragment
+import id.xxx.module.auth.fragment.phone.listener.IRecaptchaFragment
 import id.xxx.module.auth.ktx.getListener
-import id.xxx.module.auth.model.SecurityChallengeResult
 import id.xxx.module.auth_presentation.databinding.RecaptchaFragmentBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-class SecurityChallengeFragment : BaseFragment<RecaptchaFragmentBinding>() {
+class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
 
     companion object {
 
@@ -44,8 +43,8 @@ class SecurityChallengeFragment : BaseFragment<RecaptchaFragmentBinding>() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) "${error.description}"
                     else "Error"
                 parentFragmentManager.popBackStack()
-                getListener<ISecurityChallengeFragment>()?.onResult(
-                    SecurityChallengeResult.Error(
+                getListener<IRecaptchaFragment>()?.onAction(
+                    IRecaptchaFragment.Action.Error(
                         Throwable(message)
                     )
                 )
@@ -63,11 +62,11 @@ class SecurityChallengeFragment : BaseFragment<RecaptchaFragmentBinding>() {
         webView.addJavascriptInterface(object : Any() {
             @Suppress("unused")
             @JavascriptInterface
-            fun onSubmit(response: String) {
+            fun onSubmit(isNewUser: Any, response: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
                     parentFragmentManager.popBackStack()
-                    getListener<ISecurityChallengeFragment>()?.onResult(
-                        SecurityChallengeResult.Success(
+                    getListener<IRecaptchaFragment>()?.onAction(
+                        IRecaptchaFragment.Action.Success(
                             response = response,
                             phoneNumber = phoneNumber,
                         )
@@ -78,9 +77,7 @@ class SecurityChallengeFragment : BaseFragment<RecaptchaFragmentBinding>() {
 
         val phoneNumberFinal = phoneNumber.replace("+", "%2b")
         val uri =
-            Uri.Builder().scheme("https")
-                .authority("x-recaptcha-x.web.app")
-                .path("/index.html")
+            Uri.Builder().scheme("https").authority("x-recaptcha-x.web.app").path("/index.html")
                 .appendQueryParameter("phoneNumber", phoneNumberFinal)
                 .appendQueryParameter("languageCode", Locale.getDefault().language).build()
         webView.loadUrl(uri.toString())

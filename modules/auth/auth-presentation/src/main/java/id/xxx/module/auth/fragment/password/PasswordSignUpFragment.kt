@@ -1,4 +1,4 @@
-package id.xxx.module.auth.fragment
+package id.xxx.module.auth.fragment.password
 
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
@@ -6,23 +6,23 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
-import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
+import id.xxx.module.auth.fragment.password.listener.IPasswordSignUpFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.utils.RichTextUtils
 import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.R
-import id.xxx.module.auth_presentation.databinding.SignUpPasswordFragmentBinding
+import id.xxx.module.auth_presentation.databinding.PasswordSignUpFragmentBinding
 import id.xxx.module.google_sign.GoogleAccountContract
 
-class SignUpPasswordFragment : BaseFragment<SignUpPasswordFragmentBinding>() {
+class PasswordSignUpFragment : BaseFragment<PasswordSignUpFragmentBinding>() {
 
     private val googleAccountLauncher =
         registerForActivityResult(GoogleAccountContract()) { result ->
             if (result != null) {
                 val action =
-                    ISignUpPasswordFragment.Action.ClickSignInWithGoogle(token = "${result.idToken}")
-                getListener<ISignUpPasswordFragment>()?.onAction(action)
+                    IPasswordSignUpFragment.Action.ClickSignInWithGoogle(token = "${result.idToken}")
+                getListener<IPasswordSignUpFragment>()?.onAction(action)
             }
         }
 
@@ -75,23 +75,23 @@ class SignUpPasswordFragment : BaseFragment<SignUpPasswordFragmentBinding>() {
     }
 
     private fun signUpWithPhoneButtonClicked() {
-        ISignUpPasswordFragment.Action.ClickSignUpWithPhone.apply {
-            getListener<ISignUpPasswordFragment>()?.onAction(this)
+        IPasswordSignUpFragment.Action.ClickSignUpWithPhone.apply {
+            getListener<IPasswordSignUpFragment>()?.onAction(this)
         }
     }
 
     private fun signInTextClicked() {
-        ISignUpPasswordFragment.Action.ClickSignIn(
+        IPasswordSignUpFragment.Action.ClickSignIn(
             email = "${viewBinding.textInputEditTextEmail.text}",
-        ).apply { getListener<ISignUpPasswordFragment>()?.onAction(this) }
+        ).apply { getListener<IPasswordSignUpFragment>()?.onAction(this) }
 
     }
 
     private fun signUpButtonClicked() {
-        validateFields()?.let { getListener<ISignUpPasswordFragment>()?.onAction(it) }
+        validateFields()?.let { getListener<IPasswordSignUpFragment>()?.onAction(it) }
     }
 
-    private fun validateFields(): ISignUpPasswordFragment.Action? {
+    private fun validateFields(): IPasswordSignUpFragment.Action? {
         val email = "${viewBinding.textInputEditTextEmail.text}"
         var validateMessage = ValidationUtils.validateEmail(email)
         if (validateMessage != null) {
@@ -107,7 +107,7 @@ class SignUpPasswordFragment : BaseFragment<SignUpPasswordFragmentBinding>() {
             return null
         }
 
-        return ISignUpPasswordFragment.Action.ClickSignUp(
+        return IPasswordSignUpFragment.Action.ClickSignUp(
             email = "${viewBinding.textInputLayoutEmail.editText?.text}",
             password = "${viewBinding.textInputLayoutPassword.editText?.text}"
         )

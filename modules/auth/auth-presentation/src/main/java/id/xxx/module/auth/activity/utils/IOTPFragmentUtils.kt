@@ -3,8 +3,8 @@ package id.xxx.module.auth.activity.utils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import id.xxx.module.auth.activity.AuthActivity
-import id.xxx.module.auth.fragment.OTPPhoneFragment
-import id.xxx.module.auth.fragment.listener.IOTPPhoneFragment
+import id.xxx.module.auth.fragment.phone.PhoneSignOTPFragment
+import id.xxx.module.auth.fragment.phone.listener.IPhoneSignOTPFragment
 import id.xxx.module.fragment.ktx.getFragment
 import id.xxx.module.auth.model.SignModel
 import id.xxx.module.common.Resources
@@ -12,14 +12,14 @@ import kotlinx.coroutines.Job
 
 class IOTPFragmentUtils(
     private val activity: AuthActivity,
-    action: IOTPPhoneFragment.Action,
-    val block: (IOTPPhoneFragment.Action.ClickNext) -> LiveData<Resources<SignModel>>
+    action: IPhoneSignOTPFragment.Action,
+    val block: (IPhoneSignOTPFragment.Action.ClickNext) -> LiveData<Resources<SignModel>>
 ) {
     init {
         when (action) {
-            is IOTPPhoneFragment.Action.ClickNext -> {
+            is IPhoneSignOTPFragment.Action.ClickNext -> {
                 val job = Job()
-                val fragment = activity.getFragment<OTPPhoneFragment>()
+                val fragment = activity.getFragment<PhoneSignOTPFragment>()
                 val observer = Observer<Resources<SignModel>> {
                     when (it) {
                         is Resources.Loading -> {

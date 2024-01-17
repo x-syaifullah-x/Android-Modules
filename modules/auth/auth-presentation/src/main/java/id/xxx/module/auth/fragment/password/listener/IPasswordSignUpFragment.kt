@@ -1,6 +1,6 @@
-package id.xxx.module.auth.fragment.listener
+package id.xxx.module.auth.fragment.password.listener
 
-interface ISignUpPasswordFragment {
+interface IPasswordSignUpFragment {
 
     sealed interface Action {
 

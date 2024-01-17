@@ -1,6 +1,6 @@
-package id.xxx.module.auth.fragment.listener
+package id.xxx.module.auth.fragment.phone.listener
 
-interface ISignInPhoneFragment {
+interface IPhoneSignFragment {
 
     sealed interface Action {
 

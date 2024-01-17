@@ -1,4 +1,4 @@
-package id.xxx.module.auth.fragment
+package id.xxx.module.auth.fragment.phone
 
 import android.os.Bundle
 import android.view.View
@@ -8,26 +8,25 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import id.xxx.module.auth.fragment.base.BaseFragment
-import id.xxx.module.auth.fragment.listener.ISecurityChallengeFragment
-import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
+import id.xxx.module.auth.fragment.phone.listener.IPhoneSignFragment
+import id.xxx.module.auth.fragment.phone.listener.IRecaptchaFragment
 import id.xxx.module.auth.ktx.getInputMethodManager
 import id.xxx.module.auth.ktx.getListener
-import id.xxx.module.auth.model.SecurityChallengeResult
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.utils.ValidationUtils
-import id.xxx.module.auth_presentation.databinding.SignInPhoneFragmentBinding
+import id.xxx.module.auth_presentation.databinding.PhoneSignFragmentBinding
 import id.xxx.module.google_sign.GoogleAccountContract
 
-class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
-    ISecurityChallengeFragment {
+class PhoneSignFragment : BaseFragment<PhoneSignFragmentBinding>(),
+    IRecaptchaFragment {
 
     private val googleAccountLauncher =
         registerForActivityResult(GoogleAccountContract()) { result ->
             if (result != null) {
-                val action = ISignInPhoneFragment.Action.ClickSignInWithGoogle(
+                val action = IPhoneSignFragment.Action.ClickSignInWithGoogle(
                     token = result.idToken ?: throw NullPointerException()
                 )
-                getListener<ISignInPhoneFragment>()?.onAction(action)
+                getListener<IPhoneSignFragment>()?.onAction(action)
             }
         }
 
@@ -83,10 +82,10 @@ class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
     }
 
     private fun buttonContinueWithEmailClicked() {
-        val action = ISignInPhoneFragment.Action.ClickSignInWithEmail(
+        val action = IPhoneSignFragment.Action.ClickSignInWithEmail(
             phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
         )
-        getListener<ISignInPhoneFragment>()?.onAction(action)
+        getListener<IPhoneSignFragment>()?.onAction(action)
     }
 
     private fun buttonContinueWithGoogleClicked() {
@@ -104,32 +103,33 @@ class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
             return
         }
         val bundle =
-            bundleOf(SecurityChallengeFragment.KEY_PHONE_NUMBER to phoneNumber)
+            bundleOf(RecaptchaFragment.KEY_PHONE_NUMBER to phoneNumber)
         childFragmentManager
             .beginTransaction()
             .add(
                 viewBinding.containerSecurityChallenge.id,
-                SecurityChallengeFragment::class.java,
+                RecaptchaFragment::class.java,
                 bundle,
                 "SecurityChallengeDialogFragment::class.java"
             )
             .commit()
     }
 
-    override fun onResult(result: SecurityChallengeResult) {
+    override fun onAction(action: IRecaptchaFragment.Action) {
         viewBinding.containerSecurityChallenge
             .removeAllViews()
         onBackPressedCallback.isEnabled = false
-        when (result) {
-            is SecurityChallengeResult.Success -> {
-                val action = ISignInPhoneFragment.Action.ClickNext(
-                    phoneNumber = result.phoneNumber,
-                    recaptchaResponse = result.response
+        when (action) {
+            is IRecaptchaFragment.Action.Success -> {
+                getListener<IPhoneSignFragment>()?.onAction(
+                    IPhoneSignFragment.Action.ClickNext(
+                        phoneNumber = action.phoneNumber,
+                        recaptchaResponse = action.response
+                    )
                 )
-                getListener<ISignInPhoneFragment>()?.onAction(action)
             }
 
-            is SecurityChallengeResult.Error -> showError(result.err)
+            is IRecaptchaFragment.Action.Error -> showError(action.err)
         }
     }
 }

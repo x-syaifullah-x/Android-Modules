@@ -10,13 +10,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxWidth="@dimen/_500dp"
+        android:layout_gravity="center"
         android:paddingTop="?actionBarSize">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image_view_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/auth_logo_otp_phone"
+            android:src="@drawable/auth_logo_sign_in_phone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -25,9 +27,7 @@
             android:id="@+id/text_view_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/auth_message_otp"
-            android:textAllCaps="true"
+            android:text="@string/auth_message_welcome_back"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,19 +35,19 @@
             app:layout_constraintTop_toBottomOf="@id/image_view_logo" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_input_layout_otp"
+            android:id="@+id/text_input_layout_phone_number"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="42dp"
-            android:hint="@string/auth_message_otp"
+            android:hint="@string/auth_message_enter_your_phone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_view_sign_up"
             app:layout_constraintWidth_percent=".8">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/text_input_edit_text_otp"
+                android:id="@+id/text_input_edit_text_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:imeOptions="flagNoFullscreen"
@@ -64,7 +64,7 @@
             android:text="@string/auth_message_next"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_input_layout_otp"
+            app:layout_constraintTop_toBottomOf="@id/text_input_layout_phone_number"
             app:layout_constraintWidth_percent=".6" />
 
         <ProgressBar
@@ -76,7 +76,48 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_next"
+            app:layout_constraintTop_toBottomOf="@+id/button_next"
             tools:visibility="visible" />
+
+        <include
+            android:id="@+id/include_or"
+            layout="@layout/include_or"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@id/text_input_layout_phone_number"
+            app:layout_constraintStart_toStartOf="@id/text_input_layout_phone_number"
+            app:layout_constraintTop_toBottomOf="@+id/button_next" />
+
+        <Button
+            android:id="@+id/button_continue_with_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/auth_message_continue_with_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/include_or"
+            app:layout_constraintWidth_percent=".8" />
+
+        <Button
+            android:id="@+id/button_continue_with_google"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/auth_message_continue_with_google"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_continue_with_email"
+            app:layout_constraintWidth_percent=".8" />
+
+        <FrameLayout
+            android:id="@+id/container_security_challenge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="9999dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

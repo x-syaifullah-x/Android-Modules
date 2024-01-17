@@ -1,4 +1,4 @@
-package id.xxx.module.auth.fragment
+package id.xxx.module.auth.fragment.password
 
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -6,12 +6,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import id.xxx.module.auth.fragment.base.BaseFragment
-import id.xxx.module.auth.fragment.listener.IForgetPasswordFragment
+import id.xxx.module.auth.fragment.password.listener.IPasswordRecoveryFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.utils.ValidationUtils
-import id.xxx.module.auth_presentation.databinding.ForgetPasswordFragmentBinding
+import id.xxx.module.auth_presentation.databinding.PasswordRecoveryFragmentBinding
 
-class ForgetPasswordFragment : BaseFragment<ForgetPasswordFragmentBinding>() {
+class PasswordRecoveryFragment : BaseFragment<PasswordRecoveryFragmentBinding>() {
 
     private val progress by lazy { ProgressDialog(context) }
 
@@ -25,9 +25,9 @@ class ForgetPasswordFragment : BaseFragment<ForgetPasswordFragmentBinding>() {
                 textInputLayoutEmail.error = null
             }
         }
-        val listener = getListener<IForgetPasswordFragment>()
+        val listener = getListener<IPasswordRecoveryFragment>()
         progress.setOnCancelListener {
-            listener?.onAction(IForgetPasswordFragment.Action.Cancel)
+            listener?.onAction(IPasswordRecoveryFragment.Action.Cancel)
         }
         viewBinding.buttonNext.setOnClickListener {
             val email = textInputEditTextEmail.text.toString()
@@ -35,7 +35,7 @@ class ForgetPasswordFragment : BaseFragment<ForgetPasswordFragmentBinding>() {
                 textInputLayoutEmail.error = "Please enter a valid email"
                 return@setOnClickListener
             }
-            val action = IForgetPasswordFragment.Action.Next(
+            val action = IPasswordRecoveryFragment.Action.Next(
                 email = email
             )
             listener?.onAction(action)

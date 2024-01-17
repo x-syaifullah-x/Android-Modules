@@ -1,10 +1,10 @@
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.AuthActivity
-import id.xxx.module.auth.fragment.SignInPasswordFragment
-import id.xxx.module.auth.fragment.SignInPhoneFragment
-import id.xxx.module.auth.fragment.SignUpPasswordFragment
-import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
+import id.xxx.module.auth.fragment.password.PasswordSignInFragment
+import id.xxx.module.auth.fragment.phone.PhoneSignFragment
+import id.xxx.module.auth.fragment.password.PasswordSignUpFragment
+import id.xxx.module.auth.fragment.password.listener.IPasswordSignUpFragment
 import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.model.parms.UserData
@@ -16,29 +16,29 @@ import kotlinx.coroutines.flow.Flow
 
 class SignUpPasswordFragmentUtils(
     private val activity: AuthActivity,
-    action: ISignUpPasswordFragment.Action,
+    action: IPasswordSignUpFragment.Action,
     private val block: (SignType) -> Flow<Resources<SignModel>>,
 ) {
 
     init {
         when (action) {
-            is ISignUpPasswordFragment.Action.ClickSignUp -> onClickSignUp(action)
-            is ISignUpPasswordFragment.Action.ClickSignIn -> onClickSignIn(action)
-            is ISignUpPasswordFragment.Action.ClickSignUpWithPhone -> onClickSignUpWithPhone()
-            is ISignUpPasswordFragment.Action.ClickSignInWithGoogle -> handleActionSignWithGoogle(
+            is IPasswordSignUpFragment.Action.ClickSignUp -> onClickSignUp(action)
+            is IPasswordSignUpFragment.Action.ClickSignIn -> onClickSignIn(action)
+            is IPasswordSignUpFragment.Action.ClickSignUpWithPhone -> onClickSignUpWithPhone()
+            is IPasswordSignUpFragment.Action.ClickSignInWithGoogle -> handleActionSignWithGoogle(
                 action
             )
         }
     }
 
-    private fun handleActionSignWithGoogle(action: ISignUpPasswordFragment.Action.ClickSignInWithGoogle) {
+    private fun handleActionSignWithGoogle(action: IPasswordSignUpFragment.Action.ClickSignInWithGoogle) {
         val signInType = SignType.Google(
             token = action.token
         )
         block(signInType)
             .asLiveData()
             .observe(activity) { value ->
-                val fragment = activity.getFragment<SignInPasswordFragment>()
+                val fragment = activity.getFragment<PasswordSignInFragment>()
                 when (value) {
                     is Resources.Loading -> {
                         fragment?.loadingVisible()
@@ -59,19 +59,19 @@ class SignUpPasswordFragmentUtils(
 
     private fun onClickSignUpWithPhone() {
         activity.supportFragmentManager.beginTransaction()
-            .replace(AuthActivity.CONTAINER_ID, SignInPhoneFragment::class.java, null)
+            .replace(AuthActivity.CONTAINER_ID, PhoneSignFragment::class.java, null)
             .commit()
     }
 
-    private fun onClickSignIn(action: ISignUpPasswordFragment.Action.ClickSignIn) {
+    private fun onClickSignIn(action: IPasswordSignUpFragment.Action.ClickSignIn) {
         SignInputPreferences.setInputEmail(activity, action.email)
         activity.supportFragmentManager.beginTransaction()
-            .replace(AuthActivity.CONTAINER_ID, SignInPasswordFragment::class.java, null)
+            .replace(AuthActivity.CONTAINER_ID, PasswordSignInFragment::class.java, null)
             .commit()
     }
 
-    private fun onClickSignUp(action: ISignUpPasswordFragment.Action.ClickSignUp) {
-        val fragment = activity.getFragment<SignUpPasswordFragment>()
+    private fun onClickSignUp(action: IPasswordSignUpFragment.Action.ClickSignUp) {
+        val fragment = activity.getFragment<PasswordSignUpFragment>()
         val job = Job()
         val type = SignType.PasswordUp(
             password = action.password,

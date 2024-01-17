@@ -3,11 +3,11 @@ package id.xxx.module.auth.activity.utils
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.AuthActivity
-import id.xxx.module.auth.fragment.ForgetPasswordFragment
-import id.xxx.module.auth.fragment.SignInPasswordFragment
-import id.xxx.module.auth.fragment.SignInPhoneFragment
-import id.xxx.module.auth.fragment.SignUpPasswordFragment
-import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
+import id.xxx.module.auth.fragment.password.PasswordRecoveryFragment
+import id.xxx.module.auth.fragment.password.PasswordSignInFragment
+import id.xxx.module.auth.fragment.phone.PhoneSignFragment
+import id.xxx.module.auth.fragment.password.PasswordSignUpFragment
+import id.xxx.module.auth.fragment.password.listener.IPasswordSignInFragment
 import id.xxx.module.fragment.ktx.getFragment
 import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.model.parms.SignType
@@ -18,37 +18,37 @@ import kotlinx.coroutines.flow.Flow
 
 class SignInPasswordFragmentUtils(
     private val activity: AuthActivity,
-    action: ISignInPasswordFragment.Action,
+    action: IPasswordSignInFragment.Action,
     private val block: (SignType) -> Flow<Resources<SignModel>>,
 ) {
 
     init {
         when (action) {
-            is ISignInPasswordFragment.Action.ClickForgetPassword ->
+            is IPasswordSignInFragment.Action.ClickForgetPassword ->
                 handleActionForgetPassword(action)
 
-            is ISignInPasswordFragment.Action.ClickSignIn ->
+            is IPasswordSignInFragment.Action.ClickSignIn ->
                 handleActionSignIn(action)
 
-            is ISignInPasswordFragment.Action.ClickSignUp ->
+            is IPasswordSignInFragment.Action.ClickSignUp ->
                 handleActionSignUp(action)
 
-            is ISignInPasswordFragment.Action.ClickContinueWithPhone ->
+            is IPasswordSignInFragment.Action.ClickContinueWithPhone ->
                 handleActionSignWithEmail(action)
 
-            is ISignInPasswordFragment.Action.ClickContinueWithGoogle ->
+            is IPasswordSignInFragment.Action.ClickContinueWithGoogle ->
                 handleActionSignWithGoogle(action)
         }
     }
 
-    private fun handleActionSignWithGoogle(action: ISignInPasswordFragment.Action.ClickContinueWithGoogle) {
+    private fun handleActionSignWithGoogle(action: IPasswordSignInFragment.Action.ClickContinueWithGoogle) {
         val signInType = SignType.Google(
             token = action.token
         )
         block(signInType)
             .asLiveData()
             .observe(activity) { value ->
-                val fragment = activity.getFragment<SignInPasswordFragment>()
+                val fragment = activity.getFragment<PasswordSignInFragment>()
                 when (value) {
                     is Resources.Loading -> {
                         fragment?.loadingVisible()
@@ -67,27 +67,27 @@ class SignInPasswordFragmentUtils(
             }
     }
 
-    private fun handleActionSignWithEmail(action: ISignInPasswordFragment.Action.ClickContinueWithPhone) {
+    private fun handleActionSignWithEmail(action: IPasswordSignInFragment.Action.ClickContinueWithPhone) {
         SignInputPreferences.setInputEmail(activity, action.email)
         activity.supportFragmentManager.beginTransaction().replace(
             AuthActivity.CONTAINER_ID,
-            SignInPhoneFragment::class.java,
+            PhoneSignFragment::class.java,
             null
         ).commit()
     }
 
-    private fun handleActionSignUp(action: ISignInPasswordFragment.Action.ClickSignUp) {
+    private fun handleActionSignUp(action: IPasswordSignInFragment.Action.ClickSignUp) {
         SignInputPreferences.setInputEmail(activity, action.email)
         activity.supportFragmentManager.beginTransaction().replace(
             AuthActivity.CONTAINER_ID,
-            SignUpPasswordFragment::class.java,
+            PasswordSignUpFragment::class.java,
             null
         ).commit()
     }
 
-    private fun handleActionSignIn(action: ISignInPasswordFragment.Action.ClickSignIn) {
+    private fun handleActionSignIn(action: IPasswordSignInFragment.Action.ClickSignIn) {
         SignInputPreferences.setInputEmail(activity, action.email)
-        val fragment = activity.getFragment<SignInPasswordFragment>()
+        val fragment = activity.getFragment<PasswordSignInFragment>()
         val job = Job()
         val type = SignType.PasswordIn(
             email = action.email,
@@ -124,10 +124,10 @@ class SignInPasswordFragmentUtils(
         }
     }
 
-    private fun handleActionForgetPassword(action: ISignInPasswordFragment.Action.ClickForgetPassword) {
+    private fun handleActionForgetPassword(action: IPasswordSignInFragment.Action.ClickForgetPassword) {
         SignInputPreferences.setInputEmail(activity, action.email)
         activity.supportFragmentManager.beginTransaction().add(
-            AuthActivity.CONTAINER_ID, ForgetPasswordFragment::class.java, null
+            AuthActivity.CONTAINER_ID, PasswordRecoveryFragment::class.java, null
         ).commit()
     }
 }
