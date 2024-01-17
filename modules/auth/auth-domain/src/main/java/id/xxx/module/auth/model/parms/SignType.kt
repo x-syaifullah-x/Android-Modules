@@ -6,27 +6,22 @@ sealed interface SignType {
         val token: String
     ) : SignType
 
-    data class PasswordIn(
-        val email: String,
-        val password: String,
-    ) : SignType
-
-    data class PhoneIn(
-        val sessionInfo: String, val otp: String
-    ) : SignType
-
-    data class Google(
-        val token: String,
-    ) : SignType
-
     data class PasswordUp(
         val password: String,
         val data: UserData,
     ) : SignType
 
-    data class PhoneUp(
+    data class PasswordIn(
+        val email: String,
+        val password: String,
+    ) : SignType
+
+    data class Phone(
         val sessionInfo: String,
         val otp: String,
-        val data: UserData? = null
+    ) : SignType
+
+    data class Google(
+        val token: String,
     ) : SignType
 }

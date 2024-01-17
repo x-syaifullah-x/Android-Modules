@@ -72,7 +72,7 @@ internal class AuthUseCaseImplTest {
             delay(100)
             emit(Resources.Success(user))
         }
-        val type = SignType.PhoneIn("session_info", otp = "otp")
+        val type = SignType.Phone("session_info", otp = "otp")
         Mockito.`when`(repo.sign(type)).thenReturn(result)
         val signIn = useCase.sign(type)
         val loading = signIn.firstOrNull()
@@ -92,28 +92,6 @@ internal class AuthUseCaseImplTest {
         }
         val type = SignType.PasswordUp(
             password = "password", UserData(email = "xxx@gmail.com", "+628")
-        )
-        Mockito.`when`(repo.sign(type)).thenReturn(result)
-        val signIn = useCase.sign(type)
-        val loading = signIn.firstOrNull()
-        Assert.assertTrue("Resources Loading", loading is Resources.Loading)
-        val success = signIn.lastOrNull()
-        Assert.assertTrue("Resources Success", success is Resources.Success)
-        Assert.assertTrue("Data", user == (success as Resources.Success).value)
-    }
-
-    @Test
-    fun signUpPhoneSuccessTest() = runBlocking {
-        val user = getMockUser()
-        val result = flow {
-            emit(Resources.Loading())
-            delay(100)
-            emit(Resources.Success(user))
-        }
-        val type = SignType.PhoneUp(
-            sessionInfo = "123456789",
-            otp = "12345",
-            data = UserData(email = "xxx@gmail.com", "+628")
         )
         Mockito.`when`(repo.sign(type)).thenReturn(result)
         val signIn = useCase.sign(type)

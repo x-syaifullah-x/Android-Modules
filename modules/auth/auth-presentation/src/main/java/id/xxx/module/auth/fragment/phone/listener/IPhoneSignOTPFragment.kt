@@ -5,7 +5,6 @@ interface IPhoneSignOTPFragment {
     sealed interface Action {
 
         data class ClickNext(
-            val isNewUser: Boolean,
             val otp: String,
             val sessionInfo: String,
         ) : Action

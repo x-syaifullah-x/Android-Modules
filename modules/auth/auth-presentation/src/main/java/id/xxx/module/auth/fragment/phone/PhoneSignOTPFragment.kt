@@ -13,7 +13,6 @@ import java.security.InvalidParameterException
 class PhoneSignOTPFragment : BaseFragment<PhoneSignOtpFragmentBinding>() {
 
     companion object {
-        const val KEY_IS_NEW_USER = "KEY_IS_NEW_USER"
         const val KEY_SESSION_INFO = "KEY_SESSION_INFO"
     }
 
@@ -29,15 +28,11 @@ class PhoneSignOTPFragment : BaseFragment<PhoneSignOtpFragmentBinding>() {
             }
             val sessionInfo = arguments?.getString(KEY_SESSION_INFO)
                 ?: throw Throwable("required session info")
-            val listener = getListener<IPhoneSignOTPFragment>()
-            val isNewUser = arguments?.getBoolean(KEY_IS_NEW_USER)
-                ?: throw InvalidParameterException()
             val action = IPhoneSignOTPFragment.Action.ClickNext(
-                isNewUser = isNewUser,
                 otp = "${viewBinding.textInputEditTextOtp.text}",
                 sessionInfo = sessionInfo
             )
-            listener?.onAction(action)
+            getListener<IPhoneSignOTPFragment>()?.onAction(action)
         }
     }
 

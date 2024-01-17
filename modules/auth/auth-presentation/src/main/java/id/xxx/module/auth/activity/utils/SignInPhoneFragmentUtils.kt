@@ -26,14 +26,11 @@ class SignInPhoneFragmentUtils(
 
     init {
         when (action) {
-            is IPhoneSignFragment.Action.ClickNext ->
-                actionNext(action)
+            is IPhoneSignFragment.Action.ClickNext -> actionNext(action)
 
-            is IPhoneSignFragment.Action.ClickSignInWithEmail ->
-                actionSignInWithEmail(action)
+            is IPhoneSignFragment.Action.ClickSignInWithEmail -> actionSignInWithEmail(action)
 
-            is IPhoneSignFragment.Action.ClickSignInWithGoogle ->
-                actionSignInWithGoogle(action)
+            is IPhoneSignFragment.Action.ClickSignInWithGoogle -> actionSignInWithGoogle(action)
         }
     }
 
@@ -73,8 +70,7 @@ class SignInPhoneFragmentUtils(
     private fun actionSignInWithEmail(action: IPhoneSignFragment.Action.ClickSignInWithEmail) {
         SignInputPreferences.setInputPhone(activity, action.phoneNumber)
         activity.supportFragmentManager.beginTransaction()
-            .replace(AuthActivity.CONTAINER_ID, PasswordSignInFragment::class.java, null)
-            .commit()
+            .replace(AuthActivity.CONTAINER_ID, PasswordSignInFragment::class.java, null).commit()
     }
 
     private fun actionNext(action: IPhoneSignFragment.Action.ClickNext) {
@@ -82,7 +78,8 @@ class SignInPhoneFragmentUtils(
         val fragment = activity.getFragment<PhoneSignFragment>()
         val job = Job()
         val code = Code.PhoneVerification(
-            phoneNumber = action.phoneNumber, recaptchaResponse = action.recaptchaResponse
+            phoneNumber = action.phoneNumber,
+            recaptchaResponse = action.recaptchaResponse,
         )
         val liveData = viewModel.sendCode(code).asLiveData(job)
         val observer = object : Observer<Resources<PhoneVerificationModel>> {
@@ -93,11 +90,11 @@ class SignInPhoneFragmentUtils(
                         val sessionInfo = value.value.sessionInfo
                         val bundle = bundleOf(
                             PhoneSignOTPFragment.KEY_SESSION_INFO to sessionInfo,
-                            PhoneSignOTPFragment.KEY_IS_NEW_USER to false
                         )
-                        val transaction = activity.supportFragmentManager
-                            .beginTransaction()
-                            .add(AuthActivity.CONTAINER_ID, PhoneSignOTPFragment::class.java, bundle)
+                        val transaction = activity.supportFragmentManager.beginTransaction().add(
+                            AuthActivity.CONTAINER_ID,
+                            PhoneSignOTPFragment::class.java, bundle,
+                        )
                         fragment?.loadingGone()
                         transaction.commit()
                         liveData.removeObserver(this)

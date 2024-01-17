@@ -10,7 +10,7 @@ import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.model.parms.UpdateType
 import id.xxx.module.auth.repository.ktx.getBoolean
 import id.xxx.module.auth.repository.ktx.getString
-import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
+import id.xxx.module.auth.repository.source.remote.auth.email.AuthDataSourceRemote
 import id.xxx.module.auth.repository.source.remote.response.Header
 import id.xxx.module.auth.repository.source.remote.response.Response
 import id.xxx.module.common.Resources
@@ -23,7 +23,7 @@ import java.io.InputStream
 import java.util.concurrent.atomic.AtomicLong
 
 class AuthRepositoryImpl private constructor(
-    private val remoteDataSource: AuthEmailDataSourceRemote,
+    private val remoteDataSource: AuthDataSourceRemote,
 ) : AuthRepository {
 
     companion object {
@@ -33,7 +33,7 @@ class AuthRepositoryImpl private constructor(
 
         fun getInstance() = _instance ?: synchronized(this) {
             _instance ?: AuthRepositoryImpl(
-                AuthEmailDataSourceRemote.getInstance(),
+                AuthDataSourceRemote.getInstance(),
             ).also { _instance = it }
         }
     }
@@ -69,7 +69,8 @@ class AuthRepositoryImpl private constructor(
         result = { _, response ->
             val j = JSONObject(response)
             PasswordResetModel(
-                kind = j.getString("kind", ""), email = j.getString("email", "")
+                kind = j.getString("kind", ""),
+                email = j.getString("email", "")
             )
         },
     )
@@ -89,6 +90,7 @@ class AuthRepositoryImpl private constructor(
         request = { remoteDataSource.lookup(idToken) },
         result = { _, response ->
             val j = JSONObject(response)
+            println(j)
             val users = j.getJSONArray("users")
             val user = users.getJSONObject(0)
             val isEmailVerify = user.getBoolean("emailVerified")

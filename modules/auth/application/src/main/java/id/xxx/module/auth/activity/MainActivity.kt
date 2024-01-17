@@ -3,10 +3,17 @@ package id.xxx.module.auth.activity
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import id.xxx.module.auth.AuthActivityForResult
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
 import id.xxx.module.auth.application.databinding.MainActivityBinding
+import id.xxx.module.auth.model.parms.Code
+import id.xxx.module.auth.model.parms.UpdateType
+import id.xxx.module.auth.repository.AuthRepositoryImpl
+import id.xxx.module.auth.usecase.AuthUseCaseImpl
 import id.xxx.module.viewbinding.ktx.viewBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.Date
 
 class MainActivity : AppCompatActivity() {
@@ -24,14 +31,14 @@ class MainActivity : AppCompatActivity() {
                 val date = Date(result.expiresInTimeMillis)
                 binding.tvExpiresInValue.text = "$date"
                 binding.tvIsNewUserValue.text = "${result.isNewUser}"
-            }
 
-//            lifecycleScope.launch {
-//                AuthUseCaseImpl.getInstance(
-//                    AuthRepositoryImpl.getInstance()
-//                ).lookup(result?.token ?: return@launch)
-//                    .collect {}
-//            }
+                lifecycleScope.launch {
+                    val repo = AuthUseCaseImpl.getInstance(
+                        AuthRepositoryImpl.getInstance()
+                    )
+                    repo.lookup(result.token).collect {}
+                }
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {

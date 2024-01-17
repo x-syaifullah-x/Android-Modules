@@ -4,23 +4,23 @@ import id.xxx.module.auth.model.parms.Code
 import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.model.parms.UpdateType
 import id.xxx.module.auth.repository.ktx.toRequestBody
+import id.xxx.module.auth.repository.source.remote.endpoint.Firebase
 import id.xxx.module.auth.repository.source.remote.http.HttpClient
 import id.xxx.module.auth.repository.source.remote.http.RequestMethode
-import id.xxx.module.auth.repository.source.remote.endpoint.Firebase
 import id.xxx.module.auth.repository.source.remote.response.Response
 import org.json.JSONObject
 import java.io.InputStream
 
-internal class AuthEmailDataSourceRemote private constructor(private val client: HttpClient) {
+internal class AuthDataSourceRemote private constructor(private val client: HttpClient) {
 
     companion object {
 
         @Volatile
-        private var sInstance: AuthEmailDataSourceRemote? = null
+        private var sInstance: AuthDataSourceRemote? = null
 
         fun getInstance() =
             sInstance ?: synchronized(this) {
-                sInstance ?: AuthEmailDataSourceRemote(HttpClient.getInstance())
+                sInstance ?: AuthDataSourceRemote(HttpClient.getInstance())
                     .also { sInstance = it }
             }
     }
@@ -94,28 +94,14 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
     fun sign(type: SignType): Response<InputStream> {
         val payload = JSONObject()
         payload.put("returnSecureToken", true)
-        val url = when (type) {
+        val endpoint = when (type) {
             is SignType.PasswordUp -> {
                 val email = type.data.email
                 val password = type.password
                 payload.put("email", email)
                 payload.put("password", password)
                 payload.put("returnSecureToken", true)
-                return client.execute(
-                    url = Firebase.Auth.Endpoint.signUp(),
-                    methode = RequestMethode.POST,
-                    payload.toRequestBody()
-                )
-            }
-
-            is SignType.PhoneUp -> {
-                payload.put("sessionInfo", type.sessionInfo)
-                payload.put("code", type.otp)
-                return client.execute(
-                    url = Firebase.Auth.Endpoint.signWithPhoneNumber(),
-                    methode = RequestMethode.POST,
-                    payload.toRequestBody()
-                )
+                Firebase.Auth.Endpoint.signUp()
             }
 
             is SignType.Google -> {
@@ -124,7 +110,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
                 Firebase.Auth.Endpoint.signWithOAuthCredential()
             }
 
-            is SignType.PhoneIn -> {
+            is SignType.Phone -> {
                 payload.put("sessionInfo", type.sessionInfo)
                 payload.put("code", type.otp)
                 Firebase.Auth.Endpoint.signWithPhoneNumber()
@@ -142,7 +128,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
             }
         }
         return client.execute(
-            url = url,
+            url = endpoint,
             methode = RequestMethode.POST,
             requestBody = payload.toRequestBody()
         )

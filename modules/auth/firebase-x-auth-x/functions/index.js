@@ -4,6 +4,7 @@ const admin = require("firebase-admin")
 admin.initializeApp()
 const express = require("express")
 const { log } = require("firebase-functions/logger")
+const { UserInfo } = require("firebase-admin/auth")
 const app = express()
 const cors = require("cors")({ origin: true })
 app.use(cors)
@@ -16,9 +17,9 @@ app.set("json spaces", 4)
 app.get("/check", async (request, response) => {
   const result = {}
   try {
-    /* replace query [+]628 with [%2B]628 */
-    const phoneNumber = request.query.phoneNumber
-    const user = await admin.auth().getUserByPhoneNumber(phoneNumber)
+    const adminAuth = admin.auth()
+    const body = request.query
+    const query = request.query
     result.exist = true
   } catch (error) {
     result.exist = false

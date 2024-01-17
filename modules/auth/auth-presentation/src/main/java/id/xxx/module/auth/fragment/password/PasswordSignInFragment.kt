@@ -37,7 +37,7 @@ class PasswordSignInFragment : BaseFragment<PasswordSignInFragmentBinding>() {
             viewBinding.textInputEditTextEmail
                 .setText(SignInputPreferences.getInputEmail(context))
 
-        viewBinding.textViewForgetPassword.setOnClickListener { moveToForgetPassword() }
+        viewBinding.buttonForgetPassword.setOnClickListener { moveToForgetPassword() }
         viewBinding.buttonSignIn.setOnClickListener { signIn() }
         val textSignUp = getString(R.string.auth_message_sign_up)
         viewBinding.textViewDonTHaveAnAccount.text = RichTextUtils.setText(
@@ -60,7 +60,7 @@ class PasswordSignInFragment : BaseFragment<PasswordSignInFragmentBinding>() {
     private fun loadingSetVisible(isVisible: Boolean) {
         val viewFinal = view
         if (viewFinal != null) {
-            viewBinding.textViewForgetPassword.isEnabled = !isVisible
+            viewBinding.buttonForgetPassword.isEnabled = !isVisible
             viewBinding.buttonSignIn.isEnabled = !isVisible
             viewBinding.buttonUsePhone.isEnabled = !isVisible
             viewBinding.progressBar.isVisible = isVisible

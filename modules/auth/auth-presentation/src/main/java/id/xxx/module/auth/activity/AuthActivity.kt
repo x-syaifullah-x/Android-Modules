@@ -30,7 +30,6 @@ import id.xxx.module.auth.ktx.isDarkThemeOn
 import id.xxx.module.auth.model.PasswordResetModel
 import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.model.parms.Code
-import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.usecase.AuthUseCase
 import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.auth.viewmodel.AuthViewModelProviderFactory
@@ -69,13 +68,11 @@ abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
         setContentView(R.layout.auth_activity)
 
         val am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val isTopActivity =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                am.appTasks[0].taskInfo.numActivities
-            } else {
-                @Suppress("DEPRECATION")
-                am.getRunningTasks(Int.MAX_VALUE)[0].numActivities
-            } == 1
+        val isTopActivity = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            am.appTasks[0].taskInfo.numActivities
+        } else {
+            @Suppress("DEPRECATION") am.getRunningTasks(Int.MAX_VALUE)[0].numActivities
+        } == 1
 
         val ivArrowBack = findViewById<ImageView>(R.id.iv_arrow_back)
         ivArrowBack.isVisible = !isTopActivity
@@ -85,14 +82,13 @@ abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
 
         if (!isDarkThemeOn()) {
             val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
-            if (!windowInsetsController.isAppearanceLightStatusBars)
-                windowInsetsController.isAppearanceLightStatusBars = true
+            if (!windowInsetsController.isAppearanceLightStatusBars) windowInsetsController.isAppearanceLightStatusBars =
+                true
         }
 
         if (savedInstanceState == null) {
             val fragmentHome = PasswordSignInFragment()
-            supportFragmentManager.beginTransaction()
-                .replace(CONTAINER_ID, fragmentHome, null)
+            supportFragmentManager.beginTransaction().replace(CONTAINER_ID, fragmentHome, null)
                 .commit()
         }
     }
@@ -105,7 +101,9 @@ abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
 
     override fun onAction(action: IPasswordSignUpFragment.Action) {
         SignUpPasswordFragmentUtils(
-            activity = this, action = action, block = viewModel::sign
+            activity = this,
+            action = action,
+            viewModel = viewModel,
         )
     }
 
@@ -113,22 +111,16 @@ abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
         SignInPhoneFragmentUtils(
             action = action,
             activity = this,
-            viewModel = viewModel
+            viewModel = viewModel,
         )
     }
 
     override fun onAction(action: IPhoneSignOTPFragment.Action) {
-        IOTPFragmentUtils(activity = this, action = action, block = { value ->
-            if (value.isNewUser) {
-                viewModel.sign(
-                    SignType.PhoneUp(sessionInfo = value.sessionInfo, otp = value.otp)
-                )
-            } else {
-                viewModel.sign(
-                    SignType.PhoneIn(sessionInfo = value.sessionInfo, otp = value.otp)
-                )
-            }.asLiveData()
-        })
+        IOTPFragmentUtils(
+            activity = this,
+            action = action,
+            viewModel = viewModel,
+        )
     }
 
     override fun onAction(action: IPasswordRecoveryFragment.Action) {

@@ -9,6 +9,7 @@ import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.model.parms.UserData
 import id.xxx.module.auth.preferences.SignInputPreferences
+import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.common.Resources
 import id.xxx.module.fragment.ktx.getFragment
 import kotlinx.coroutines.Job
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.Flow
 class SignUpPasswordFragmentUtils(
     private val activity: AuthActivity,
     action: IPasswordSignUpFragment.Action,
-    private val block: (SignType) -> Flow<Resources<SignModel>>,
+    private val viewModel: AuthViewModel,
 ) {
 
     init {
@@ -35,7 +36,7 @@ class SignUpPasswordFragmentUtils(
         val signInType = SignType.Google(
             token = action.token
         )
-        block(signInType)
+        viewModel.sign(signInType)
             .asLiveData()
             .observe(activity) { value ->
                 val fragment = activity.getFragment<PasswordSignInFragment>()
@@ -80,7 +81,7 @@ class SignUpPasswordFragmentUtils(
                 phoneNumber = ""
             )
         )
-        val liveData = block(type).asLiveData(job)
+        val liveData = viewModel.sign(type).asLiveData(job)
         val observer = object : Observer<Resources<SignModel>> {
             override fun onChanged(value: Resources<SignModel>) {
                 when (value) {

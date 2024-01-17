@@ -13,7 +13,7 @@ export const resolve = {
     alias: { src: path.resolve(__dirname, "./src") }
 }
 export const output = {
-    path: path.resolve(__dirname, "../firebase-x-auth-x/hosting/recaptcha/build"),
+    path: path.resolve(__dirname, "../build"),
     filename: "bundle.js"
 }
 export const plugins = [

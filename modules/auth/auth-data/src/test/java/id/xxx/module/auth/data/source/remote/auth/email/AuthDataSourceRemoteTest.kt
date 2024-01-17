@@ -1,12 +1,12 @@
 package id.xxx.module.auth.data.source.remote.auth.email
 
-import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
+import id.xxx.module.auth.repository.source.remote.auth.email.AuthDataSourceRemote
 import org.junit.Assert
 import org.junit.Test
 
-internal class AuthEmailDataSourceRemoteTest {
+internal class AuthDataSourceRemoteTest {
 
-    private val dataSource = AuthEmailDataSourceRemote.getInstance()
+    private val dataSource = AuthDataSourceRemote.getInstance()
 
     @Test
     fun test() {

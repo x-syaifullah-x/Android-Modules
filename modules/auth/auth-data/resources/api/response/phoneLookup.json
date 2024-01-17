@@ -1,0 +1,19 @@
+{
+  "kind": "identitytoolkit#GetAccountInfoResponse",
+  "users": [
+    {
+      "localId": "SciYtF1MQCPSx5c06Ewf83JvNey1",
+      "providerUserInfo": [
+        {
+          "providerId": "phone",
+          "rawId": "+6281295677453",
+          "phoneNumber": "+6281295677453"
+        }
+      ],
+      "lastLoginAt": "1705508723631",
+      "createdAt": "1705508723631",
+      "phoneNumber": "+6281295677453",
+      "lastRefreshAt": "2024-01-17T16:25:23.631Z"
+    }
+  ]
+}

@@ -1,19 +1,21 @@
 package id.xxx.module.auth.activity.utils
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.phone.PhoneSignOTPFragment
 import id.xxx.module.auth.fragment.phone.listener.IPhoneSignOTPFragment
 import id.xxx.module.fragment.ktx.getFragment
 import id.xxx.module.auth.model.SignModel
+import id.xxx.module.auth.model.parms.SignType
+import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
 
 class IOTPFragmentUtils(
     private val activity: AuthActivity,
     action: IPhoneSignOTPFragment.Action,
-    val block: (IPhoneSignOTPFragment.Action.ClickNext) -> LiveData<Resources<SignModel>>
+    viewModel: AuthViewModel
 ) {
     init {
         when (action) {
@@ -39,7 +41,8 @@ class IOTPFragmentUtils(
                         }
                     }
                 }
-                block.invoke(action).observe(activity, observer)
+                val signType = SignType.Phone(sessionInfo = action.sessionInfo, otp = action.otp)
+                viewModel.sign(signType).asLiveData(job).observe(activity, observer)
                 fragment?.setCancelProcess {
                     fragment.loadingGone()
                     fragment.showError(Throwable("Cancel"))
