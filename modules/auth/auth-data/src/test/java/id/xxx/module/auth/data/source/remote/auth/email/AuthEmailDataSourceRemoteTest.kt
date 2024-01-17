@@ -1,7 +1,6 @@
 package id.xxx.module.auth.data.source.remote.auth.email
 
 import id.xxx.module.auth.repository.source.remote.auth.email.AuthEmailDataSourceRemote
-import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 
@@ -50,10 +49,14 @@ internal class AuthEmailDataSourceRemoteTest {
 
 //    @Test
 //    fun lookup() = runBlocking<Unit> {
-//        val response = dataSource.lookup(
-//            "eyJhbGciOiJSUzI1NiIsImtpZCI6IjYyM2YzNmM4MTZlZTNkZWQ2YzU0NTkyZTM4ZGFlZjcyZjE1YTBmMTMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiU3lhaWZ1bGxhaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQWNIVHRleHlMMWtKZ1U3UXZuSHBMYzR4OWY5MlF3VDdMd244Y01YQzNucEhjay1mQT1zOTYtYyIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS94LXgteC10ZXN0IiwiYXVkIjoieC14LXgtdGVzdCIsImF1dGhfdGltZSI6MTY5MDc4ODQ4MywidXNlcl9pZCI6Ilh5UEx0b05IQVBPV2t3Y1dNNE5zbVg4UnBNRjMiLCJzdWIiOiJYeVBMdG9OSEFQT1drd2NXTTROc21YOFJwTUYzIiwiaWF0IjoxNjkwNzg4NDgzLCJleHAiOjE2OTA3OTIwODMsImVtYWlsIjoieC5zeWFpZnVsbGFoLnhAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsieC5zeWFpZnVsbGFoLnhAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.od-w_SG7OtJsWmXY7CT8XCSHRvuGVopMq2QHEZl4KrvhQKIYnQHu_NQOvYwxaiJ7fVIRPXT2FcGjnItl9G0hKn7PxCWP246DYO45Z4zCyqkF5EpADsQPl7aSF6LPzKeQ6BMKudiFhvKmTTjpE18X5ZnRgRAqyAtO94WqIuLwfgzP3RQ2BRK7Ll7orqNwMl54IaiLn4agHJRsBUaYdT-ZVXev_QAQKIMeCWZvF4eJQMmzLkGdyGNnvgDZdwISOh9YlP3C-L-U5BzkAfS4T9D-ndMF3kjw_dJdH7NG2Nd1pga5nOcmaoWOUiXbXF2kp48DBHR4T74JSo5nIaydncr-HQ"
+//        val idToken =
+//            "eyJhbGciOiJSUzI1NiIsImtpZCI6IjdjZjdmODcyNzA5MWU0Yzc3YWE5OTVkYjYwNzQzYjdkZDJiYjcwYjUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20veC14LXgtcHJvamVjdHMiLCJhdWQiOiJ4LXgteC1wcm9qZWN0cyIsImF1dGhfdGltZSI6MTcwNTQ2MDYxOSwidXNlcl9pZCI6Im12ckVzTFdFdVVNTERDSUFtejkyY2JrWk1tbzEiLCJzdWIiOiJtdnJFc0xXRXVVTUxEQ0lBbXo5MmNia1pNbW8xIiwiaWF0IjoxNzA1NDYwNjE5LCJleHAiOjE3MDU0NjQyMTksImVtYWlsIjoieC5zeWFpZnVsbGFoLnhAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInguc3lhaWZ1bGxhaC54QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.WQuqWSlcdRlgjKPZ8-AdnajLcwIQ1ScvIGWmbboDZ0mt0Iwg-fzcaYnrq95NwjcREFG8RVyg1W89ekrkYkweNN3YcSsW03pUGSYDPAVzu8Jh9BYKiIXCikVmaQ8h-qikKe9eOnIdqqEGrcLJYziGwvOy5zH-y4ivS15uZy28mBrthhcopn1Yclb0TwATNJvBNSHRIP5QLWxTUIVbfl_aKWxRVHl7_eIRTwD9IFTJ_N17xyef8zITqGD6n1OnDI5R_IsCOWKUkO8Ikxdzg_354mL1YfZkpTzVgvIg4Z8jtt_WtxlAH1txAjWAh5nC8qIwGr9Q48hYW_7F02Uhz0Fvgw"
+//        val response = dataSource.lookup(idToken)
+//        val a = dataSource.linkWithOAuthCredential(
+//            idToken, idToken, "password"
 //        )
-//        read(response)
+//        val result = String(a.body.readAllBytes())
+//        println(result)
 //    }
 
     //
@@ -82,14 +85,16 @@ internal class AuthEmailDataSourceRemoteTest {
 //            .sendOobCode(OobType.PasswordReset("roottingandroid@gmail.com"))
 //        read(response)
 //    }
-//
+
 //    @Test
 //    fun signUp() = runBlocking<Unit> {
-//        val type = SignUpType.Password(
-//            password = "123456", data = UserData(email = "x.syaifullah.x@gmail.com", phoneNumber = "+628")
+//        val type = SignType.PasswordUp(
+//            password = "123456",
+//            data = UserData(email = "x.syaifullah.x@gmail.com", phoneNumber = "+628")
 //        )
-//        val response = dataSource.signUp(type)
-//        read(response)
+//        val response = dataSource.sign(type)
+//        val result = JSONObject(String(response.body.readAllBytes()))
+//        println(result)
 //    }
 
     //

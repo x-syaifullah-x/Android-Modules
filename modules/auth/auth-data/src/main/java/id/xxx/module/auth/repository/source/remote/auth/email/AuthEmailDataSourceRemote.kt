@@ -41,14 +41,6 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         )
     }
 
-//    fun lookup(idToken: String): Response<InputStream> {
-//        return client.execute(
-//            URL = Firebase.Auth.Endpoint.lookup(),
-//            methode = RequestMethode.POST,
-//            requestBody = "{\"idToken\":\"$idToken\"}".toRequestBody()
-//        )
-//    }
-
     fun resetPassword(oobCode: String, newPassword: String): Response<InputStream> {
         val payload = JSONObject()
         payload.put("oobCode", oobCode)
@@ -99,7 +91,7 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         )
     }
 
-    fun signIn(type: SignType): Response<InputStream> {
+    fun sign(type: SignType): Response<InputStream> {
         val payload = JSONObject()
         payload.put("returnSecureToken", true)
         val url = when (type) {
@@ -161,6 +153,37 @@ internal class AuthEmailDataSourceRemote private constructor(private val client:
         payload.put("idToken", idToken)
         return client.execute(
             url = Firebase.Auth.Endpoint.lookup(),
+            methode = RequestMethode.POST,
+            requestBody = payload.toRequestBody()
+        )
+    }
+
+    fun linkWithOAuthCredential(
+        idToken: String, providerToken: String, providerId: String
+    ): Response<InputStream> {
+        val payload = JSONObject()
+        payload.put("idToken", idToken)
+        payload.put("requestUri", "http://localhost")
+        payload.put("postBody", "id_token=$providerToken&providerId=$providerId")
+        payload.put("returnSecureToken", true)
+        payload.put("returnIdpCredential", true)
+        return client.execute(
+            url = Firebase.Auth.Endpoint.signWithOAuthCredential(),
+            methode = RequestMethode.POST,
+            requestBody = payload.toRequestBody()
+        )
+    }
+
+    fun linkWithEmailOrPassword(
+        idToken: String, email: String, password: String
+    ): Response<InputStream> {
+        val payload = JSONObject()
+        payload.put("idToken", idToken)
+        payload.put("email", email)
+        payload.put("password", password)
+        payload.put("returnSecureToken", true)
+        return client.execute(
+            url = Firebase.Auth.Endpoint.update(),
             methode = RequestMethode.POST,
             requestBody = payload.toRequestBody()
         )

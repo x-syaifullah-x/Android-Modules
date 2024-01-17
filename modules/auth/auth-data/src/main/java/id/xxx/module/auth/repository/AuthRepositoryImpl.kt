@@ -39,7 +39,7 @@ class AuthRepositoryImpl private constructor(
     }
 
     override fun sign(type: SignType) = asResources(
-        request = { remoteDataSource.signIn(type) },
+        request = { remoteDataSource.sign(type) },
         result = { header, response ->
             val j = JSONObject(response)
             SignModel(
