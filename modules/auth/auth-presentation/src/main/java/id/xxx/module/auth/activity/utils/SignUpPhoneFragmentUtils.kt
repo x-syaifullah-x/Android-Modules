@@ -10,16 +10,16 @@ import id.xxx.module.auth.fragment.SignUpPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.fragment.ktx.getFragment
 import id.xxx.module.auth.model.parms.Code
-import id.xxx.module.auth.model.PhoneVerificationModel
+import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.preferences.SignInputPreferences
+import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
 
 class SignUpPhoneFragmentUtils(
     private val activity: AuthActivity,
     action: ISignUpPhoneFragment.Action,
-    private val block: (Code.PhoneVerification) -> Flow<Resources<PhoneVerificationModel>>,
+    private val viewModel: AuthViewModel,
 ) {
 
     init {
@@ -27,6 +27,37 @@ class SignUpPhoneFragmentUtils(
             is ISignUpPhoneFragment.Action.ClickNext -> actionClickNext(action)
             is ISignUpPhoneFragment.Action.ClickSignIn -> actionClickSignIn(action)
             is ISignUpPhoneFragment.Action.ClickSignUpWithEmail -> actionClickSignUpWithEmail(action)
+            is ISignUpPhoneFragment.Action.ClickSignUpWithGoogle -> actionClickSignUpWithGoogle(action)
+        }
+    }
+
+    private fun actionClickSignUpWithGoogle(action: ISignUpPhoneFragment.Action.ClickSignUpWithGoogle) {
+        val fragment = activity.getFragment<SignUpPhoneFragment>()
+        val job = Job()
+        val liveData = viewModel.sign(
+            SignType.Google(action.token)
+        ).asLiveData(job)
+        liveData.observe(activity) {
+            when (it) {
+                is Resources.Loading -> {
+                    fragment?.loadingVisible()
+                }
+
+                is Resources.Success -> {
+                    fragment?.loadingGone()
+                    activity.result(it.value)
+                }
+
+                is Resources.Failure -> {
+                    fragment?.loadingGone()
+                    fragment?.showError(it.value)
+                }
+            }
+        }
+        fragment?.setSignUpOnCancel {
+            job.cancel()
+            fragment.loadingGone()
+            fragment.showError(Throwable("Canceled"))
         }
     }
 
@@ -51,8 +82,7 @@ class SignUpPhoneFragmentUtils(
             phoneNumber = action.phoneNumber,
             recaptchaResponse = action.recaptchaResponse
         )
-        val liveData = block(code)
-            .asLiveData(job)
+        val liveData = viewModel.sendCode(code).asLiveData(job)
         liveData.observe(activity) {
             when (it) {
                 is Resources.Loading -> {

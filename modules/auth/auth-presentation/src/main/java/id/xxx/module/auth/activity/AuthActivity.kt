@@ -28,7 +28,6 @@ import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
-import id.xxx.module.fragment.ktx.getFragment
 import id.xxx.module.auth.ktx.isDarkThemeOn
 import id.xxx.module.auth.model.PasswordResetModel
 import id.xxx.module.auth.model.SignModel
@@ -39,6 +38,7 @@ import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.auth.viewmodel.AuthViewModelProviderFactory
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.common.Resources
+import id.xxx.module.fragment.ktx.getFragment
 
 open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
     ISignUpPasswordFragment,
@@ -116,7 +116,7 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
         SignUpPhoneFragmentUtils(
             activity = this,
             action = action,
-            block = viewModel::sendCode,
+            viewModel = viewModel,
         )
     }
 

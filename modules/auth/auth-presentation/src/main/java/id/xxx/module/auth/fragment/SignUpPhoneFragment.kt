@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISecurityChallengeFragment
+import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.model.SecurityChallengeResult
@@ -14,21 +15,35 @@ import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.R
 import id.xxx.module.auth_presentation.databinding.SignUpPhoneFragmentBinding
+import id.xxx.module.google_sign.GoogleAccountContract
 
 class SignUpPhoneFragment : BaseFragment<SignUpPhoneFragmentBinding>(), ISecurityChallengeFragment {
+
+    private val googleAccountLauncher =
+        registerForActivityResult(GoogleAccountContract()) { result ->
+            if (result != null) {
+                ISignUpPhoneFragment.Action.ClickSignUpWithGoogle(
+                    token = result.idToken ?: throw NullPointerException()
+                ).apply { getListener<ISignUpPhoneFragment>()?.onAction(this) }
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState == null) viewBinding.textInputEditTextPhoneNumber.setText(
-            SignInputPreferences.getInputPhoneNumber(context)
-        )
+        if (savedInstanceState == null)
+            viewBinding.textInputEditTextPhoneNumber.setText(
+                SignInputPreferences.getInputPhoneNumber(context)
+            )
 
         viewBinding.buttonNext.setOnClickListener { nextButtonClicked() }
         viewBinding.buttonSignIn.setOnClickListener { signInTextClicked() }
-        viewBinding.buttonSignUpWithEmail.setOnClickListener {
-            signUpWithEmailButtonClicked()
-        }
+        viewBinding.buttonContinueWithEmail.setOnClickListener { signUpWithEmailButtonClicked() }
+        viewBinding.buttonContinueWithGoogle.setOnClickListener { signUpWithGoogleButtonClicked() }
+    }
+
+    private fun signUpWithGoogleButtonClicked() {
+        googleAccountLauncher.launch(null)
     }
 
     private fun signUpWithEmailButtonClicked() {
@@ -56,11 +71,11 @@ class SignUpPhoneFragment : BaseFragment<SignUpPhoneFragmentBinding>(), ISecurit
     private fun showSecurityChallenge(phoneNumber: String) {
         val bundle = bundleOf(SecurityChallengeFragment.KEY_PHONE_NUMBER to phoneNumber)
         childFragmentManager.beginTransaction().add(
-                R.id.container_security_challenge,
-                SecurityChallengeFragment::class.java,
-                bundle,
-                null
-            ).commit()
+            R.id.container_security_challenge,
+            SecurityChallengeFragment::class.java,
+            bundle,
+            null
+        ).commit()
     }
 
     override fun onResult(result: SecurityChallengeResult) {
@@ -102,7 +117,7 @@ class SignUpPhoneFragment : BaseFragment<SignUpPhoneFragmentBinding>(), ISecurit
         if (viewFinal != null) {
             viewBinding.buttonNext.isEnabled = !isVisible
             viewBinding.progressBar.isVisible = isVisible
-            viewBinding.buttonSignUpWithEmail.isEnabled = !isVisible
+            viewBinding.buttonContinueWithEmail.isEnabled = !isVisible
         }
     }
 

@@ -115,14 +115,25 @@
             app:layout_constraintTop_toBottomOf="@+id/text_view_already_an_account" />
 
         <Button
-            android:id="@+id/button_sign_up_with_email"
+            android:id="@+id/button_continue_with_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="SIGN UP WITH EMAIL"
+            android:text="CONTINUE WITH EMAIL"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/include_or"
+            app:layout_constraintWidth_percent=".8" />
+
+        <Button
+            android:id="@+id/button_continue_with_google"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="CONTINUE WITH GOOGLE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_continue_with_email"
             app:layout_constraintWidth_percent=".8" />
 
         <FrameLayout
