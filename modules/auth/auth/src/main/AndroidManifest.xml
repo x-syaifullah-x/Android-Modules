@@ -4,6 +4,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
-        <activity android:name="id.xxx.module.auth.MainActivity" />
+        <activity android:name="id.xxx.module.auth.AuthActivity" />
     </application>
 </manifest>

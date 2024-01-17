@@ -23,5 +23,23 @@ dependencies {
   
         }
     ```
-
 ---
+
+### Example
+```kotlin
+class MainActivity : AppCompatActivity() {
+    
+    private val authActivityResultLauncher =
+        registerForActivityResult(AuthActivityForResult()) { result ->
+            val uid = result?.uid
+            val token = result?.token
+            val refreshToken = result?.refreshToken
+            val expiresIn = Date(result?.expiresInTimeMillis ?: 0)
+            val isNewUser = "${result?.isNewUser}"
+        }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        authActivityResultLauncher.launch(null)
+    }
+}
+```

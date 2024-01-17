@@ -38,7 +38,7 @@ import id.xxx.module.auth_presentation.R
 import id.xxx.module.common.Resources
 import id.xxx.module.fragment.ktx.getFragment
 
-open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
+abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
     IPasswordSignInFragment,
     IPasswordSignUpFragment,
     IPhoneSignFragment,
