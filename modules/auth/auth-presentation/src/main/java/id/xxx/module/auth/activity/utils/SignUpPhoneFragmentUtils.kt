@@ -8,12 +8,12 @@ import id.xxx.module.auth.fragment.SignInPhoneFragment
 import id.xxx.module.auth.fragment.SignUpPasswordFragment
 import id.xxx.module.auth.fragment.SignUpPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
-import id.xxx.module.fragment.ktx.getFragment
 import id.xxx.module.auth.model.parms.Code
 import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.common.Resources
+import id.xxx.module.fragment.ktx.getFragment
 import kotlinx.coroutines.Job
 
 class SignUpPhoneFragmentUtils(
@@ -27,7 +27,9 @@ class SignUpPhoneFragmentUtils(
             is ISignUpPhoneFragment.Action.ClickNext -> actionClickNext(action)
             is ISignUpPhoneFragment.Action.ClickSignIn -> actionClickSignIn(action)
             is ISignUpPhoneFragment.Action.ClickSignUpWithEmail -> actionClickSignUpWithEmail(action)
-            is ISignUpPhoneFragment.Action.ClickSignUpWithGoogle -> actionClickSignUpWithGoogle(action)
+            is ISignUpPhoneFragment.Action.ClickSignUpWithGoogle -> actionClickSignUpWithGoogle(
+                action
+            )
         }
     }
 

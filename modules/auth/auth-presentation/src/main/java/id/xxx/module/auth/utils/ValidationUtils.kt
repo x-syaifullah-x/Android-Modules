@@ -23,10 +23,16 @@ object ValidationUtils {
         return result
     }
 
-    fun isValidPhoneNumber(number: String): Boolean {
+    fun validPhoneNumber(number: String): String? {
+        if (number.firstOrNull() != '+')
+            return "Please use code area (eg. +62)"
         val pattern = Regex("^\\+?[\\d-]+$")
         // + is optional, followed by digits and/or hyphens
         // $ at the end ensures that there are no extra characters
-        return pattern.matches(number)
+        return if (!pattern.matches(number)) {
+            "Invalid phone number."
+        } else {
+            null
+        }
     }
 }

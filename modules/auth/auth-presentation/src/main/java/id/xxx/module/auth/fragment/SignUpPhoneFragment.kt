@@ -7,7 +7,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISecurityChallengeFragment
-import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.model.SecurityChallengeResult
@@ -60,9 +59,10 @@ class SignUpPhoneFragment : BaseFragment<SignUpPhoneFragmentBinding>(), ISecurit
 
     private fun nextButtonClicked() {
         val phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
-        if (!ValidationUtils.isValidPhoneNumber(phoneNumber)) {
+        val message = ValidationUtils.validPhoneNumber(phoneNumber)
+        if (message != null) {
             viewBinding.textInputEditTextPhoneNumber.requestFocus()
-            viewBinding.textInputEditTextPhoneNumber.error = "Invalid phone number."
+            viewBinding.textInputLayoutPhoneNumber.error = message
             return
         }
         showSecurityChallenge(phoneNumber = phoneNumber)

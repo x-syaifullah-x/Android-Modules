@@ -6,14 +6,15 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISecurityChallengeFragment
-import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.ktx.getInputMethodManager
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.model.SecurityChallengeResult
 import id.xxx.module.auth.preferences.SignInputPreferences
+import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.databinding.SignInPhoneFragmentBinding
 import id.xxx.module.google_sign.GoogleAccountContract
 
@@ -43,6 +44,11 @@ class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
         if (savedInstanceState == null)
             viewBinding.textInputEditTextPhoneNumber
                 .setText(SignInputPreferences.getInputPhoneNumber(context))
+        viewBinding.textInputEditTextPhoneNumber.doOnTextChanged { _, _, _, _ ->
+            if (viewBinding.textInputLayoutPhoneNumber.error != null) {
+                viewBinding.textInputLayoutPhoneNumber.error = null
+            }
+        }
         viewBinding.buttonNext
             .setOnClickListener { buttonNextClicked() }
         viewBinding.buttonSignUp
@@ -99,9 +105,14 @@ class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
 
     private fun buttonNextClicked() {
         getInputMethodManager()?.hideSoftInputFromWindow(viewBinding.root.windowToken, 0)
-
         onBackPressedCallback.isEnabled = true
         val phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
+        val message = ValidationUtils.validPhoneNumber(phoneNumber)
+        if (message != null) {
+            viewBinding.textInputEditTextPhoneNumber.requestFocus()
+            viewBinding.textInputLayoutPhoneNumber.error = message
+            return
+        }
         val bundle =
             bundleOf(SecurityChallengeFragment.KEY_PHONE_NUMBER to phoneNumber)
         childFragmentManager
