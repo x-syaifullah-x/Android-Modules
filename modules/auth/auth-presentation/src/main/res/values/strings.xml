@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="auth_sign_hint_input_phone">Enter your phone</string>
-
-    <string name="sign_in_password_hint_input_password">Enter your password</string>
-    <string name="sign_in_password_hint_input_email">Enter your email</string>
-    <string name="sign_in_password_title">Welcome Back</string>
-    <string name="sign_in_password_sign_in">SIGN IN</string>
-    <string name="sign_in_password_sign_in_with_phone">CONTINUE WITH PHONE</string>
-    <string name="sign_in_password_sign_in_with_google">CONTINUE WITH GOOGLE</string>
-    <string name="sign_in_password_don_t_have_an_account">Don\'t have an account?</string>
-    <string name="sign_in_password_sign_up">Sign Up</string>
-    <string name="sign_in_password_forget_password">Forget Password?</string>
-
-    <string name="sign_up_password_sign_in_with_phone">CONTINUE WITH PHONE</string>
-    <string name="sign_up_password_sign_up">SIGN UP</string>
-    <string name="sign_up_password_hint_input_password">Enter your password</string>
-    <string name="sign_up_password_hint_input_email">Enter your email</string>
-    <string name="sign_up_password_title">Sign Up</string>
-    <string name="sign_up_password_sign_in">Sign In</string>
-    <string name="sign_up_password_already_have_an_account">Already have an account?</string>
-
-    <string name="sign_or">OR</string>
+    <string name="auth_message_already_have_an_account">Already have an account?</string>
+    <string name="auth_message_continue_with_email">CONTINUE WITH EMAIL</string>
+    <string name="auth_message_continue_with_google">CONTINUE WITH GOOGLE</string>
+    <string name="auth_message_continue_with_phone">CONTINUE WITH PHONE</string>
+    <string name="auth_message_don_t_have_an_account">Don\'t have an account?</string>
+    <string name="auth_message_enter_your_email">Enter your email</string>
+    <string name="auth_message_enter_your_password">Enter your password</string>
+    <string name="auth_message_enter_your_phone">Enter your phone</string>
+    <string name="auth_message_forget_password">Forget Password</string>
+    <string name="auth_message_forget_password_">Forget Password?</string>
+    <string name="auth_message_next">NEXT</string>
+    <string name="auth_message_or">OR</string>
+    <string name="auth_message_otp">otp</string>
+    <string name="auth_message_sign_in">Sign In</string>
+    <string name="auth_message_sign_up">Sign Up</string>
+    <string name="auth_message_welcome_back">Welcome Back</string>
 </resources>

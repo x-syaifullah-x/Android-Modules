@@ -9,10 +9,6 @@ interface ISignInPhoneFragment {
             val recaptchaResponse: String,
         ) : Action
 
-        data class ClickSignUp(
-            val phoneNumber: String,
-        ) : Action
-
         data class ClickSignInWithEmail(
             val phoneNumber: String,
         ) : Action

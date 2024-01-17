@@ -1,11 +1,9 @@
-package id.xxx.module.auth.activity.utils
-
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.SignInPasswordFragment
+import id.xxx.module.auth.fragment.SignInPhoneFragment
 import id.xxx.module.auth.fragment.SignUpPasswordFragment
-import id.xxx.module.auth.fragment.SignUpPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
 import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.model.parms.SignType
@@ -26,8 +24,10 @@ class SignUpPasswordFragmentUtils(
         when (action) {
             is ISignUpPasswordFragment.Action.ClickSignUp -> onClickSignUp(action)
             is ISignUpPasswordFragment.Action.ClickSignIn -> onClickSignIn(action)
-            is ISignUpPasswordFragment.Action.ClickSignUpWithPhone -> onClickSignUpWithPhone(action)
-            is ISignUpPasswordFragment.Action.ClickSignInWithGoogle -> handleActionSignWithGoogle(action)
+            is ISignUpPasswordFragment.Action.ClickSignUpWithPhone -> onClickSignUpWithPhone()
+            is ISignUpPasswordFragment.Action.ClickSignInWithGoogle -> handleActionSignWithGoogle(
+                action
+            )
         }
     }
 
@@ -57,10 +57,9 @@ class SignUpPasswordFragmentUtils(
             }
     }
 
-    private fun onClickSignUpWithPhone(action: ISignUpPasswordFragment.Action.ClickSignUpWithPhone) {
-        SignInputPreferences.setInputEmail(activity, action.email)
+    private fun onClickSignUpWithPhone() {
         activity.supportFragmentManager.beginTransaction()
-            .replace(AuthActivity.CONTAINER_ID, SignUpPhoneFragment::class.java, null)
+            .replace(AuthActivity.CONTAINER_ID, SignInPhoneFragment::class.java, null)
             .commit()
     }
 

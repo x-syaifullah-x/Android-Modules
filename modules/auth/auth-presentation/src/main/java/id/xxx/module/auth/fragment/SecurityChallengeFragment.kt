@@ -45,10 +45,10 @@ class SecurityChallengeFragment : BaseFragment<RecaptchaFragmentBinding>() {
                     else "Error"
                 parentFragmentManager.popBackStack()
                 getListener<ISecurityChallengeFragment>()?.onResult(
-                        SecurityChallengeResult.Error(
-                            Throwable(message)
-                        )
+                    SecurityChallengeResult.Error(
+                        Throwable(message)
                     )
+                )
             }
         }
 
@@ -63,16 +63,15 @@ class SecurityChallengeFragment : BaseFragment<RecaptchaFragmentBinding>() {
         webView.addJavascriptInterface(object : Any() {
             @Suppress("unused")
             @JavascriptInterface
-            fun onSubmit(isNewUser: Boolean, response: String) {
+            fun onSubmit(response: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
                     parentFragmentManager.popBackStack()
                     getListener<ISecurityChallengeFragment>()?.onResult(
-                            SecurityChallengeResult.Success(
-                                isNewUser = isNewUser,
-                                response = response,
-                                phoneNumber = phoneNumber,
-                            )
+                        SecurityChallengeResult.Success(
+                            response = response,
+                            phoneNumber = phoneNumber,
                         )
+                    )
                 }
             }
         }, "RecaptchaCallback")

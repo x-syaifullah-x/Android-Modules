@@ -20,40 +20,37 @@ class SignUpPasswordFragment : BaseFragment<SignUpPasswordFragmentBinding>() {
     private val googleAccountLauncher =
         registerForActivityResult(GoogleAccountContract()) { result ->
             if (result != null) {
-                getListener<ISignUpPasswordFragment>()?.onAction(
-                    ISignUpPasswordFragment.Action.ClickSignInWithGoogle(
-                        token = "${result.idToken}"
-                    )
-                )
-            } else {
-                println("google sign canceled")
+                val action =
+                    ISignUpPasswordFragment.Action.ClickSignInWithGoogle(token = "${result.idToken}")
+                getListener<ISignUpPasswordFragment>()?.onAction(action)
             }
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        if (savedInstanceState == null)
-            viewBinding.textInputEditTextEmail
-                .setText(SignInputPreferences.getInputEmail(context))
-        viewBinding.buttonSignUp.setOnClickListener { signUpButtonClicked() }
-        val textSignUp = getString(R.string.sign_up_password_sign_in)
-        viewBinding.textViewAlreadyAnAccount.text = RichTextUtils.setText(
-            context = requireContext(),
-            firstText = textSignUp,
-            lastText = "${getString(R.string.sign_up_password_already_have_an_account)} $textSignUp",
-            lastTextOnClick = {
-                if (!viewBinding.progressBar.isVisible) signInTextClicked()
-            }
+        if (savedInstanceState == null) viewBinding.textInputEditTextEmail.setText(
+            SignInputPreferences.getInputEmail(context)
         )
+        val textSignUp = getString(R.string.auth_message_sign_in)
+        viewBinding.textViewAlreadyAnAccount.text =
+            RichTextUtils.setText(
+                context = requireContext(),
+                firstText = textSignUp,
+                lastText = "${getString(R.string.auth_message_already_have_an_account)} $textSignUp",
+                lastTextOnClick = {
+                    if (!viewBinding.progressBar.isVisible)
+                        signInTextClicked()
+                },
+            )
         viewBinding.textViewAlreadyAnAccount.movementMethod = LinkMovementMethod.getInstance()
-        viewBinding.buttonSignUpWithPhone.setOnClickListener {
-            signUpWithPhoneButtonClicked()
-        }
-        viewBinding.buttonUseGoogle.setOnClickListener {
-            googleAccountLauncher.launch(null)
-        }
+
+        viewBinding.buttonSignUp
+            .setOnClickListener { signUpButtonClicked() }
+        viewBinding.buttonContinueWithPhone
+            .setOnClickListener { signUpWithPhoneButtonClicked() }
+        viewBinding.buttonContinueWithGoogle
+            .setOnClickListener { googleAccountLauncher.launch(null) }
     }
 
     fun loadingVisible() = loadingSetVisible(true)
@@ -65,7 +62,7 @@ class SignUpPasswordFragment : BaseFragment<SignUpPasswordFragmentBinding>() {
         if (viewFinal != null) {
             viewBinding.buttonSignUp.isEnabled = !isVisible
             viewBinding.progressBar.isVisible = isVisible
-            viewBinding.buttonSignUpWithPhone.isEnabled = !isVisible
+            viewBinding.buttonContinueWithPhone.isEnabled = !isVisible
         }
     }
 
@@ -78,9 +75,9 @@ class SignUpPasswordFragment : BaseFragment<SignUpPasswordFragmentBinding>() {
     }
 
     private fun signUpWithPhoneButtonClicked() {
-        ISignUpPasswordFragment.Action.ClickSignUpWithPhone(
-            email = "${viewBinding.textInputEditTextEmail.text}",
-        ).apply { getListener<ISignUpPasswordFragment>()?.onAction(this) }
+        ISignUpPasswordFragment.Action.ClickSignUpWithPhone.apply {
+            getListener<ISignUpPasswordFragment>()?.onAction(this)
+        }
     }
 
     private fun signInTextClicked() {

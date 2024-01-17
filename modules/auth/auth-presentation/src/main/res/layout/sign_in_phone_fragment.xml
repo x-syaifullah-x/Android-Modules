@@ -25,7 +25,7 @@
             android:id="@+id/text_view_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_in_password_title"
+            android:text="@string/auth_message_welcome_back"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="42dp"
-            android:hint="@string/auth_sign_hint_input_phone"
+            android:hint="@string/auth_message_enter_your_phone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_view_sign_up"
@@ -59,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="NEXT"
+            android:text="@string/auth_message_next"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_input_layout_phone_number"
@@ -77,33 +77,6 @@
             app:layout_constraintTop_toBottomOf="@+id/button_next"
             tools:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_view_already_an_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Don't have an account?"
-            app:layout_constraintEnd_toStartOf="@+id/button_sign_up"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/progress_bar" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/button_sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="Sign up"
-            android:textColor="?colorPrimary"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/text_view_already_an_account"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_view_already_an_account"
-            app:layout_constraintTop_toTopOf="@id/text_view_already_an_account" />
-
         <include
             android:id="@+id/include_or"
             layout="@layout/or"
@@ -112,14 +85,14 @@
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="@id/text_input_layout_phone_number"
             app:layout_constraintStart_toStartOf="@id/text_input_layout_phone_number"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_already_an_account" />
+            app:layout_constraintTop_toBottomOf="@+id/button_next" />
 
         <Button
             android:id="@+id/button_continue_with_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="CONTINUE WITH EMAIL"
+            android:text="@string/auth_message_continue_with_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/include_or"
@@ -130,7 +103,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="CONTINUE WITH GOOGLE"
+            android:text="@string/auth_message_continue_with_google"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_continue_with_email"

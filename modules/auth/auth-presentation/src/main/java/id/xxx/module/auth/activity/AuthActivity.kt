@@ -1,5 +1,6 @@
 package id.xxx.module.auth.activity
 
+import SignUpPasswordFragmentUtils
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
@@ -18,8 +19,6 @@ import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
 import id.xxx.module.auth.activity.utils.IOTPFragmentUtils
 import id.xxx.module.auth.activity.utils.SignInPasswordFragmentUtils
 import id.xxx.module.auth.activity.utils.SignInPhoneFragmentUtils
-import id.xxx.module.auth.activity.utils.SignUpPasswordFragmentUtils
-import id.xxx.module.auth.activity.utils.SignUpPhoneFragmentUtils
 import id.xxx.module.auth.fragment.ForgetPasswordFragment
 import id.xxx.module.auth.fragment.SignInPasswordFragment
 import id.xxx.module.auth.fragment.listener.IForgetPasswordFragment
@@ -27,7 +26,6 @@ import id.xxx.module.auth.fragment.listener.IOTPPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
-import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
 import id.xxx.module.auth.ktx.isDarkThemeOn
 import id.xxx.module.auth.model.PasswordResetModel
 import id.xxx.module.auth.model.SignModel
@@ -41,9 +39,8 @@ import id.xxx.module.common.Resources
 import id.xxx.module.fragment.ktx.getFragment
 
 open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
-    ISignUpPasswordFragment,
     ISignInPasswordFragment,
-    ISignUpPhoneFragment,
+    ISignUpPasswordFragment,
     ISignInPhoneFragment,
     IOTPPhoneFragment,
     IForgetPasswordFragment {
@@ -100,23 +97,15 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
         }
     }
 
-    override fun onAction(action: ISignUpPasswordFragment.Action) {
-        SignUpPasswordFragmentUtils(
-            activity = this, action = action, block = viewModel::sign
-        )
-    }
-
     override fun onAction(action: ISignInPasswordFragment.Action) {
         SignInPasswordFragmentUtils(
             activity = this, action = action, block = viewModel::sign
         )
     }
 
-    override fun onAction(action: ISignUpPhoneFragment.Action) {
-        SignUpPhoneFragmentUtils(
-            activity = this,
-            action = action,
-            viewModel = viewModel,
+    override fun onAction(action: ISignUpPasswordFragment.Action) {
+        SignUpPasswordFragmentUtils(
+            activity = this, action = action, block = viewModel::sign
         )
     }
 

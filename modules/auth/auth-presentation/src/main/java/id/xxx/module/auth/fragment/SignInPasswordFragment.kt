@@ -39,11 +39,11 @@ class SignInPasswordFragment : BaseFragment<SignInPasswordFragmentBinding>() {
 
         viewBinding.textViewForgetPassword.setOnClickListener { moveToForgetPassword() }
         viewBinding.buttonSignIn.setOnClickListener { signIn() }
-        val textSignUp = getString(R.string.sign_in_password_sign_up)
+        val textSignUp = getString(R.string.auth_message_sign_up)
         viewBinding.textViewDonTHaveAnAccount.text = RichTextUtils.setText(
             context = requireContext(),
             firstText = textSignUp,
-            lastText = "${getString(R.string.sign_in_password_don_t_have_an_account)} $textSignUp",
+            lastText = "${getString(R.string.auth_message_don_t_have_an_account)} $textSignUp",
             lastTextOnClick = { if (!viewBinding.progressBar.isVisible) moveToSignUp() }
         )
         viewBinding.textViewDonTHaveAnAccount.movementMethod = LinkMovementMethod.getInstance()

@@ -41,12 +41,12 @@ class MainActivity : AppCompatActivity() {
             binding.tvExpiresInValue.text = "$date"
             binding.tvIsNewUserValue.text = "${result?.isNewUser}"
 
-            lifecycleScope.launch {
-                AuthUseCaseImpl.getInstance(
-                    AuthRepositoryImpl.getInstance()
-                ).lookup(result?.token ?: return@launch)
-                    .collect {}
-            }
+//            lifecycleScope.launch {
+//                AuthUseCaseImpl.getInstance(
+//                    AuthRepositoryImpl.getInstance()
+//                ).lookup(result?.token ?: return@launch)
+//                    .collect {}
+//            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {

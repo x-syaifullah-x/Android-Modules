@@ -7,18 +7,16 @@ import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.OTPPhoneFragment
 import id.xxx.module.auth.fragment.SignInPasswordFragment
 import id.xxx.module.auth.fragment.SignInPhoneFragment
-import id.xxx.module.auth.fragment.SignUpPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
-import id.xxx.module.fragment.ktx.getFragment
-import id.xxx.module.auth.model.parms.Code
 import id.xxx.module.auth.model.PhoneVerificationModel
 import id.xxx.module.auth.model.SignModel
+import id.xxx.module.auth.model.parms.Code
 import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.common.Resources
+import id.xxx.module.fragment.ktx.getFragment
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
 
 class SignInPhoneFragmentUtils(
     private val activity: AuthActivity,
@@ -30,9 +28,6 @@ class SignInPhoneFragmentUtils(
         when (action) {
             is ISignInPhoneFragment.Action.ClickNext ->
                 actionNext(action)
-
-            is ISignInPhoneFragment.Action.ClickSignUp ->
-                actionSignUp(action)
 
             is ISignInPhoneFragment.Action.ClickSignInWithEmail ->
                 actionSignInWithEmail(action)
@@ -79,13 +74,6 @@ class SignInPhoneFragmentUtils(
         SignInputPreferences.setInputPhone(activity, action.phoneNumber)
         activity.supportFragmentManager.beginTransaction()
             .replace(AuthActivity.CONTAINER_ID, SignInPasswordFragment::class.java, null)
-            .commit()
-    }
-
-    private fun actionSignUp(action: ISignInPhoneFragment.Action.ClickSignUp) {
-        SignInputPreferences.setInputPhone(activity, action.phoneNumber)
-        activity.supportFragmentManager.beginTransaction()
-            .replace(AuthActivity.CONTAINER_ID, SignUpPhoneFragment::class.java, null)
             .commit()
     }
 

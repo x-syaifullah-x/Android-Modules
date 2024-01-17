@@ -51,8 +51,6 @@ class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
         }
         viewBinding.buttonNext
             .setOnClickListener { buttonNextClicked() }
-        viewBinding.buttonSignUp
-            .setOnClickListener { textSignUpClicked() }
         viewBinding.buttonContinueWithEmail
             .setOnClickListener { buttonContinueWithEmailClicked() }
         viewBinding.buttonContinueWithGoogle
@@ -79,7 +77,6 @@ class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
         val viewFinal = view
         if (viewFinal != null) {
             viewBinding.buttonNext.isEnabled = !isVisible
-            viewBinding.buttonSignUp.isEnabled = !isVisible
             viewBinding.buttonContinueWithEmail.isEnabled = !isVisible
             viewBinding.progressBar.isVisible = isVisible
         }
@@ -94,13 +91,6 @@ class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
 
     private fun buttonContinueWithGoogleClicked() {
         googleAccountLauncher.launch(null)
-    }
-
-    private fun textSignUpClicked() {
-        val action = ISignInPhoneFragment.Action.ClickSignUp(
-            phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
-        )
-        getListener<ISignInPhoneFragment>()?.onAction(action)
     }
 
     private fun buttonNextClicked() {
@@ -132,22 +122,11 @@ class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
         onBackPressedCallback.isEnabled = false
         when (result) {
             is SecurityChallengeResult.Success -> {
-                if (result.isNewUser) {
-                    val viewFinal = view
-                    val messageError = "Unregistered user"
-                    if (viewFinal != null) {
-                        viewBinding.textInputEditTextPhoneNumber.error = messageError
-                        viewBinding.textInputEditTextPhoneNumber.requestFocus()
-                    } else {
-                        showError(Throwable(messageError))
-                    }
-                } else {
-                    val action = ISignInPhoneFragment.Action.ClickNext(
-                        phoneNumber = result.phoneNumber,
-                        recaptchaResponse = result.response
-                    )
-                    getListener<ISignInPhoneFragment>()?.onAction(action)
-                }
+                val action = ISignInPhoneFragment.Action.ClickNext(
+                    phoneNumber = result.phoneNumber,
+                    recaptchaResponse = result.response
+                )
+                getListener<ISignInPhoneFragment>()?.onAction(action)
             }
 
             is SecurityChallengeResult.Error -> showError(result.err)

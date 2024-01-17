@@ -6,7 +6,6 @@ sealed interface SecurityChallengeResult {
     ) : SecurityChallengeResult
 
     data class Success(
-        val isNewUser: Boolean,
         val response: String,
         val phoneNumber: String
     ) : SecurityChallengeResult
