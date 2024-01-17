@@ -2,22 +2,33 @@ package id.xxx.module.auth.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.listener.ISecurityChallengeFragment
+import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
+import id.xxx.module.auth.ktx.getInputMethodManager
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.model.SecurityChallengeResult
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth_presentation.databinding.SignInPhoneFragmentBinding
+import id.xxx.module.google_sign.GoogleAccountContract
 
 class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
     ISecurityChallengeFragment {
+
+    private val googleAccountLauncher =
+        registerForActivityResult(GoogleAccountContract()) { result ->
+            if (result != null) {
+                val action = ISignInPhoneFragment.Action.ClickSignInWithGoogle(
+                    token = result.idToken ?: throw NullPointerException()
+                )
+                getListener<ISignInPhoneFragment>()?.onAction(action)
+            }
+        }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
@@ -33,11 +44,13 @@ class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
             viewBinding.textInputEditTextPhoneNumber
                 .setText(SignInputPreferences.getInputPhoneNumber(context))
         viewBinding.buttonNext
-            .setOnClickListener { nextButtonClicked() }
+            .setOnClickListener { buttonNextClicked() }
         viewBinding.buttonSignUp
-            .setOnClickListener { signUpTextClicked() }
-        viewBinding.buttonSignInWithEmail
-            .setOnClickListener { signInWithEmailButtonClicked() }
+            .setOnClickListener { textSignUpClicked() }
+        viewBinding.buttonContinueWithEmail
+            .setOnClickListener { buttonContinueWithEmailClicked() }
+        viewBinding.buttonContinueWithGoogle
+            .setOnClickListener { buttonContinueWithGoogleClicked() }
 
         activity?.onBackPressedDispatcher?.addCallback(
             viewLifecycleOwner, onBackPressedCallback
@@ -61,28 +74,31 @@ class SignInPhoneFragment : BaseFragment<SignInPhoneFragmentBinding>(),
         if (viewFinal != null) {
             viewBinding.buttonNext.isEnabled = !isVisible
             viewBinding.buttonSignUp.isEnabled = !isVisible
-            viewBinding.buttonSignInWithEmail.isEnabled = !isVisible
+            viewBinding.buttonContinueWithEmail.isEnabled = !isVisible
             viewBinding.progressBar.isVisible = isVisible
         }
     }
 
-    private fun signInWithEmailButtonClicked() {
+    private fun buttonContinueWithEmailClicked() {
         val action = ISignInPhoneFragment.Action.ClickSignInWithEmail(
             phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
         )
         getListener<ISignInPhoneFragment>()?.onAction(action)
     }
 
-    private fun signUpTextClicked() {
+    private fun buttonContinueWithGoogleClicked() {
+        googleAccountLauncher.launch(null)
+    }
+
+    private fun textSignUpClicked() {
         val action = ISignInPhoneFragment.Action.ClickSignUp(
             phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
         )
         getListener<ISignInPhoneFragment>()?.onAction(action)
     }
 
-    private fun nextButtonClicked() {
-        val imm = ContextCompat.getSystemService(requireContext(), InputMethodManager::class.java)
-        imm?.hideSoftInputFromWindow(viewBinding.root.windowToken, 0)
+    private fun buttonNextClicked() {
+        getInputMethodManager()?.hideSoftInputFromWindow(viewBinding.root.windowToken, 0)
 
         onBackPressedCallback.isEnabled = true
         val phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"

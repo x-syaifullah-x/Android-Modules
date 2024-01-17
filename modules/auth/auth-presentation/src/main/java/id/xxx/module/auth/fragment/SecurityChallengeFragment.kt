@@ -77,10 +77,12 @@ class SecurityChallengeFragment : BaseFragment<RecaptchaFragmentBinding>() {
             }
         }, "RecaptchaCallback")
 
-        val finalPhoneNumber = phoneNumber.replace("+", "%2b")
+        val phoneNumberFinal = phoneNumber.replace("+", "%2b")
         val uri =
-            Uri.Builder().scheme("https").authority("x-recaptcha-x.web.app").path("/index.html")
-                .appendQueryParameter("phoneNumber", finalPhoneNumber)
+            Uri.Builder().scheme("https")
+                .authority("x-recaptcha-x.web.app")
+                .path("/index.html")
+                .appendQueryParameter("phoneNumber", phoneNumberFinal)
                 .appendQueryParameter("languageCode", Locale.getDefault().language).build()
         webView.loadUrl(uri.toString())
     }

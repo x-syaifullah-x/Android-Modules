@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.fragment.OTPPhoneFragment
 import id.xxx.module.auth.fragment.listener.IOTPPhoneFragment
-import id.xxx.module.auth.ktx.getFragment
+import id.xxx.module.fragment.ktx.getFragment
 import id.xxx.module.auth.model.SignModel
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job

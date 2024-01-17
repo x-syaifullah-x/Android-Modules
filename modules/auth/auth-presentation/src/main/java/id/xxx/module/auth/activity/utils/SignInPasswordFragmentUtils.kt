@@ -8,7 +8,7 @@ import id.xxx.module.auth.fragment.SignInPasswordFragment
 import id.xxx.module.auth.fragment.SignInPhoneFragment
 import id.xxx.module.auth.fragment.SignUpPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
-import id.xxx.module.auth.ktx.getFragment
+import id.xxx.module.fragment.ktx.getFragment
 import id.xxx.module.auth.model.SignModel
 import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.preferences.SignInputPreferences

@@ -2,6 +2,7 @@
 
 package id.xxx.module.fragment.ktx
 
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 
 /*
@@ -48,4 +49,8 @@ fun <T : FragmentActivity> T.fragmentStackIsEmpty(): Boolean {
     val countParentFragment = fragmentRoot?.parentFragmentManager?.backStackEntryCount
     val countChildFragment = fragmentRoot?.childFragmentManager?.backStackEntryCount
     return (countParentFragment == 0 && countChildFragment == 0)
+}
+
+inline fun <reified T : Fragment> FragmentActivity.getFragment(): T? {
+    return supportFragmentManager.fragments.find { it is T } as? T
 }

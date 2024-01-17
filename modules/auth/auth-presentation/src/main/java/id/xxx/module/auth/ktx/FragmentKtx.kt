@@ -15,3 +15,6 @@ inline fun <reified Listener> Fragment.getListener(): Listener? {
     return result as? Listener
 }
 
+fun Fragment.getInputMethodManager() =
+    context?.getInputMethodManager()
+

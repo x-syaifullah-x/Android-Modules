@@ -9,10 +9,13 @@ import id.xxx.module.auth.fragment.SignInPasswordFragment
 import id.xxx.module.auth.fragment.SignInPhoneFragment
 import id.xxx.module.auth.fragment.SignUpPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
-import id.xxx.module.auth.ktx.getFragment
+import id.xxx.module.fragment.ktx.getFragment
 import id.xxx.module.auth.model.parms.Code
 import id.xxx.module.auth.model.PhoneVerificationModel
+import id.xxx.module.auth.model.SignModel
+import id.xxx.module.auth.model.parms.SignType
 import id.xxx.module.auth.preferences.SignInputPreferences
+import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.common.Resources
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +23,7 @@ import kotlinx.coroutines.flow.Flow
 class SignInPhoneFragmentUtils(
     private val activity: AuthActivity,
     action: ISignInPhoneFragment.Action,
-    private val block: (Code.PhoneVerification) -> Flow<Resources<PhoneVerificationModel>>,
+    private val viewModel: AuthViewModel
 ) {
 
     init {
@@ -33,7 +36,43 @@ class SignInPhoneFragmentUtils(
 
             is ISignInPhoneFragment.Action.ClickSignInWithEmail ->
                 actionSignInWithEmail(action)
+
+            is ISignInPhoneFragment.Action.ClickSignInWithGoogle ->
+                actionSignInWithGoogle(action)
         }
+    }
+
+    private fun actionSignInWithGoogle(action: ISignInPhoneFragment.Action.ClickSignInWithGoogle) {
+        val job = Job()
+        val liveData = viewModel.sign(SignType.Google(action.token)).asLiveData(job)
+        val fragment = activity.getFragment<SignInPhoneFragment>()
+        val observer = object : Observer<Resources<SignModel>> {
+            override fun onChanged(value: Resources<SignModel>) {
+                when (value) {
+                    is Resources.Loading -> fragment?.loadingVisible()
+                    is Resources.Success -> {
+                        activity.result(value.value)
+                        liveData.removeObserver(this)
+                        job.cancel()
+                    }
+
+                    is Resources.Failure -> {
+                        fragment?.loadingGone()
+                        fragment?.showError(err = value.value)
+                        liveData.removeObserver(this)
+                        job.cancel()
+                    }
+                }
+            }
+        }
+        liveData.observe(activity, observer)
+        fragment?.setSignInOnCancel {
+            liveData.removeObserver(observer)
+            job.cancel()
+            fragment.loadingGone()
+            fragment.showError(Throwable("Sign in Canceled"))
+        }
+
     }
 
     private fun actionSignInWithEmail(action: ISignInPhoneFragment.Action.ClickSignInWithEmail) {
@@ -57,7 +96,7 @@ class SignInPhoneFragmentUtils(
         val code = Code.PhoneVerification(
             phoneNumber = action.phoneNumber, recaptchaResponse = action.recaptchaResponse
         )
-        val liveData = block(code).asLiveData(job)
+        val liveData = viewModel.sendCode(code).asLiveData(job)
         val observer = object : Observer<Resources<PhoneVerificationModel>> {
             override fun onChanged(value: Resources<PhoneVerificationModel>) {
                 when (value) {

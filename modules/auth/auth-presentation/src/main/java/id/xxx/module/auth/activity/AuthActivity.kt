@@ -28,7 +28,7 @@ import id.xxx.module.auth.fragment.listener.ISignInPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignInPhoneFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPasswordFragment
 import id.xxx.module.auth.fragment.listener.ISignUpPhoneFragment
-import id.xxx.module.auth.ktx.getFragment
+import id.xxx.module.fragment.ktx.getFragment
 import id.xxx.module.auth.ktx.isDarkThemeOn
 import id.xxx.module.auth.model.PasswordResetModel
 import id.xxx.module.auth.model.SignModel
@@ -122,7 +122,9 @@ open class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
 
     override fun onAction(action: ISignInPhoneFragment.Action) {
         SignInPhoneFragmentUtils(
-            action = action, activity = this, block = viewModel::sendCode
+            action = action,
+            activity = this,
+            viewModel = viewModel
         )
     }
 
