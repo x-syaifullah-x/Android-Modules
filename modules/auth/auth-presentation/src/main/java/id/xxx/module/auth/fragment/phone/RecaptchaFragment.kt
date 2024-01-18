@@ -81,6 +81,7 @@ class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
                 .appendQueryParameter("phoneNumber", phoneNumberFinal)
                 .appendQueryParameter("languageCode", Locale.getDefault().language).build()
         webView.loadUrl(uri.toString())
+//        webView.loadUrl("https://x-link-with-phone-number-x.web.app")
     }
 
     override fun onDestroyView() {

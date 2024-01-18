@@ -1,6 +1,15 @@
 {
   "hosting": [
     {
+      "target": "x-link-with-phone-number-x",
+      "public": "hosting/x-link-with-phone-number-x",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    },
+    {
       "target": "x-recaptcha-x",
       "public": "hosting/x-recaptcha-x",
       "ignore": [

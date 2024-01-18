@@ -69,8 +69,7 @@ class AuthRepositoryImpl private constructor(
         result = { _, response ->
             val j = JSONObject(response)
             PasswordResetModel(
-                kind = j.getString("kind", ""),
-                email = j.getString("email", "")
+                kind = j.getString("kind", ""), email = j.getString("email", "")
             )
         },
     )
@@ -90,7 +89,6 @@ class AuthRepositoryImpl private constructor(
         request = { remoteDataSource.lookup(idToken) },
         result = { _, response ->
             val j = JSONObject(response)
-            println(j)
             val users = j.getJSONArray("users")
             val user = users.getJSONObject(0)
             val isEmailVerify = user.getBoolean("emailVerified")
@@ -124,8 +122,7 @@ class AuthRepositoryImpl private constructor(
             while (true) {
                 val readCount = data.read(buffers, 0, buffers.size)
                 if (readCount != -1) {
-                    val bytes =
-                        if (readCount == buffersSize) buffers else buffers.copyOf(readCount)
+                    val bytes = if (readCount == buffersSize) buffers else buffers.copyOf(readCount)
                     out.write(bytes, 0, bytes.size)
                 } else {
                     break

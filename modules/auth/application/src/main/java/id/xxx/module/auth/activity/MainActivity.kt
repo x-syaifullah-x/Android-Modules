@@ -7,12 +7,10 @@ import androidx.lifecycle.lifecycleScope
 import id.xxx.module.auth.AuthActivityForResult
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
 import id.xxx.module.auth.application.databinding.MainActivityBinding
-import id.xxx.module.auth.model.parms.Code
-import id.xxx.module.auth.model.parms.UpdateType
 import id.xxx.module.auth.repository.AuthRepositoryImpl
 import id.xxx.module.auth.usecase.AuthUseCaseImpl
 import id.xxx.module.viewbinding.ktx.viewBinding
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -32,11 +30,10 @@ class MainActivity : AppCompatActivity() {
                 binding.tvExpiresInValue.text = "$date"
                 binding.tvIsNewUserValue.text = "${result.isNewUser}"
 
-                lifecycleScope.launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     val repo = AuthUseCaseImpl.getInstance(
                         AuthRepositoryImpl.getInstance()
                     )
-                    repo.lookup(result.token).collect {}
                 }
             }
         }
