@@ -1,7 +1,6 @@
 package id.xxx.module.auth.activity
 
 import SignUpPasswordFragmentUtils
-import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
@@ -12,30 +11,23 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
 import id.xxx.module.auth.activity.utils.IOTPFragmentUtils
+import id.xxx.module.auth.activity.utils.PasswordRecoveryFragmentUtils
 import id.xxx.module.auth.activity.utils.SignInPasswordFragmentUtils
 import id.xxx.module.auth.activity.utils.SignInPhoneFragmentUtils
-import id.xxx.module.auth.fragment.password.PasswordRecoveryFragment
 import id.xxx.module.auth.fragment.password.PasswordSignInFragment
 import id.xxx.module.auth.fragment.password.listener.IPasswordRecoveryFragment
-import id.xxx.module.auth.fragment.phone.listener.IPhoneSignOTPFragment
 import id.xxx.module.auth.fragment.password.listener.IPasswordSignInFragment
-import id.xxx.module.auth.fragment.phone.listener.IPhoneSignFragment
 import id.xxx.module.auth.fragment.password.listener.IPasswordSignUpFragment
+import id.xxx.module.auth.fragment.phone.listener.IPhoneSignFragment
+import id.xxx.module.auth.fragment.phone.listener.IPhoneSignOTPFragment
 import id.xxx.module.auth.ktx.isDarkThemeOn
-import id.xxx.module.auth.model.PasswordResetModel
 import id.xxx.module.auth.model.SignModel
-import id.xxx.module.auth.model.parms.Code
 import id.xxx.module.auth.usecase.AuthUseCase
 import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.auth.viewmodel.AuthViewModelProviderFactory
 import id.xxx.module.auth_presentation.R
-import id.xxx.module.common.Resources
-import id.xxx.module.fragment.ktx.getFragment
 
 abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
     IPasswordSignInFragment,
@@ -53,9 +45,6 @@ abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
     private val viewModel by viewModels<AuthViewModel> {
         AuthViewModelProviderFactory(useCase)
     }
-
-    private var liveDataForgetPassword: LiveData<Resources<PasswordResetModel>>? = null
-    private var observerForgetPassword: Observer<Resources<PasswordResetModel>>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,41 +113,16 @@ abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
     }
 
     override fun onAction(action: IPasswordRecoveryFragment.Action) {
-        fun resetLiveDataAndObserver() {
-            observerForgetPassword?.apply { liveDataForgetPassword?.removeObserver(this) }
-            liveDataForgetPassword = null
-            observerForgetPassword = null
-        }
-        when (action) {
-            is IPasswordRecoveryFragment.Action.Next -> {
-                liveDataForgetPassword = viewModel.sendCode(
-                    Code.PasswordReset(email = action.email)
-                ).asLiveData()
-                observerForgetPassword = Observer { resources ->
-                    val passwordRecoveryFragment = getFragment<PasswordRecoveryFragment>()
-                    when (resources) {
-                        is Resources.Loading -> passwordRecoveryFragment?.onLoading()
-                        is Resources.Failure -> passwordRecoveryFragment?.onError(resources.value)
-                        is Resources.Success -> {
-                            passwordRecoveryFragment?.onSuccess()
-                            resetLiveDataAndObserver()
-                        }
-                    }
-                }
-                observerForgetPassword?.apply {
-                    liveDataForgetPassword?.observe(this@AuthActivity, this)
-                }
-            }
-
-            is IPasswordRecoveryFragment.Action.Cancel -> {
-                resetLiveDataAndObserver()
-            }
-        }
+        PasswordRecoveryFragmentUtils(
+            activity = this,
+            action = action,
+            viewModel = viewModel
+        )
     }
 
-    internal fun result(model: SignModel) {
+    internal fun setResult(model: SignModel) {
         val result = Intent().putExtra(RESULT_USER, model)
-        setResult(Activity.RESULT_OK, result)
+        setResult(RESULT_OK, result)
         finishAfterTransition()
     }
 }

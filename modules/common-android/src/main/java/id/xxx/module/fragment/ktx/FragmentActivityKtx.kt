@@ -43,13 +43,13 @@ import androidx.fragment.app.FragmentActivity
     D/LeakCanary:
     D/LeakCanary: ====================================
 */
-@JvmName("fragmentStackIsEmpty")
-fun <T : FragmentActivity> T.fragmentStackIsEmpty(): Boolean {
-    val fragmentRoot = supportFragmentManager.fragments.firstOrNull()
-    val countParentFragment = fragmentRoot?.parentFragmentManager?.backStackEntryCount
-    val countChildFragment = fragmentRoot?.childFragmentManager?.backStackEntryCount
-    return (countParentFragment == 0 && countChildFragment == 0)
-}
+//@JvmName("fragmentStackIsEmpty")
+//fun <T : FragmentActivity> T.fragmentStackIsEmpty(): Boolean {
+//    val fragmentRoot = supportFragmentManager.fragments.firstOrNull()
+//    val countParentFragment = fragmentRoot?.parentFragmentManager?.backStackEntryCount
+//    val countChildFragment = fragmentRoot?.childFragmentManager?.backStackEntryCount
+//    return (countParentFragment == 0 && countChildFragment == 0)
+//}
 
 inline fun <reified T : Fragment> FragmentActivity.getFragment(): T? {
     return supportFragmentManager.fragments.find { it is T } as? T

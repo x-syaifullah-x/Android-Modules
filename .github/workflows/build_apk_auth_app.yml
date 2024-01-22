@@ -32,7 +32,7 @@ jobs:
 
       - name: assembleDebug
         run: |
-          ./gradlew clean :modules:auth:application:assembleDebug
+          ./gradlew clean :modules:auth:auth-example:assembleDebug
 
       - name: Uploading apk debug
         uses: actions/upload-artifact@v3
@@ -42,7 +42,7 @@ jobs:
 
       - name: assembleRelease
         run: |
-          ./gradlew clean :modules:auth:application:assembleRelease
+          ./gradlew clean :modules:auth:auth-example:assembleRelease
 
       - name: Uploading apk release
         uses: actions/upload-artifact@v3

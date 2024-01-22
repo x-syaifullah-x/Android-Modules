@@ -13,7 +13,6 @@ import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.common.Resources
 import id.xxx.module.fragment.ktx.getFragment
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
 
 class SignUpPasswordFragmentUtils(
     private val activity: AuthActivity,
@@ -52,7 +51,7 @@ class SignUpPasswordFragmentUtils(
 
                     is Resources.Success -> {
                         fragment?.loadingGone()
-                        activity.result(value.value)
+                        activity.setResult(value.value)
                     }
                 }
             }
@@ -98,7 +97,7 @@ class SignUpPasswordFragmentUtils(
                     is Resources.Success -> {
                         fragment?.loadingGone()
                         liveData.removeObserver(this)
-                        activity.result(value.value)
+                        activity.setResult(value.value)
                     }
                 }
             }

@@ -16,33 +16,33 @@ import id.xxx.module.fragment.ktx.FragmentActivityKtx;
 
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (resultCode == Activity.RESULT_OK) {
+//            for (Fragment fragment : getChildFragment()) {
+//                fragment.onActivityResult(requestCode, resultCode, data);
+//            }
+//        }
+//    }
 
-        if (resultCode == Activity.RESULT_OK) {
-            for (Fragment fragment : getChildFragment()) {
-                fragment.onActivityResult(requestCode, resultCode, data);
-            }
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        for (Fragment fragment : getChildFragment()) {
+//            fragment.onOptionsItemSelected(item);
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        for (Fragment fragment : getChildFragment()) {
-            fragment.onOptionsItemSelected(item);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private List<Fragment> getChildFragment() {
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        if (!fragments.isEmpty()) {
-            Fragment fragment = fragments.get(0);
-            return fragment.getChildFragmentManager().getFragments();
-        }
-        return Collections.emptyList();
-    }
+//    private List<Fragment> getChildFragment() {
+//        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+//        if (!fragments.isEmpty()) {
+//            Fragment fragment = fragments.get(0);
+//            return fragment.getChildFragmentManager().getFragments();
+//        }
+//        return Collections.emptyList();
+//    }
 
     /**
      * ┬───
@@ -67,12 +67,12 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
      * ​     mBase instance of androidx.appcompat.view.ContextThemeWrapper
      * Handle Leaking
      */
-    @Override
-    public void onBackPressed() {
-        if (FragmentActivityKtx.fragmentStackIsEmpty(this)) {
-            finishAfterTransition();
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (FragmentActivityKtx.fragmentStackIsEmpty(this)) {
+//            finishAfterTransition();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 }

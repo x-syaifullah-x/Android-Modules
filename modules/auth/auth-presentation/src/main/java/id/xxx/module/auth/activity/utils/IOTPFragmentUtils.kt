@@ -31,7 +31,7 @@ class IOTPFragmentUtils(
                         is Resources.Success -> {
                             fragment?.loadingGone()
                             job.cancel()
-                            activity.result(it.value)
+                            activity.setResult(it.value)
                         }
 
                         is Resources.Failure -> {

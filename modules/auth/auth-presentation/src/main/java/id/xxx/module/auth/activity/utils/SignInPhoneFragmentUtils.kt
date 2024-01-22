@@ -43,7 +43,7 @@ class SignInPhoneFragmentUtils(
                 when (value) {
                     is Resources.Loading -> fragment?.loadingVisible()
                     is Resources.Success -> {
-                        activity.result(value.value)
+                        activity.setResult(value.value)
                         liveData.removeObserver(this)
                         job.cancel()
                     }

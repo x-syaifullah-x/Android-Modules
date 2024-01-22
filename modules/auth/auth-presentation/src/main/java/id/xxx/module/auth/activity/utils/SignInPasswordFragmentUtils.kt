@@ -61,7 +61,7 @@ class SignInPasswordFragmentUtils(
 
                     is Resources.Success -> {
                         fragment?.loadingGone()
-                        activity.result(value.value)
+                        activity.setResult(value.value)
                     }
                 }
             }
@@ -110,7 +110,7 @@ class SignInPasswordFragmentUtils(
                     is Resources.Success -> {
                         fragment?.loadingGone()
                         liveData.removeObserver(this)
-                        activity.result(value.value)
+                        activity.setResult(value.value)
                     }
                 }
             }
