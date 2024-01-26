@@ -78,8 +78,9 @@ class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
         val phoneNumberFinal = phoneNumber.replace("+", "%2b")
         val uri =
             Uri.Builder().scheme("https").authority("x-recaptcha-x.web.app").path("/index.html")
-                .appendQueryParameter("phoneNumber", phoneNumberFinal)
-                .appendQueryParameter("languageCode", Locale.getDefault().language).build()
+//                .appendQueryParameter("phoneNumber", phoneNumberFinal)
+//                .appendQueryParameter("languageCode", Locale.getDefault().language)
+                .build()
         webView.loadUrl(uri.toString())
 //        webView.loadUrl("https://x-link-with-phone-number-x.web.app")
     }

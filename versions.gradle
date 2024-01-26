@@ -11,7 +11,7 @@ build_versions.name = "$major.$minor.$patch"
 ext.build_versions = build_versions
 
 ext {
-    vGradle = "8.2.1"
+    vGradle = "8.2.2"
     vKotlin = "1.9.22"
 
     // https://developer.android.com/jetpack/androidx/releases/activity
@@ -110,7 +110,7 @@ def addRepos(RepositoryHandler handler) {
     handler.google()
     handler.mavenCentral()
     handler.maven {
-        url "https://jcenter.bintray.com"
+//        url "https://jcenter.bintray.com"
         url "https://oss.sonatype.org/content/repositories/snapshots"
         url "https://jitpack.io"
     }
