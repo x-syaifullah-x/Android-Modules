@@ -2,6 +2,7 @@
 
 package id.xxx.module.auth.ktx
 
+import android.view.View
 import androidx.fragment.app.Fragment
 
 inline fun <reified Listener> Fragment.getListener(): Listener? {
@@ -15,6 +16,7 @@ inline fun <reified Listener> Fragment.getListener(): Listener? {
     return result as? Listener
 }
 
-fun Fragment.getInputMethodManager() =
-    context?.getInputMethodManager()
+fun Fragment.hideSoftInputFromWindow(v: View? = null, flag: Int = 0) =
+    context?.hideSoftInputFromWindow(iBinder = (v ?: view)?.windowToken, flag = flag)
+
 

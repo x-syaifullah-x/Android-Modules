@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: apk-debug
-          path: modules/auth/application/build/outputs/apk/debug/application-debug.apk
+          path: modules/auth/auth-example/build/outputs/apk/debug/auth-example-debug.apk
 
       - name: assembleRelease
         run: |
@@ -48,10 +48,10 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: apk-release-unsigned
-          path: modules/auth/application/build/outputs/apk/release/application-release-unsigned.apk
+          path: modules/auth/auth-example/build/outputs/apk/release/auth-example-release-unsigned.apk
 
       - name: Uploading apk release
         uses: actions/upload-artifact@v3
         with:
           name: apk-release
-          path: modules/auth/application/build/outputs/apk/release/application-release.apk
+          path: modules/auth/auth-example/build/outputs/apk/release/auth-example-release.apk

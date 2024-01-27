@@ -12,6 +12,7 @@ import id.xxx.module.auth.fragment.phone.listener.IPhoneSignFragment
 import id.xxx.module.auth.fragment.phone.listener.IRecaptchaFragment
 import id.xxx.module.auth.ktx.getInputMethodManager
 import id.xxx.module.auth.ktx.getListener
+import id.xxx.module.auth.ktx.hideSoftInputFromWindow
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.databinding.PhoneSignFragmentBinding
@@ -93,7 +94,7 @@ class PhoneSignFragment : BaseFragment<PhoneSignFragmentBinding>(),
     }
 
     private fun buttonNextClicked() {
-        getInputMethodManager()?.hideSoftInputFromWindow(viewBinding.root.windowToken, 0)
+        hideSoftInputFromWindow()
         onBackPressedCallback.isEnabled = true
         val phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
         val message = ValidationUtils.validPhoneNumber(phoneNumber)

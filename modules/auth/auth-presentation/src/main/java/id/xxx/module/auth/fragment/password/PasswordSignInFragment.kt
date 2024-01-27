@@ -7,7 +7,9 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.password.listener.IPasswordSignInFragment
+import id.xxx.module.auth.ktx.getInputMethodManager
 import id.xxx.module.auth.ktx.getListener
+import id.xxx.module.auth.ktx.hideSoftInputFromWindow
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.utils.RichTextUtils
 import id.xxx.module.auth.utils.ValidationUtils
@@ -91,11 +93,13 @@ class PasswordSignInFragment : BaseFragment<PasswordSignInFragmentBinding>() {
     }
 
     private fun signIn() {
-        validateFields()
-            ?.let { action -> getListener<IPasswordSignInFragment>()?.onAction(action) }
+        validateFields()?.let { action ->
+            hideSoftInputFromWindow()
+            getListener<IPasswordSignInFragment>()?.onAction(action)
+        }
     }
 
-    private fun validateFields(): IPasswordSignInFragment.Action? {
+    private fun validateFields(): IPasswordSignInFragment.Action.ClickSignIn? {
         val email = "${viewBinding.textInputEditTextEmail.text}"
         var validateMessage = ValidationUtils.validateEmail(email)
         if (validateMessage != null) {
@@ -117,6 +121,7 @@ class PasswordSignInFragment : BaseFragment<PasswordSignInFragmentBinding>() {
     }
 
     private fun moveToForgetPassword() {
+        hideSoftInputFromWindow()
         getListener<IPasswordSignInFragment>()?.onAction(
             IPasswordSignInFragment.Action.ClickForgetPassword(
                 email = "${viewBinding.textInputEditTextEmail.text}",
