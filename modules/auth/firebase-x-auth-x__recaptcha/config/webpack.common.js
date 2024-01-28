@@ -10,7 +10,7 @@ export const entry = {
     app: "./src/index.js"
 }
 export const resolve = {
-    alias: { src: path.resolve(__dirname, "./src") }
+    alias: { src: path.resolve(__dirname, "../src") }
 }
 export const output = {
     path: path.resolve(__dirname, "../build"),
@@ -71,12 +71,16 @@ export const module = {
             loader: "html-loader"
         },
         // {
-        //     test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        //     type: "assets/resource"
+        //     test: /\.(ttf|eot|webp|png|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        //     loader: "file-loader"
         // }
         {
-            test: /\.(ttf|eot|webp|png|gif)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: "file-loader"
-        }
+            test: /\.(png|jpe?g|gif)$/i,
+            use: [
+                {
+                    loader: "file-loader",
+                },
+            ],
+        },
     ]
 }

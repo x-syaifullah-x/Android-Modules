@@ -37,7 +37,7 @@ abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
     IPasswordRecoveryFragment {
 
     companion object {
-        internal val CONTAINER_ID = R.id.content
+        internal const val CONTAINER_ID = android.R.id.content
 
         const val RESULT_USER = "a_s_d_f_g_h_j_k_L"
     }
@@ -54,20 +54,17 @@ abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),
 
         setTheme(R.style.Theme_Auth)
 
-        setContentView(R.layout.auth_activity)
-
-        val am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val isTopActivity = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            am.appTasks[0].taskInfo.numActivities
-        } else {
-            @Suppress("DEPRECATION") am.getRunningTasks(Int.MAX_VALUE)[0].numActivities
-        } == 1
-
-        val ivArrowBack = findViewById<ImageView>(R.id.iv_arrow_back)
-        ivArrowBack.isVisible = !isTopActivity
-        ivArrowBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+//        val am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+//        val isTopActivity = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            am.appTasks[0].taskInfo.numActivities
+//        } else {
+//            @Suppress("DEPRECATION") am.getRunningTasks(Int.MAX_VALUE)[0].numActivities
+//        } == 1
+//        val ivArrowBack = findViewById<ImageView>(R.id.iv_arrow_back)
+//        ivArrowBack.isVisible = !isTopActivity
+//        ivArrowBack.setOnClickListener {
+//            onBackPressedDispatcher.onBackPressed()
+//        }
 
         if (!isDarkThemeOn()) {
             val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)

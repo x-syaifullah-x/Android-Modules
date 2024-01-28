@@ -30,6 +30,8 @@ class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
         val webView = viewBinding.webView
         webView.setBackgroundColor(Color.TRANSPARENT)
         webView.setLayerType(WebView.LAYER_TYPE_HARDWARE, Paint())
+//        webView.isVerticalScrollBarEnabled = true
+//        webView.isHorizontalScrollBarEnabled = true
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
@@ -75,14 +77,16 @@ class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
             }
         }, "RecaptchaCallback")
 
-        val phoneNumberFinal = phoneNumber.replace("+", "%2b")
+//        val phoneNumberFinal = phoneNumber.replace("+", "%2b")
         val uri =
-            Uri.Builder().scheme("https").authority("x-recaptcha-x.web.app").path("/index.html")
+            Uri.Builder()
+                .scheme("https")
+                .authority("x-recaptcha-x.web.app")
+                .path("/index.html")
 //                .appendQueryParameter("phoneNumber", phoneNumberFinal)
 //                .appendQueryParameter("languageCode", Locale.getDefault().language)
                 .build()
         webView.loadUrl(uri.toString())
-//        webView.loadUrl("https://x-link-with-phone-number-x.web.app")
     }
 
     override fun onDestroyView() {
