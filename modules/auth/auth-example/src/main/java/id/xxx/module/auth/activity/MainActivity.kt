@@ -1,8 +1,11 @@
 package id.xxx.module.auth.activity
 
+import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import id.xxx.module.auth.AuthActivityForResult
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
@@ -47,6 +50,12 @@ class MainActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, onBackPressedCallbackImpl)
 
         binding.btnTestSign.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                overrideActivityTransition(Activity.OVERRIDE_TRANSITION_OPEN, 0, 0)
+            } else {
+                @Suppress("DEPRECATION")
+                overridePendingTransition(0, 0)
+            }
             authActivityResultLauncher.launch(null)
         }
     }
