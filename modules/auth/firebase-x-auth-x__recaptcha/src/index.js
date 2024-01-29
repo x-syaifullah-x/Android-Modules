@@ -4,6 +4,7 @@ import logo from "/src/assets/logo.png"
 
 const img = document.getElementById("sc_logo")
 img.setAttribute("src", logo)
+img.style.visibility = "visible"
 
 const queryParams = _getQueryParams()
 const config = {
@@ -22,7 +23,7 @@ auth.languageCode = queryParams.languageCode
 // https://developers.google.com/recaptcha/docs/display#render_param
 window.recaptchaVerifier = new firebaseAuth.RecaptchaVerifier("sc_recaptcha_container", {
     "theme": "dark", // dark | light
-    size: "compact", // compact | normal
+    size: "normal", // compact | normal
     tabindex: 0,
     callback: async (response) => {
         try {

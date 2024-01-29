@@ -3,14 +3,10 @@ package id.xxx.module.auth.fragment.phone
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.phone.listener.IPhoneSignFragment
-import id.xxx.module.auth.fragment.phone.listener.IRecaptchaFragment
-import id.xxx.module.auth.ktx.getInputMethodManager
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.ktx.hideSoftInputFromWindow
 import id.xxx.module.auth.preferences.SignInputPreferences
@@ -18,8 +14,7 @@ import id.xxx.module.auth.utils.ValidationUtils
 import id.xxx.module.auth_presentation.databinding.PhoneSignFragmentBinding
 import id.xxx.module.google_sign.GoogleAccountContract
 
-class PhoneSignFragment : BaseFragment<PhoneSignFragmentBinding>(),
-    IRecaptchaFragment {
+class PhoneSignFragment : BaseFragment<PhoneSignFragmentBinding>() {
 
     private val googleAccountLauncher =
         registerForActivityResult(GoogleAccountContract()) { result ->
@@ -30,13 +25,6 @@ class PhoneSignFragment : BaseFragment<PhoneSignFragmentBinding>(),
                 getListener<IPhoneSignFragment>()?.onAction(action)
             }
         }
-
-    private val onBackPressedCallback = object : OnBackPressedCallback(false) {
-        override fun handleOnBackPressed() {
-            viewBinding.containerSecurityChallenge.removeAllViews()
-            isEnabled = false
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,13 +43,9 @@ class PhoneSignFragment : BaseFragment<PhoneSignFragmentBinding>(),
             .setOnClickListener { buttonContinueWithEmailClicked() }
         viewBinding.buttonContinueWithGoogle
             .setOnClickListener { buttonContinueWithGoogleClicked() }
-
-        activity?.onBackPressedDispatcher?.addCallback(
-            viewLifecycleOwner, onBackPressedCallback
-        )
     }
 
-    fun setSignInOnCancel(block: () -> Unit) {
+    fun setOnCancelProcess(block: () -> Unit) {
         viewBinding.progressBar.setOnClickListener { block.invoke() }
     }
 
@@ -94,43 +78,15 @@ class PhoneSignFragment : BaseFragment<PhoneSignFragmentBinding>(),
     }
 
     private fun buttonNextClicked() {
-        hideSoftInputFromWindow()
-        onBackPressedCallback.isEnabled = true
         val phoneNumber = "${viewBinding.textInputEditTextPhoneNumber.text}"
-        val message = ValidationUtils.validPhoneNumber(phoneNumber)
-        if (message != null) {
+        val errorMessage = ValidationUtils.validPhoneNumber(phoneNumber)
+        if (errorMessage != null) {
             viewBinding.textInputEditTextPhoneNumber.requestFocus()
-            viewBinding.textInputLayoutPhoneNumber.error = message
+            viewBinding.textInputLayoutPhoneNumber.error = errorMessage
             return
         }
-        val bundle =
-            bundleOf(RecaptchaFragment.KEY_PHONE_NUMBER to phoneNumber)
-        childFragmentManager
-            .beginTransaction()
-            .add(
-                viewBinding.containerSecurityChallenge.id,
-                RecaptchaFragment::class.java,
-                bundle,
-                "SecurityChallengeDialogFragment::class.java"
-            )
-            .commit()
-    }
-
-    override fun onAction(action: IRecaptchaFragment.Action) {
-        viewBinding.containerSecurityChallenge
-            .removeAllViews()
-        onBackPressedCallback.isEnabled = false
-        when (action) {
-            is IRecaptchaFragment.Action.Success -> {
-                getListener<IPhoneSignFragment>()?.onAction(
-                    IPhoneSignFragment.Action.ClickNext(
-                        phoneNumber = action.phoneNumber,
-                        recaptchaResponse = action.response
-                    )
-                )
-            }
-
-            is IRecaptchaFragment.Action.Error -> showError(action.err)
-        }
+        hideSoftInputFromWindow()
+        val action = IPhoneSignFragment.Action.ClickNext(phoneNumber = phoneNumber)
+        getListener<IPhoneSignFragment>()?.onAction(action)
     }
 }

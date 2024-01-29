@@ -1,16 +1,16 @@
-package id.xxx.module.auth.fragment.phone.listener
+package id.xxx.module.auth.fragment.recaptcha.listener
 
 interface IRecaptchaFragment {
 
     sealed interface Action {
 
         data class Error(
-            val err: Throwable
+            val err: Throwable,
         ) : Action
 
         data class Success(
+            val phoneNumber: String,
             val response: String,
-            val phoneNumber: String
         ) : Action
     }
 

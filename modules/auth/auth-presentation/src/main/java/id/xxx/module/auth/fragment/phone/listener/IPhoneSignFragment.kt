@@ -6,7 +6,6 @@ interface IPhoneSignFragment {
 
         data class ClickNext(
             val phoneNumber: String,
-            val recaptchaResponse: String,
         ) : Action
 
         data class ClickSignInWithEmail(

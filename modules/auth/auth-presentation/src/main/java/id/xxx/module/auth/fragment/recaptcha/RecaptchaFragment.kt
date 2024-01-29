@@ -1,4 +1,4 @@
-package id.xxx.module.auth.fragment.phone
+package id.xxx.module.auth.fragment.recaptcha
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -10,7 +10,7 @@ import android.view.View
 import android.webkit.*
 import androidx.lifecycle.lifecycleScope
 import id.xxx.module.auth.fragment.base.BaseFragment
-import id.xxx.module.auth.fragment.phone.listener.IRecaptchaFragment
+import id.xxx.module.auth.fragment.recaptcha.listener.IRecaptchaFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth_presentation.databinding.RecaptchaFragmentBinding
 import kotlinx.coroutines.Dispatchers
@@ -30,8 +30,6 @@ class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
         val webView = viewBinding.webView
         webView.setBackgroundColor(Color.TRANSPARENT)
         webView.setLayerType(WebView.LAYER_TYPE_HARDWARE, Paint())
-//        webView.isVerticalScrollBarEnabled = true
-//        webView.isHorizontalScrollBarEnabled = true
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
@@ -42,9 +40,10 @@ class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
                 view: WebView, request: WebResourceRequest, error: WebResourceError
             ) {
                 val message =
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) "${error.description}"
-                    else "Error"
-                parentFragmentManager.popBackStack()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        "${error.description}"
+                    else
+                        "Error"
                 getListener<IRecaptchaFragment>()?.onAction(
                     IRecaptchaFragment.Action.Error(
                         Throwable(message)
@@ -66,7 +65,6 @@ class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
             @JavascriptInterface
             fun onSubmit(response: String) {
                 lifecycleScope.launch(Dispatchers.Main) {
-                    parentFragmentManager.popBackStack()
                     getListener<IRecaptchaFragment>()?.onAction(
                         IRecaptchaFragment.Action.Success(
                             response = response,
@@ -77,21 +75,20 @@ class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
             }
         }, "RecaptchaCallback")
 
-//        val phoneNumberFinal = phoneNumber.replace("+", "%2b")
         val uri =
             Uri.Builder()
                 .scheme("https")
                 .authority("x-recaptcha-x.web.app")
                 .path("/index.html")
-//                .appendQueryParameter("phoneNumber", phoneNumberFinal)
-//                .appendQueryParameter("languageCode", Locale.getDefault().language)
+                .appendQueryParameter("languageCode", Locale.getDefault().language)
                 .build()
         webView.loadUrl(uri.toString())
     }
 
     override fun onDestroyView() {
-        viewBinding.webView.removeAllViews()
-        viewBinding.webView.destroy()
+        val webView = viewBinding.webView
+        webView.removeAllViews()
+        webView.destroy()
         super.onDestroyView()
     }
 }
