@@ -1,0 +1,62 @@
+apply from: "$rootDir/common_android_application.gradle"
+apply plugin: "com.google.gms.google-services"
+
+android {
+    String packageName = "com.umn.iptv"
+    namespace packageName
+    testNamespace "${packageName}.test"
+
+    defaultConfig {
+
+        resConfigs "en"
+    }
+
+    signingConfigs {
+        def store_file = file("$projectDir/debug.keystore")
+        def store_password = "android"
+        def key_alias = "androiddebugkey"
+        def key_password = "android"
+
+        debug {
+            storeFile store_file
+            storePassword store_password
+            keyAlias key_alias
+            keyPassword key_password
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            debuggable false
+            jniDebuggable false
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    implementation project(":modules:viewbinding")
+
+    implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
+    implementation "androidx.cardview:cardview:$vAndroidxCardView"
+    implementation "androidx.recyclerview:recyclerview:$vAndroidxRecyclerview"
+    implementation "androidx.constraintlayout:constraintlayout:$vAndroidxConstrainLayout"
+
+    implementation platform("com.google.firebase:firebase-bom:$vFirebaseBoom")
+    implementation "com.google.firebase:firebase-firestore-ktx"
+}

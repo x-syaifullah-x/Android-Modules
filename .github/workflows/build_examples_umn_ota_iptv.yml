@@ -1,0 +1,51 @@
+name: build_umn_ota_iptv
+
+on:
+  push:
+    branches: [ master ]
+#  pull_request:
+#    branches: [ master ]
+
+jobs:
+  build_apk_umn_ota_iptv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "adopt"
+
+      - name: Gradle cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+
+      - name: Grant execute gradlew
+        run: chmod +x gradlew
+
+      - name: assembleDebug
+        run: |
+          ./gradlew clean :examples:umn-ota-iptv:assembleDebug
+
+      - name: Uploading apk debug
+        uses: actions/upload-artifact@v3
+        with:
+          name: apk-debug
+          path: examples/umn-ota-iptv/build/outputs/apk/debug/umn-ota-iptv-debug.apk
+
+      - name: assembleRelease
+        run: |
+          ./gradlew clean :examples:umn-ota-iptv:assembleRelease
+
+      - name: Uploading apk release
+        uses: actions/upload-artifact@v3
+        with:
+          name: apk-release
+          path: examples/umn-ota-iptv/build/outputs/apk/release/umn-ota-iptv-release.apk

@@ -1,0 +1,50 @@
+apply from: "$rootDir/common_android_application.gradle"
+apply plugin: "com.google.devtools.ksp"
+
+android {
+    String packageName = "id.xxx.example.room"
+    namespace packageName
+    testNamespace "${packageName}.test"
+
+    defaultConfig {
+
+        resConfigs "en"
+    }
+
+//    signingConfigs {
+//        def home_dir = System.getProperty("user.home")
+//        def store_file = file("$home_dir/.android/debug.keystore")
+//        def store_password = "android"
+//        def key_alias = "androiddebugkey"
+//        def key_password = "android"
+//
+//        release {
+//            storeFile store_file
+//            storePassword store_password
+//            keyAlias key_alias
+//            keyPassword key_password
+//        }
+//    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            debuggable false
+            jniDebuggable false
+//            signingConfig signingConfigs.release
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
+    implementation "androidx.room:room-ktx:$vAndroidxRoom" // support suspend fun
+    implementation "androidx.room:room-runtime:$vAndroidxRoom"
+    ksp "androidx.room:room-compiler:$vAndroidxRoom"
+}

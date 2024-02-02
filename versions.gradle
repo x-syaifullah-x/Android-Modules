@@ -24,6 +24,8 @@ ext {
     vAndroidxAppCompat = "1.6.1"
     // https://developer.android.com/jetpack/androidx/releases/arch-core
     vAndroidxArchCore = "2.2.0"
+    // https://developer.android.com/jetpack/androidx/releases/cardview
+    vAndroidxCardView = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/collection
     vAndroidxCollection = "1.3.0"
     // https://developer.android.com/jetpack/androidx/releases/concurrent
@@ -54,6 +56,8 @@ ext {
     vAndroidxPrint = "1.1.0-beta01"
     // https://developer.android.com/jetpack/androidx/releases/recyclerview
     vAndroidxRecyclerview = "1.3.2"
+    // https://developer.android.com/jetpack/androidx/releases/room
+    vAndroidxRoom = "2.6.1"
     // https://developer.android.com/jetpack/androidx/releases/savedstate
     vAndroidxSavedstate = "1.2.1"
     // https://developer.android.com/jetpack/androidx/releases/test
@@ -88,6 +92,8 @@ ext {
     vJunit = "4.13.2"
     // https://github.com/Kotlin/kotlinx.coroutines
     vKotlinCoroutines = "1.7.3"
+    // https://github.com/google/ksp/releases
+    vKsp = "1.9.22-1.0.17"
     // https://github.com/square/leakcanary/releases
     vLeakcanaryAndroid = "2.13"
     // https://github.com/material-components/material-components-android/releases
@@ -96,6 +102,7 @@ ext {
     vMockito = "5.9.0"
     // https://mvnrepository.com/artifact/org.mockito/mockito-inline
     vMockitoInline = "5.2.0"
+    //
     vModule = "0.0.001"
     // https://mvnrepository.com/artifact/org.json/json
     vOrgGson = "20231013"

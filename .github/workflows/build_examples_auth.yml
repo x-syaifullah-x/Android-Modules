@@ -1,4 +1,4 @@
-name: build_apk_auth_app
+name: build_examples_auth
 
 on:
   push:
@@ -32,26 +32,20 @@ jobs:
 
       - name: assembleDebug
         run: |
-          ./gradlew clean :modules:auth:auth-example:assembleDebug
+          ./gradlew clean :examples:auth:assembleDebug
 
       - name: Uploading apk debug
         uses: actions/upload-artifact@v3
         with:
           name: apk-debug
-          path: modules/auth/auth-example/build/outputs/apk/debug/auth-example-debug.apk
+          path: modules/examples/auth/build/outputs/apk/debug/auth-debug.apk
 
       - name: assembleRelease
         run: |
-          ./gradlew clean :modules:auth:auth-example:assembleRelease
-
-      - name: Uploading apk release
-        uses: actions/upload-artifact@v3
-        with:
-          name: apk-release-unsigned
-          path: modules/auth/auth-example/build/outputs/apk/release/auth-example-release-unsigned.apk
+          ./gradlew clean :examples:auth:assembleRelease
 
       - name: Uploading apk release
         uses: actions/upload-artifact@v3
         with:
           name: apk-release
-          path: modules/auth/auth-example/build/outputs/apk/release/auth-example-release.apk
+          path: modules/examples/auth/build/outputs/apk/release/auth-release.apk
