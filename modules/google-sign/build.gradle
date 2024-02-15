@@ -11,5 +11,5 @@ dependencies {
 
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
 
-    implementation "com.google.android.gms:play-services-auth:$vPlayServicesAuth"
+    implementation "com.google.android.gms:play-services-auth:$vComGoogleAndroidGmsPlayServicesAuth"
 }

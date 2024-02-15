@@ -1,4 +1,4 @@
-name: build_umn_ota_iptv
+name: build_umn_iptv
 
 on:
   push:
@@ -32,20 +32,20 @@ jobs:
 
       - name: assembleDebug
         run: |
-          ./gradlew clean :examples:umn-ota-iptv:assembleDebug
+          ./gradlew clean :examples:umn-iptv:assembleDebug
 
       - name: Uploading apk debug
         uses: actions/upload-artifact@v3
         with:
           name: apk-debug
-          path: examples/umn-ota-iptv/build/outputs/apk/debug/umn-ota-iptv-debug.apk
+          path: examples/umn-iptv/build/outputs/apk/debug/umn-iptv-debug.apk
 
       - name: assembleRelease
         run: |
-          ./gradlew clean :examples:umn-ota-iptv:assembleRelease
+          ./gradlew clean :examples:umn-iptv:assembleRelease
 
       - name: Uploading apk release
         uses: actions/upload-artifact@v3
         with:
           name: apk-release
-          path: examples/umn-ota-iptv/build/outputs/apk/release/umn-ota-iptv-release.apk
+          path: examples/umn-iptv/build/outputs/apk/release/umn-iptv-release.apk

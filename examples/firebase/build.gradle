@@ -52,5 +52,5 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:$vFirebaseBoom")
     implementation "com.google.firebase:firebase-messaging-ktx"
 
-    implementation "com.google.android.gms:play-services-auth:$vPlayServicesAuth"
+    implementation "com.google.android.gms:play-services-auth:$vComGoogleAndroidGmsPlayServicesAuth"
 }

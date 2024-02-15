@@ -22,7 +22,8 @@ afterEvaluate {
 
                 groupId = "id.xxx.module"
                 artifactId = project.name
-                version = "$vModule"
+//                version = "$vModule"
+                version = build_versions.name
 
                 versionMapping {
                     usage("java-api") {

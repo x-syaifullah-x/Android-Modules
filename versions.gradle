@@ -36,6 +36,8 @@ ext {
     vAndroidxCoordinatorLayout = "1.2.0"
     // https://developer.android.com/jetpack/androidx/releases/core
     vAndroidxCore = "1.12.0"
+    // https://developer.android.com/jetpack/androidx/releases/cursoradapter
+    vAndroidxCursorAdapter = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/customview
     vAndroidxCustomview = "1.1.0"
     // https://developer.android.com/jetpack/androidx/releases/customview
@@ -44,8 +46,14 @@ ext {
     vAndroidxDocumentFile = "1.0.1"
     // https://developer.android.com/jetpack/androidx/releases/drawerlayout
     vAndroidxDrawerLayout = "1.2.0"
+    // https://developer.android.com/jetpack/androidx/releases/dynamicanimation
+    vAndroidxDynamicanimation = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/fragment
     vAndroidxFragment = "1.6.2"
+    // https://developer.android.com/jetpack/androidx/releases/interpolator
+    vAndroidxInterpolator = "1.0.0"
+    // https://developer.android.com/jetpack/androidx/releases/legacy
+    vAndroidxLegacy = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
     vAndroidxLifecycle = "2.7.0"
     // https://developer.android.com/jetpack/androidx/releases/loader
@@ -56,10 +64,16 @@ ext {
     vAndroidxPrint = "1.1.0-beta01"
     // https://developer.android.com/jetpack/androidx/releases/recyclerview
     vAndroidxRecyclerview = "1.3.2"
+    // https://developer.android.com/jetpack/androidx/releases/resourceinspection
+    vAndroidxResourceinspection = "1.0.1"
     // https://developer.android.com/jetpack/androidx/releases/room
     vAndroidxRoom = "2.6.1"
     // https://developer.android.com/jetpack/androidx/releases/savedstate
     vAndroidxSavedstate = "1.2.1"
+    // https://developer.android.com/jetpack/androidx/releases/sqlite
+    vAndroidxSqlite = "2.4.0"
+    // https://developer.android.com/jetpack/androidx/releases/test
+    vAndroidxTestAnnotaion = "1.0.1"
     // https://developer.android.com/jetpack/androidx/releases/test
     vAndroidxTestCore = "1.5.0"
     // https://developer.android.com/jetpack/androidx/releases/test
@@ -70,6 +84,10 @@ ext {
     vAndroidxTestMonitor = "1.6.1"
     // https://developer.android.com/jetpack/androidx/releases/test
     vAndroidxTestRules = "1.5.0"
+    // https://developer.android.com/jetpack/androidx/releases/test
+    vAndroidxTestRunner = "1.5.2"
+    // https://developer.android.com/jetpack/androidx/releases/test
+    vAndroidxTestServices = "1.4.2"
     // https://developer.android.com/jetpack/androidx/releases/tracing
     vAndroidxTracing = "1.2.0"
     // https://developer.android.com/jetpack/androidx/releases/transition
@@ -82,10 +100,22 @@ ext {
     vAndroidxViewPager = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/viewpager2
     vAndroidxViewPager2 = "1.0.0"
-    // https://firebase.google.com/support/release-notes/android
-    vFirebaseBoom = "32.7.0"
     // https://developers.google.com/android/guides/google-services-plugin
-    vGoogleServices = "4.4.0"
+    vComGoogleGmsGoogleServices = "4.4.0"
+    //
+    vComGoogleAndroidGmsPlayServicesAuth = "20.7.0"
+    //
+    vComGoogleAndroidGmsPlayServicesTasks = "18.0.2"
+    //
+    vComGoogleAndroidGmsPlayServicesBasement = "18.2.0"
+    //
+    vComGoogleCodeFindbugsJsr305 = "3.0.2"
+    //
+    vComGoogleErrorProneAnnotations = "2.18.0"
+    // https://firebase.google.com/support/release-notes/android
+    vFirebaseBoom = "32.7.2"
+    // https://github.com/bumptech/glide/releases
+    vGlide = "4.16.0"
     // https://www.eclemma.org/jacoco/#:~:text=JaCoCo%20is%20a%20free%20code,existing%20libraries%20for%20many%20years.
     vJacoco = "0.8.11"
     // https://mvnrepository.com/artifact/junit/junit
@@ -102,14 +132,13 @@ ext {
     vMockito = "5.9.0"
     // https://mvnrepository.com/artifact/org.mockito/mockito-inline
     vMockitoInline = "5.2.0"
-    //
-    vModule = "0.0.001"
     // https://mvnrepository.com/artifact/org.json/json
     vOrgGson = "20231013"
+    //
+    vOrgJetbrainsAnnotations = "23.0.0"
     // https://square.github.io/okhttp/changelogs/changelog_4x/
     vSquareupOkhttp3 = "4.12.0"
     // https://developers.google.com/android/guides/setup
-    vPlayServicesAuth = "20.7.0"
 }
 
 def addRepos(RepositoryHandler handler) {

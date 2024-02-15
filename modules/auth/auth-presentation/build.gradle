@@ -22,5 +22,5 @@ dependencies {
     api "androidx.lifecycle:lifecycle-viewmodel:$vAndroidxLifecycle"
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$vAndroidxLifecycle"
     api "com.google.android.material:material:$vMaterial"
-    api "com.google.android.gms:play-services-auth:$vPlayServicesAuth"
+    api "com.google.android.gms:play-services-auth:$vComGoogleAndroidGmsPlayServicesAuth"
 }

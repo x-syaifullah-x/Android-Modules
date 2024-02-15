@@ -10,13 +10,18 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
+import com.umn.iptv.BuildConfig
+import com.umn.iptv.R
 import com.umn.iptv.constant.DeviceCode
 import com.umn.iptv.constant.DeviceID
 import com.umn.iptv.databinding.MainActivityBinding
 import id.xxx.module.viewbinding.ktx.viewBinding
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.security.MessageDigest
@@ -38,9 +43,13 @@ class MainActivity : AppCompatActivity() {
 
         val fireStore = FirebaseFirestore.getInstance()
 
-        @SuppressLint("HardwareIds") val androidID =
+        @SuppressLint("HardwareIds")
+        val androidID =
             Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         lifecycleScope.launch {
+            Glide.with(this@MainActivity)
+                .load(R.drawable.cupertino_activity_indicator)
+                .into(activityBinding.rvLoadProgress)
             val collectionDevicesID = fireStore.collection(DeviceID.C_PATH)
             val documentID = generateHash(androidID)
             val documentReference = collectionDevicesID.document(documentID)
@@ -67,17 +76,20 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT,
                 ).show()
             }
-
             documentReference.collection(DeviceID.Playlist.C_PATH)
+                .orderBy("name")
                 .addSnapshotListener { value, error ->
+                    activityBinding.rvLoadProgress.visibility = View.INVISIBLE
                     if (error == null) {
                         val data = value?.map {
                             PlaylistModel(
                                 id = it.id,
                                 name = it?.getString(DeviceID.Playlist.F_NAME) ?: "-",
+                                url = it?.getString(DeviceID.Playlist.F_URL) ?: "-",
                             )
                         } ?: listOf()
                         adapter.setItem(data)
+                        activityBinding.rvNoItem.isVisible = data.isEmpty()
                     } else {
                         Toast.makeText(
                             this@MainActivity,
@@ -94,6 +106,9 @@ class MainActivity : AppCompatActivity() {
             ContextCompat.getSystemService(c, ClipboardManager::class.java)
         val clipData =
             ClipData.newPlainText("Copied Text", text)
+        if (BuildConfig.DEBUG) {
+            println(clipData)
+        }
         cm?.setPrimaryClip(clipData)
     }
 

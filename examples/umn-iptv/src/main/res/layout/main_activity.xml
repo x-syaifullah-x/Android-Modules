@@ -11,28 +11,57 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Playlist"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_playlist"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:paddingTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/aa"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title_playlist"
         tools:listitem="@layout/playlist_item" />
 
+    <ImageView
+        android:id="@+id/rv_load_progress"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/cupertino_activity_indicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/aa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_playlist" />
+
+    <TextView
+        android:id="@+id/rv_no_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Playlist is empty"
+        android:textSize="28sp"
+        android:textStyle="bold|italic"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/aa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_playlist"
+        tools:visibility="visible" />
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/aa"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:padding="0dp"
+        app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rv_playlist"
         app:layout_constraintWidth_percent=".35">
 
         <androidx.core.widget.NestedScrollView
@@ -41,13 +70,16 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/tv_device_key"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Device Key"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -67,7 +99,7 @@
                     android:id="@+id/iv_copy_device_key"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:src="@drawable/content_copy"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
