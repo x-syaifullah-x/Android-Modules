@@ -1,6 +1,15 @@
 {
   "hosting": [
     {
+      "target": "umn-iptv-panel",
+      "public": "hosting/umn-iptv-panel",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    },
+    {
       "target": "x-link-with-phone-number-x",
       "public": "hosting/x-link-with-phone-number-x",
       "ignore": [
