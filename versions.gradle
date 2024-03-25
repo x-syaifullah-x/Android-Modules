@@ -11,8 +11,8 @@ build_versions.name = "$major.$minor.$patch"
 ext.build_versions = build_versions
 
 ext {
-    vGradle = "8.2.2"
-    vKotlin = "1.9.22"
+    vGradle = "8.3.1"
+    vKotlin = "1.9.23"
 
     // https://developer.android.com/jetpack/androidx/releases/activity
     vAndroidxActivity = "1.8.2"
@@ -123,7 +123,7 @@ ext {
     // https://github.com/Kotlin/kotlinx.coroutines
     vKotlinCoroutines = "1.7.3"
     // https://github.com/google/ksp/releases
-    vKsp = "1.9.22-1.0.17"
+    vKsp = "1.9.23-1.0.19"
     // https://github.com/square/leakcanary/releases
     vLeakcanaryAndroid = "2.13"
     // https://github.com/material-components/material-components-android/releases
