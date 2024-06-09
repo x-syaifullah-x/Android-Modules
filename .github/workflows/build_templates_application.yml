@@ -19,6 +19,12 @@ jobs:
           java-version: "17"
           distribution: "adopt"
 
+      - name: Setup gradle properties
+        run: |
+          ORG_GRADLE_JVM=`cat gradle.properties | grep org.gradle.jvmargs`
+          sed -i 's/'"${ORG_GRADLE_JVM}"'/org.gradle.jvmargs=-Xmx8192m -Dfile.encoding=UTF-8/g' gradle.properties
+          cat gradle.properties
+          
       - name: Grant execute gradlew
         run: chmod +x gradlew
 

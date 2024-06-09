@@ -4,6 +4,7 @@ android {
 
     compileSdkVersion build_versions.compile_sdk
     buildToolsVersion build_versions.build_tools
+    ndkVersion build_versions.ndk
 
     defaultConfig {
         minSdkVersion build_versions.min_sdk
@@ -22,6 +23,7 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
