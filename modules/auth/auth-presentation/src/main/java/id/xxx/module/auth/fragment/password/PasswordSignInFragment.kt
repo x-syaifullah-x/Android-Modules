@@ -41,14 +41,18 @@ class PasswordSignInFragment : BaseFragment<PasswordSignInFragmentBinding>() {
 
         viewBinding.buttonForgetPassword.setOnClickListener { moveToForgetPassword() }
         viewBinding.buttonSignIn.setOnClickListener { signIn() }
-        val textSignUp = getString(R.string.auth_message_sign_up)
-        viewBinding.textViewDonTHaveAnAccount.text = RichTextUtils.setText(
-            context = requireContext(),
-            firstText = textSignUp,
-            lastText = "${getString(R.string.auth_message_don_t_have_an_account)} $textSignUp",
-            lastTextOnClick = { if (!viewBinding.progressBar.isVisible) moveToSignUp() }
-        )
-        viewBinding.textViewDonTHaveAnAccount.movementMethod = LinkMovementMethod.getInstance()
+//        val textSignUp = getString(R.string.auth_message_sign_up)
+//        viewBinding.textViewDonTHaveAnAccount.text = RichTextUtils.setText(
+//            context = requireContext(),
+//            firstText = textSignUp,
+//            lastText = "${getString(R.string.auth_message_don_t_have_an_account)} $textSignUp",
+//            lastTextOnClick = { if (!viewBinding.progressBar.isVisible) moveToSignUp() }
+//        )
+//        viewBinding.textViewDonTHaveAnAccount.movementMethod = LinkMovementMethod.getInstance()
+        viewBinding.tvSignUp.setOnClickListener {
+            if (!viewBinding.progressBar.isVisible)
+                moveToSignUp()
+        }
         viewBinding.buttonUsePhone.setOnClickListener { moveToSignInWithPhone() }
         viewBinding.buttonUseGoogle.setOnClickListener {
             googleAccountLauncher.launch(null)

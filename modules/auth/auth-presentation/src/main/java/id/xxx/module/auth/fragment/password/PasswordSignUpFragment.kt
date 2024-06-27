@@ -32,18 +32,22 @@ class PasswordSignUpFragment : BaseFragment<PasswordSignUpFragmentBinding>() {
         if (savedInstanceState == null) viewBinding.textInputEditTextEmail.setText(
             SignInputPreferences.getInputEmail(context)
         )
-        val textSignUp = getString(R.string.auth_message_sign_in)
-        viewBinding.textViewAlreadyAnAccount.text =
-            RichTextUtils.setText(
-                context = requireContext(),
-                firstText = textSignUp,
-                lastText = "${getString(R.string.auth_message_already_have_an_account)} $textSignUp",
-                lastTextOnClick = {
-                    if (!viewBinding.progressBar.isVisible)
-                        signInTextClicked()
-                },
-            )
-        viewBinding.textViewAlreadyAnAccount.movementMethod = LinkMovementMethod.getInstance()
+//        val textSignUp = getString(R.string.auth_message_sign_in)
+//        viewBinding.textViewAlreadyAnAccount.text =
+//            RichTextUtils.setText(
+//                context = requireContext(),
+//                firstText = textSignUp,
+//                lastText = "${getString(R.string.auth_message_already_have_an_account)} $textSignUp",
+//                lastTextOnClick = {
+//                    if (!viewBinding.progressBar.isVisible)
+//                        signInTextClicked()
+//                },
+//            )
+//        viewBinding.textViewAlreadyAnAccount.movementMethod = LinkMovementMethod.getInstance()
+        viewBinding.tvSignIn.setOnClickListener {
+            if (!viewBinding.progressBar.isVisible)
+                signInTextClicked()
+        }
 
         viewBinding.buttonSignUp
             .setOnClickListener { signUpButtonClicked() }
