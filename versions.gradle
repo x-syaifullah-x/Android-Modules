@@ -101,6 +101,8 @@ ext {
     vAndroidxViewPager = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/viewpager2
     vAndroidxViewPager2 = "1.1.0"
+    //
+    vComGoogleAndroidDatatransportApi = "3.1.0"
     // https://developers.google.com/android/guides/google-services-plugin
     vComGoogleGmsGoogleServices = "4.4.2"
     // https://developers.google.com/android/guides/setup
@@ -113,6 +115,8 @@ ext {
     vComGoogleCodeFindbugsJsr305 = "3.0.2"
     // https://github.com/google/error-prone
     vComGoogleErrorProneAnnotations = "2.28.0"
+    //
+    vComGoogleProtobufJavaLite = "3.22.3"
     // https://firebase.google.com/support/release-notes/android
     vFirebaseBoom = "33.1.0"
     // https://github.com/bumptech/glide/releases

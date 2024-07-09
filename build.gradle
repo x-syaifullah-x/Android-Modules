@@ -4,12 +4,6 @@ buildscript {
 
     addRepos(repositories)
 
-    dependencies {
-        classpath "com.android.tools.build:gradle:$vGradle"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$vKotlin"
-        classpath "com.google.gms:google-services:$vComGoogleGmsGoogleServices"
-    }
-
     subprojects {
         project.configurations.configureEach {
             resolutionStrategy.eachDependency { details ->
@@ -166,6 +160,14 @@ buildscript {
                         details.useVersion "$vComGoogleAndroidGmsPlayServicesTasks"
                     }
                 }
+                if (details.requested.group == "com.google.android.datatransport") {
+                    if ("${details.requested}".contains("transport-api")) {
+                        details.useVersion "$vComGoogleAndroidDatatransportApi"
+                    }
+                    if ("${details.requested}".contains("play-services-tasks")) {
+                        details.useVersion "$vComGoogleAndroidGmsPlayServicesTasks"
+                    }
+                }
                 if (details.requested.group == "com.google.code.findbugs") {
                     if ("${details.requested}".contains("jsr305")) {
                         details.useVersion "$vComGoogleCodeFindbugsJsr305"
@@ -174,6 +176,11 @@ buildscript {
                 if (details.requested.group == "com.google.errorprone") {
                     if ("${details.requested}".contains("error_prone_annotations")) {
                         details.useVersion "$vComGoogleErrorProneAnnotations"
+                    }
+                }
+                if (details.requested.group == "com.google.protobuf") {
+                    if ("${details.requested}".contains("protobuf-javalite")) {
+                        details.useVersion "$vComGoogleProtobufJavaLite"
                     }
                 }
                 if (details.requested.group == "org.jetbrains") {
@@ -185,12 +192,6 @@ buildscript {
         }
     }
 }
-
-plugins {
-    id "com.google.devtools.ksp" version "$vKsp" apply false
-}
-
-addRepos(repositories)
 
 allprojects {
     addRepos(repositories)
