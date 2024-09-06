@@ -12,7 +12,8 @@ build_versions.name = "$major.$minor.$patch"
 ext.build_versions = build_versions
 
 ext {
-    vGradle = "8.5.0"
+    // https://developer.android.com/reference/tools/gradle-api
+    vGradle = "8.6.0"
     vKotlin = "1.9.20"
 
     // https://developer.android.com/jetpack/androidx/releases/activity

@@ -196,17 +196,7 @@ buildscript {
 allprojects {
     addRepos(repositories)
 
-//    String userName = System.getProperty("user.name")
-//    if (userName == "xxx") {
-//        String userHomeDir = System.getProperty("user.home")
-//        String userCacheDir = "${userHomeDir}/.cache"
-//        boolean projectInCacheDir = projectDir.path.contains(userCacheDir)
-//        if (!projectInCacheDir) {
-//            buildDir = "${userCacheDir}/android/studio/project/${rootProject.name}/${project.name}/build"
-//        }
-//    }
-
-    // handle warning This class can only be used with the compiler argument "-opt-in=kotlin.RequiresOptIn"
+//    handle warning This class can only be used with the compiler argument "-opt-in=kotlin.RequiresOptIn"
 //    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile)
 //            .configureEach {
 //                kotlinOptions {
@@ -216,5 +206,5 @@ allprojects {
 }
 
 tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+    delete rootProject.layout.buildDirectory
 }

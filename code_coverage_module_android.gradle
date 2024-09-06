@@ -95,7 +95,7 @@ project.afterEvaluate {
             additionalSourceDirs.setFrom(files(coverageSourceDirs))
             sourceDirectories.setFrom(files(coverageSourceDirs))
 
-            File dirConnected = new File("${project.buildDir}/outputs/code_coverage/debugAndroidTest/connected")
+            File dirConnected = new File("${project.layout.buildDirectory}/outputs/code_coverage/debugAndroidTest/connected")
             String deviceName = ""
             for (String name : dirConnected.list()) {
                 if (!name.isBlank()) {
@@ -103,8 +103,8 @@ project.afterEvaluate {
                 }
             }
             executionData(files([
-                    "${project.buildDir}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
-                    "${project.buildDir}/outputs/code_coverage/debugAndroidTest/connected/$deviceName/coverage.ec"
+                    "${project.layout.buildDirectory}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+                    "${project.layout.buildDirectory}/outputs/code_coverage/debugAndroidTest/connected/$deviceName/coverage.ec"
             ]))
         }
     }

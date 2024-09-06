@@ -8,10 +8,10 @@ apply plugin: "jacoco"
 */
 jacoco {
     toolVersion = "$vJacoco"
-    reportsDirectory = layout.buildDirectory.dir("$buildDir/${project.name}-code-coverage")
+    reportsDirectory = layout.buildDirectory.dir("${layout.buildDirectory}/${project.name}-code-coverage")
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     jacoco.includeNoLocationClasses = true
     jacoco.excludes = ['jdk.internal.*']
 }
@@ -68,7 +68,7 @@ project.afterEvaluate {
         ]
 
         classDirectories.setFrom(files([
-                fileTree(dir: "$buildDir/classes", excludes: fileFilter),
+                fileTree(dir: "${layout.buildDirectory}/classes", excludes: fileFilter),
         ]))
 
         def coverageSourceDirs = [
@@ -79,7 +79,7 @@ project.afterEvaluate {
         sourceDirectories.setFrom(files(coverageSourceDirs))
 
         executionData(files([
-                "${project.buildDir}/jacoco/test.exec",
+                "${project.layout.buildDirectory}/jacoco/test.exec",
         ]))
 //        }
     }
