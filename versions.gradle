@@ -117,7 +117,7 @@ ext {
     // https://github.com/google/error-prone
     vComGoogleErrorProneAnnotations = "2.31.0"
     // https://central.sonatype.com/artifact/com.google.protobuf/protobuf-javalite
-    vComGoogleProtobufJavaLite = "4.28.0"
+    vComGoogleProtobufJavaLite = "3.25.1"
     // https://firebase.google.com/support/release-notes/android
     vFirebaseBoom = "33.2.0"
     // https://github.com/bumptech/glide/releases

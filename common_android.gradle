@@ -7,8 +7,8 @@ android {
     ndkVersion build_versions.ndk
 
     defaultConfig {
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
+        minSdk build_versions.min_sdk
+        targetSdk build_versions.target_sdk
         versionCode build_versions.code
         versionName build_versions.name
 
