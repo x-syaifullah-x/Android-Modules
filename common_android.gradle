@@ -2,8 +2,8 @@ apply plugin: "kotlin-android"
 
 android {
 
-    compileSdkVersion build_versions.compile_sdk
-    buildToolsVersion build_versions.build_tools
+    compileSdk build_versions.compile_sdk
+    buildToolsVersion = build_versions.build_tools
     ndkVersion build_versions.ndk
 
     defaultConfig {

@@ -17,9 +17,9 @@ ext {
     vKotlin = "1.9.20"
 
     // https://developer.android.com/jetpack/androidx/releases/activity
-    vAndroidxActivity = "1.9.0"
+    vAndroidxActivity = "1.9.2"
     // https://developer.android.com/jetpack/androidx/releases/annotation
-    vAndroidxAnnotation = "1.8.0"
+    vAndroidxAnnotation = "1.8.2"
     // https://developer.android.com/jetpack/androidx/releases/annotation
     vAndroidxAnnotationExperimental = "1.4.1"
     // https://developer.android.com/jetpack/androidx/releases/appcompat
@@ -29,7 +29,7 @@ ext {
     // https://developer.android.com/jetpack/androidx/releases/cardview
     vAndroidxCardView = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/collection
-    vAndroidxCollection = "1.4.0"
+    vAndroidxCollection = "1.4.3"
     // https://developer.android.com/jetpack/androidx/releases/concurrent
     vAndroidxConcurrent = "1.2.0"
     // https://developer.android.com/jetpack/androidx/releases/constraintlayout
@@ -51,13 +51,13 @@ ext {
     // https://developer.android.com/jetpack/androidx/releases/dynamicanimation
     vAndroidxDynamicanimation = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/fragment
-    vAndroidxFragment = "1.8.0"
+    vAndroidxFragment = "1.8.3"
     // https://developer.android.com/jetpack/androidx/releases/interpolator
     vAndroidxInterpolator = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/legacy
     vAndroidxLegacy = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
-    vAndroidxLifecycle = "2.8.2"
+    vAndroidxLifecycle = "2.8.5"
     // https://developer.android.com/jetpack/androidx/releases/loader
     vAndroidxLoader = "1.1.0"
     // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager
@@ -77,23 +77,23 @@ ext {
     // https://developer.android.com/jetpack/androidx/releases/test
     vAndroidxTestAnnotaion = "1.0.1"
     // https://developer.android.com/jetpack/androidx/releases/test
-    vAndroidxTestCore = "1.5.0"
+    vAndroidxTestCore = "1.6.1"
     // https://developer.android.com/jetpack/androidx/releases/test
-    vAndroidxTestEspresso = "3.5.1"
+    vAndroidxTestEspresso = "3.6.1"
     // https://developer.android.com/jetpack/androidx/releases/test
-    vAndroidxTestExtJunit = "1.1.5"
+    vAndroidxTestExtJunit = "1.2.1"
     // https://developer.android.com/jetpack/androidx/releases/test
-    vAndroidxTestMonitor = "1.6.1"
+    vAndroidxTestMonitor = "1.7.2"
     // https://developer.android.com/jetpack/androidx/releases/test
-    vAndroidxTestRules = "1.5.0"
+    vAndroidxTestRules = "1.6.1"
     // https://developer.android.com/jetpack/androidx/releases/test
-    vAndroidxTestRunner = "1.5.2"
+    vAndroidxTestRunner = "1.6.2"
     // https://developer.android.com/jetpack/androidx/releases/test
-    vAndroidxTestServices = "1.4.2"
+    vAndroidxTestServices = "1.5.0"
     // https://developer.android.com/jetpack/androidx/releases/tracing
     vAndroidxTracing = "1.2.0"
     // https://developer.android.com/jetpack/androidx/releases/transition
-    vAndroidxTransition = "1.5.0"
+    vAndroidxTransition = "1.5.1"
     // https://developer.android.com/jetpack/androidx/releases/vectordrawable
     vAndroidxVectorDrawable = "1.2.0"
     // https://developer.android.com/jetpack/androidx/releases/versionedparcelable
@@ -102,8 +102,8 @@ ext {
     vAndroidxViewPager = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/viewpager2
     vAndroidxViewPager2 = "1.1.0"
-    //
-    vComGoogleAndroidDatatransportApi = "3.1.0"
+    // https://mvnrepository.com/artifact/com.google.android.datatransport/transport-api
+    vComGoogleAndroidDatatransportApi = "3.2.0"
     // https://developers.google.com/android/guides/google-services-plugin
     vComGoogleGmsGoogleServices = "4.4.2"
     // https://developers.google.com/android/guides/setup
@@ -115,18 +115,18 @@ ext {
     // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
     vComGoogleCodeFindbugsJsr305 = "3.0.2"
     // https://github.com/google/error-prone
-    vComGoogleErrorProneAnnotations = "2.28.0"
-    //
-    vComGoogleProtobufJavaLite = "3.22.3"
+    vComGoogleErrorProneAnnotations = "2.31.0"
+    // https://central.sonatype.com/artifact/com.google.protobuf/protobuf-javalite
+    vComGoogleProtobufJavaLite = "4.28.0"
     // https://firebase.google.com/support/release-notes/android
-    vFirebaseBoom = "33.1.0"
+    vFirebaseBoom = "33.2.0"
     // https://github.com/bumptech/glide/releases
     vGlide = "4.16.0"
     // https://www.eclemma.org/jacoco/#:~:text=JaCoCo%20is%20a%20free%20code,existing%20libraries%20for%20many%20years.
     vJacoco = "0.8.12"
     // https://mvnrepository.com/artifact/junit/junit
     vJunit = "4.13.2"
-    // https://github.com/Kotlin/kotlinx.coroutines
+    // https://github.com/Kotlin/kotlinx.coroutines/releases
     vKotlinCoroutines = "1.8.1"
     // https://github.com/google/ksp/releases
     // same as kotlin version
@@ -136,14 +136,14 @@ ext {
     // https://github.com/material-components/material-components-android/releases
     vMaterial = "1.12.0"
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
-    vMockito = "5.12.0"
+    vMockito = "5.13.0"
     // https://mvnrepository.com/artifact/org.mockito/mockito-inline
     vMockitoInline = "5.2.0"
     // https://mvnrepository.com/artifact/org.json/json
     vOrgGson = "20240303"
     // https://mvnrepository.com/artifact/org.jetbrains/annotations
     vOrgJetbrainsAnnotations = "24.1.0"
-    // https://square.github.io/okhttp/changelogs/changelog_4x/
+    // https://square.github.io/okhttp/changelogs/changelog_4x
     vSquareupOkhttp3 = "4.12.0"
 }
 
