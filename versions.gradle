@@ -14,7 +14,8 @@ ext.build_versions = build_versions
 ext {
     // https://developer.android.com/reference/tools/gradle-api
     vGradle = "8.6.0"
-    vKotlin = "1.9.20"
+    // https://github.com/JetBrains/kotlin/releases
+    vKotlin = "2.0.20"
 
     // https://developer.android.com/jetpack/androidx/releases/activity
     vAndroidxActivity = "1.9.2"
@@ -130,7 +131,7 @@ ext {
     vKotlinCoroutines = "1.8.1"
     // https://github.com/google/ksp/releases
     // same as kotlin version
-    vKsp = "1.9.20-1.0.14"
+    vKsp = "${vKotlin}-1.0.25"
     // https://github.com/square/leakcanary/releases
     vLeakcanaryAndroid = "2.14"
     // https://github.com/material-components/material-components-android/releases
