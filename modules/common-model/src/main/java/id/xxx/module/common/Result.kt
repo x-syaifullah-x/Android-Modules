@@ -8,11 +8,9 @@ interface Result<out O> {
         val progress: Progress? = null
     ) : Result<Nothing> {
 
-        data class Progress(private val count: AtomicLong, private val length: AtomicLong) {
-
-            fun count() = count.get()
-
-            fun length() = length.get()
+        data class Progress(private val count: AtomicLong, private val length: Long) {
+            fun getCount() = count.get()
+            fun getLength() = length
         }
     }
 

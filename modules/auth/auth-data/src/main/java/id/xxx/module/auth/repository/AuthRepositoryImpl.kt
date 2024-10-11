@@ -108,13 +108,13 @@ class AuthRepositoryImpl private constructor(
         result: (header: Header, response: String) -> T
     ) = flow {
         try {
-            val progressAtomic = AtomicLong(-1)
-            val lengthAtomic = AtomicLong(-1)
-            val loading = Resources.Loading(progress = progressAtomic, length = lengthAtomic)
-            emit(loading)
+            emit(Resources.Loading())
             val response = request.invoke()
             val header = response.header
-            lengthAtomic.set(header.contentLength)
+            val count = AtomicLong(0)
+            val progress = Resources.Loading.Progress(count = count, length = header.contentLength)
+            val loading = Resources.Loading(progress)
+            emit(loading)
             val data = response.body
             val out = ByteArrayOutputStream()
             val buffersSize = 1024 * 512
@@ -127,7 +127,7 @@ class AuthRepositoryImpl private constructor(
                 } else {
                     break
                 }
-                progressAtomic.set(out.size().toLong())
+                count.set(out.size().toLong())
                 emit(loading)
             }
 

@@ -21,12 +21,16 @@ class ResultTest {
                 is Result.Loading -> {
                     val progress = result.progress
                     Assert.assertNotNull(progress)
-                    Assert.assertTrue(progress!!.count() <= CONTENT_LENGTH)
-                    Assert.assertTrue(progress.length() == CONTENT_LENGTH)
+                    if (progress == null)
+                        throw NullPointerException()
+                    Assert.assertTrue(progress.getCount() <= CONTENT_LENGTH)
+                    Assert.assertTrue(progress.getLength() == CONTENT_LENGTH)
                 }
+
                 is Result.Success -> {
                     Assert.assertEquals(ID_RESULT, result.value.id)
                 }
+
                 is Result.Failure -> {
                     Assert.assertEquals(ERROR_MESSAGE, result.value.message)
                 }
@@ -34,8 +38,7 @@ class ResultTest {
         }
         val thread = Thread {
             val countAtomic = AtomicLong(0)
-            val lengthAtomic = AtomicLong(CONTENT_LENGTH)
-            val progress = Result.Loading.Progress(countAtomic, lengthAtomic)
+            val progress = Result.Loading.Progress(countAtomic, CONTENT_LENGTH)
             val loading = Result.Loading(progress)
             for (i in 0..CONTENT_LENGTH) {
                 countAtomic.set(i)

@@ -20,11 +20,11 @@ class ResourcesTest {
             when (result) {
                 is Resources.Loading -> {
                     Assert.assertNotNull(result)
-                    val progress = result.getProgress()
+                    val progress = result.progress
                     if (progress != null) {
-                        Assert.assertTrue(progress <= CONTENT_LENGTH)
+                        Assert.assertTrue(progress.getCount() <= CONTENT_LENGTH)
                     }
-                    val length = result.getLength()
+                    val length = result.progress?.getLength()
                     Assert.assertTrue(length == CONTENT_LENGTH)
                 }
 
@@ -38,13 +38,12 @@ class ResourcesTest {
             }
         }
         val thread = Thread {
-            val countAtomic = AtomicLong(0)
-            val lengthAtomic = AtomicLong(CONTENT_LENGTH)
+            val count = AtomicLong(0)
             val loading = Resources.Loading(
-                progress = countAtomic, length = lengthAtomic
+                progress = Resources.Loading.Progress(count = count, length = CONTENT_LENGTH)
             )
             for (i in 0..CONTENT_LENGTH) {
-                countAtomic.set(i)
+                count.set(i)
                 rc.invoke(loading)
             }
             rc.invoke(Resources.Success(Model(ID_RESULT)))

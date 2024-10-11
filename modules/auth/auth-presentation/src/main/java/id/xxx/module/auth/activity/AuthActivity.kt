@@ -1,6 +1,6 @@
 package id.xxx.module.auth.activity
 
-import SignUpPasswordFragmentUtils
+import id.xxx.module.auth.activity.utils.SignUpPasswordFragmentUtils
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels

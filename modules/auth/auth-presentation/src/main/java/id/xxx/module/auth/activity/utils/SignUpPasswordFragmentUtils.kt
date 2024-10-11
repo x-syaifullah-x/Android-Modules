@@ -1,3 +1,5 @@
+package id.xxx.module.auth.activity.utils
+
 import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.AuthActivity
