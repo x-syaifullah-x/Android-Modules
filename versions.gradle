@@ -13,7 +13,7 @@ ext.build_versions = build_versions
 
 ext {
     // https://developer.android.com/reference/tools/gradle-api
-    vGradle = "8.6.0"
+    vGradle = "8.7.0"
     // https://github.com/JetBrains/kotlin/releases
     vKotlin = "2.0.20"
 
@@ -30,7 +30,7 @@ ext {
     // https://developer.android.com/jetpack/androidx/releases/cardview
     vAndroidxCardView = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/collection
-    vAndroidxCollection = "1.4.3"
+    vAndroidxCollection = "1.4.4"
     // https://developer.android.com/jetpack/androidx/releases/concurrent
     vAndroidxConcurrent = "1.2.0"
     // https://developer.android.com/jetpack/androidx/releases/constraintlayout
@@ -52,13 +52,13 @@ ext {
     // https://developer.android.com/jetpack/androidx/releases/dynamicanimation
     vAndroidxDynamicanimation = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/fragment
-    vAndroidxFragment = "1.8.3"
+    vAndroidxFragment = "1.8.4"
     // https://developer.android.com/jetpack/androidx/releases/interpolator
     vAndroidxInterpolator = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/legacy
     vAndroidxLegacy = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/lifecycle
-    vAndroidxLifecycle = "2.8.5"
+    vAndroidxLifecycle = "2.8.6"
     // https://developer.android.com/jetpack/androidx/releases/loader
     vAndroidxLoader = "1.1.0"
     // https://developer.android.com/jetpack/androidx/releases/localbroadcastmanager
@@ -116,11 +116,11 @@ ext {
     // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
     vComGoogleCodeFindbugsJsr305 = "3.0.2"
     // https://github.com/google/error-prone
-    vComGoogleErrorProneAnnotations = "2.31.0"
+    vComGoogleErrorProneAnnotations = "2.33.0"
     // https://central.sonatype.com/artifact/com.google.protobuf/protobuf-javalite
-    vComGoogleProtobufJavaLite = "3.25.1"
+    vComGoogleProtobufJavaLite = "3.25.5"
     // https://firebase.google.com/support/release-notes/android
-    vFirebaseBoom = "33.2.0"
+    vFirebaseBoom = "33.4.0"
     // https://github.com/bumptech/glide/releases
     vGlide = "4.16.0"
     // https://www.eclemma.org/jacoco/#:~:text=JaCoCo%20is%20a%20free%20code,existing%20libraries%20for%20many%20years.
@@ -128,7 +128,7 @@ ext {
     // https://mvnrepository.com/artifact/junit/junit
     vJunit = "4.13.2"
     // https://github.com/Kotlin/kotlinx.coroutines/releases
-    vKotlinCoroutines = "1.8.1"
+    vKotlinCoroutines = "1.9.0"
     // https://github.com/google/ksp/releases
     // same as kotlin version
     vKsp = "${vKotlin}-1.0.25"
@@ -137,13 +137,13 @@ ext {
     // https://github.com/material-components/material-components-android/releases
     vMaterial = "1.12.0"
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
-    vMockito = "5.13.0"
+    vMockito = "5.14.1"
     // https://mvnrepository.com/artifact/org.mockito/mockito-inline
     vMockitoInline = "5.2.0"
     // https://mvnrepository.com/artifact/org.json/json
     vOrgGson = "20240303"
     // https://mvnrepository.com/artifact/org.jetbrains/annotations
-    vOrgJetbrainsAnnotations = "24.1.0"
+    vOrgJetbrainsAnnotations = "26.0.0"
     // https://square.github.io/okhttp/changelogs/changelog_4x
     vSquareupOkhttp3 = "4.12.0"
 }
