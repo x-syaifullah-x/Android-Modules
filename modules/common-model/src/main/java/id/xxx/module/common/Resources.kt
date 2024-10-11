@@ -8,7 +8,7 @@ interface Resources<out O> {
         val progress: Progress? = null
     ) : Resources<Nothing> {
 
-        data class Progress(private val count: AtomicLong, private val length: Long) {
+        class Progress(private val count: AtomicLong, private val length: Long) {
             fun getCount() = count.get()
             fun getLength() = length
         }

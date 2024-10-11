@@ -120,7 +120,7 @@ ext {
     // https://central.sonatype.com/artifact/com.google.protobuf/protobuf-javalite
     vComGoogleProtobufJavaLite = "3.25.5"
     // https://firebase.google.com/support/release-notes/android
-    vFirebaseBoom = "33.4.0"
+    vFirebaseBom = "33.4.0"
     // https://github.com/bumptech/glide/releases
     vGlide = "4.16.0"
     // https://www.eclemma.org/jacoco/#:~:text=JaCoCo%20is%20a%20free%20code,existing%20libraries%20for%20many%20years.
