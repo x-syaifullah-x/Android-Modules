@@ -1,6 +1,6 @@
 def build_versions = [:]
 build_versions.min_sdk = 21 // android lollipop ( 5.0 )
-build_versions.target_sdk = 34 // android latest
+build_versions.target_sdk = 35 // android latest
 build_versions.compile_sdk = build_versions.target_sdk
 build_versions.build_tools = "35.0.0"
 build_versions.ndk = "26.3.11579264"

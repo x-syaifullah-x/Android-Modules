@@ -4,7 +4,7 @@ import id.xxx.module.auth.activity.AuthActivity
 import id.xxx.module.auth.repository.AuthRepositoryImpl
 import id.xxx.module.auth.usecase.AuthUseCaseImpl
 
-internal class AuthActivity :
+class AuthActivity :
     AuthActivity(AuthUseCaseImpl.getInstance(AuthRepositoryImpl.getInstance())) {
 
     companion object {
