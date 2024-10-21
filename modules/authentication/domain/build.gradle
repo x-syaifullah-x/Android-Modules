@@ -1,0 +1,9 @@
+apply from: "$rootDir/common_android_library.gradle"
+apply from: "$rootDir/maven_publish_android.gradle"
+
+dependencies {
+    api project(":modules:common-model")
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$vKotlinCoroutines"
+
+    testImplementation project(":modules:common-test")
+}

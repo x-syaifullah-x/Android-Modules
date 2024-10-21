@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        api-level: [ 21 ]
+        api-level: [ 23 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,6 +21,7 @@ jobs:
         with:
           java-version: "21"
           distribution: "oracle"
+          cache: gradle
 
       - name: Setup gradle properties
         run: |
@@ -28,13 +29,13 @@ jobs:
           sed -i 's/'"${ORG_GRADLE_JVM}"'/org.gradle.jvmargs=-Xmx8192m -Dfile.encoding=UTF-8/g' gradle.properties
           cat gradle.properties
           
-      - name: Gradle cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+#      - name: Gradle cache
+#        uses: actions/cache@v4
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
 
       #      - name: AVD cache
       #        uses: actions/cache@v3

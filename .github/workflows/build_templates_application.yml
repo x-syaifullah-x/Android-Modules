@@ -18,6 +18,7 @@ jobs:
         with:
           java-version: "21"
           distribution: "oracle"
+          cache: gradle
 
       - name: Setup gradle properties
         run: |
@@ -28,15 +29,15 @@ jobs:
       - name: Grant execute gradlew
         run: chmod +x gradlew
 
-      - name: assembleDebug
-        run: |
-          ./gradlew clean :templates:application:assembleDebug
-
-      - name: Uploading apk
-        uses: actions/upload-artifact@v4
-        with:
-          name: templateApplicationDebug
-          path: templates/application/build/outputs/apk/debug/application-debug.apk
+#      - name: assembleDebug
+#        run: |
+#          ./gradlew clean :templates:application:assembleDebug
+#
+#      - name: Uploading apk
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: templateApplicationDebug
+#          path: templates/application/build/outputs/apk/debug/application-debug.apk
 
       - name: assembleRelease
         run: |

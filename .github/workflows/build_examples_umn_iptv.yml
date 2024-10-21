@@ -18,6 +18,7 @@ jobs:
         with:
           java-version: "21"
           distribution: "oracle"
+          cache: gradle
 
       - name: Setup gradle properties
         run: |
@@ -25,26 +26,26 @@ jobs:
           sed -i 's/'"${ORG_GRADLE_JVM}"'/org.gradle.jvmargs=-Xmx8192m -Dfile.encoding=UTF-8/g' gradle.properties
           cat gradle.properties
           
-      - name: Gradle cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+#      - name: Gradle cache
+#        uses: actions/cache@v4
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
 
       - name: Grant execute gradlew
         run: chmod +x gradlew
 
-      - name: assembleDebug
-        run: |
-          ./gradlew clean :examples:umn-iptv:assembleDebug
-
-      - name: Uploading apk debug
-        uses: actions/upload-artifact@v4
-        with:
-          name: apk-debug
-          path: examples/umn-iptv/build/outputs/apk/debug/umn-iptv-debug.apk
+#      - name: assembleDebug
+#        run: |
+#          ./gradlew clean :examples:umn-iptv:assembleDebug
+#
+#      - name: Uploading apk debug
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: apk-debug
+#          path: examples/umn-iptv/build/outputs/apk/debug/umn-iptv-debug.apk
 
       - name: assembleRelease
         run: |
