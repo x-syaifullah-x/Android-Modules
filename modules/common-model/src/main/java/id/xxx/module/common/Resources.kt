@@ -2,7 +2,7 @@ package id.xxx.module.common
 
 import java.util.concurrent.atomic.AtomicLong
 
-interface Resources<out O> {
+sealed interface Resources<out O> {
 
     data class Loading(
         val progress: Progress? = null

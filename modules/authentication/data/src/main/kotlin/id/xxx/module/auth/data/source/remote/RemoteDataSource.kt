@@ -1,9 +1,8 @@
 package id.xxx.module.auth.data.source.remote
 
 import id.xxx.module.auth.data.source.remote.helpers.MyFirebase
-import id.xxx.module.auth.data.source.remote.model.SignUpResult
-import id.xxx.module.auth.domain.model.TypeSignIn
-import id.xxx.module.auth.domain.model.TypeSignUp
+import id.xxx.module.auth.data.source.remote.model.SignResult
+import id.xxx.module.auth.domain.model.TypeSign
 import kotlinx.coroutines.tasks.await
 
 class RemoteDataSource private constructor() {
@@ -18,12 +17,12 @@ class RemoteDataSource private constructor() {
         }
     }
 
-    internal suspend fun signUp(type: TypeSignUp): SignUpResult {
-        val res = when (type) {
-            is TypeSignUp.Password -> {
+    internal suspend fun sign(type: TypeSign): SignResult {
+        val auth = MyFirebase.getFirebaseAuth()
+        return when (type) {
+            is TypeSign.UpPassword -> {
                 val email = type.email
                 val password = type.password
-                val auth = MyFirebase.getFirebaseAuth()
                 val result = auth.createUserWithEmailAndPassword(
                     email, password
                 ).await()
@@ -31,24 +30,20 @@ class RemoteDataSource private constructor() {
                 if (user == null)
                     throw NullPointerException()
                 else
-                    SignUpResult(uid = user.uid, isNewUser = true)
+                    SignResult(uid = user.uid, isNewUser = true)
             }
-        }
-        return res
-    }
 
-    internal suspend fun signIn(type: TypeSignIn) = when (type) {
-        is TypeSignIn.Password -> {
-            val auth = MyFirebase.getFirebaseAuth()
-            val email = type.email
-            val password = type.password
-            val authResult = auth.signInWithEmailAndPassword(
-                email, password
-            ).await()
-            val user = authResult.user
-            if (user == null)
-                throw NullPointerException("user")
-            SignUpResult(uid = user.uid, isNewUser = false)
+            is TypeSign.InPassword -> {
+                val email = type.email
+                val password = type.password
+                val authResult = auth.signInWithEmailAndPassword(
+                    email, password
+                ).await()
+                val user = authResult.user
+                if (user == null)
+                    throw NullPointerException("user")
+                SignResult(uid = user.uid, isNewUser = false)
+            }
         }
     }
 }

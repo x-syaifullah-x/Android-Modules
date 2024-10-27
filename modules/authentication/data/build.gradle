@@ -19,6 +19,6 @@ dependencies {
 
     // Room
     implementation "androidx.room:room-ktx:$vAndroidxRoom" // support suspend fun
-    implementation "androidx.room:room-runtime:$vAndroidxRoom"
+    api "androidx.room:room-runtime:$vAndroidxRoom"
     ksp "androidx.room:room-compiler:$vAndroidxRoom"
 }

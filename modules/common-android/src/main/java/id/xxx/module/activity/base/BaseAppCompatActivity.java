@@ -2,6 +2,7 @@ package id.xxx.module.activity.base;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,7 @@ import id.xxx.module.fragment.ktx.FragmentActivityKtx;
 
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
-//    @Override
+    //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
 //

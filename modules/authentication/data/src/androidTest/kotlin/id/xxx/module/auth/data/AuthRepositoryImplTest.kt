@@ -2,21 +2,8 @@ package id.xxx.module.auth.data
 
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
-import id.xxx.module.auth.data.source.local.LocalDataSource
-import id.xxx.module.auth.data.source.local.db.AppDatabase
-import id.xxx.module.auth.data.source.remote.RemoteDataSource
 import id.xxx.module.auth.data.source.remote.helpers.MyFirebase
-import id.xxx.module.auth.domain.exception.AuthInvalidCredentialsException
-import id.xxx.module.auth.domain.exception.AuthUserCollisionException
-import id.xxx.module.auth.domain.model.TypeSignIn
-import id.xxx.module.auth.domain.model.TypeSignUp
-import id.xxx.module.common.Resources
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.tasks.await
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -29,7 +16,7 @@ class AuthRepositoryImplTest {
         val appContext =
             InstrumentationRegistry.getInstrumentation().targetContext
         context = appContext
-        MyFirebase.firebaseInit(appContext)
+        MyFirebase.initialize(appContext)
     }
 
     @Test

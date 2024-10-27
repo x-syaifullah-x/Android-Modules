@@ -10,7 +10,7 @@ object MyFirebase {
     @Volatile
     private var _sFirebaseApp: FirebaseApp? = null
 
-    fun firebaseInit(context: Context) {
+    fun initialize(context: Context) {
         synchronized(this) {
             val options = FirebaseOptions.Builder()
 //            .setDatabaseUrl(nul)

@@ -14,7 +14,7 @@ import id.xxx.module.auth.data.source.local.entity.UserEntity
     version = 1,
     exportSchema = false
 )
-internal abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     companion object {
 

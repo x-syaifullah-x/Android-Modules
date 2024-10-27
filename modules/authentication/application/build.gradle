@@ -1,0 +1,52 @@
+apply from: "$rootDir/common_android_application.gradle"
+
+android {
+    String packageName = "id.xxx.module.auth"
+    namespace packageName
+    testNamespace "${packageName}.test"
+
+    defaultConfig {
+
+        resConfigs "en"
+    }
+
+//    signingConfigs {
+//        def home_dir = System.getProperty("user.home")
+//        def store_file = file("$home_dir/.android/debug.keystore")
+//        def store_password = "android"
+//        def key_alias = "androiddebugkey"
+//        def key_password = "android"
+//
+//        release {
+//            storeFile store_file
+//            storePassword store_password
+//            keyAlias key_alias
+//            keyPassword key_password
+//        }
+//    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            debuggable false
+            jniDebuggable false
+//            signingConfig signingConfigs.release
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(":modules:authentication:data")
+    implementation project(":modules:authentication:domain")
+    implementation project(":modules:authentication:presentation")
+
+    implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$vAndroidxLifecycle"
+
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$vLeakcanaryAndroid"
+}

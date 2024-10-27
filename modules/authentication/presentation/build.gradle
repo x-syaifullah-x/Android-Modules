@@ -1,0 +1,19 @@
+apply from: "$rootDir/common_android_library.gradle"
+//apply from: "$rootDir/maven_publish_android.gradle"
+
+android {
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(":modules:authentication:domain")
+    api project(":modules:viewbinding")
+
+    implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
+    implementation "androidx.constraintlayout:constraintlayout:$vAndroidxConstrainLayout"
+    implementation "androidx.fragment:fragment-ktx:$vAndroidxFragment"
+    implementation "com.google.android.material:material:$vMaterial"
+}

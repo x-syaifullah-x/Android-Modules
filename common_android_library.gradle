@@ -5,7 +5,7 @@ apply from: "$rootDir/code_coverage_module_android.gradle"
 
 android {
 
-    String packageName = "id.xxx.module.${projectDir.name.replace("-", "_")}"
+    String packageName = "id.xxx.${project.displayName.replace("project ':", "").replace(":", ".").replace("-", "_").replace("'", "")}"
     namespace packageName
     testNamespace "${packageName}.test"
 }
