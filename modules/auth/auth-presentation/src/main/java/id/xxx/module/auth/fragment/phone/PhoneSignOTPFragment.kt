@@ -7,8 +7,7 @@ import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.phone.listener.IPhoneSignOTPFragment
 import id.xxx.module.auth.ktx.getListener
-import id.xxx.module.auth_presentation.databinding.PhoneSignOtpFragmentBinding
-import java.security.InvalidParameterException
+import id.xxx.modules.auth.auth_presentation.databinding.PhoneSignOtpFragmentBinding
 
 class PhoneSignOTPFragment : BaseFragment<PhoneSignOtpFragmentBinding>() {
 

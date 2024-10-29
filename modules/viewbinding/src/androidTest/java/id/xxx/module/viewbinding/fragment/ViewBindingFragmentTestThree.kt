@@ -7,9 +7,9 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
-import id.xxx.module.viewbinding.databinding.BodyBinding
-import id.xxx.module.viewbinding.databinding.HeadBinding
 import id.xxx.module.viewbinding.ktx.viewBinding
+import id.xxx.modules.viewbinding.databinding.BodyBinding
+import id.xxx.modules.viewbinding.databinding.HeadBinding
 import org.junit.Test
 
 class ViewBindingFragmentTestThree : ViewBindingFragment<HeadBinding>() {

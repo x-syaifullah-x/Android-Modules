@@ -7,15 +7,20 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.webkit.*
+import android.webkit.JavascriptInterface
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.lifecycle.lifecycleScope
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.recaptcha.listener.IRecaptchaFragment
 import id.xxx.module.auth.ktx.getListener
-import id.xxx.module.auth_presentation.databinding.RecaptchaFragmentBinding
+import id.xxx.modules.auth.auth_presentation.databinding.RecaptchaFragmentBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Locale
 
 class RecaptchaFragment : BaseFragment<RecaptchaFragmentBinding>() {
 

@@ -1,6 +1,5 @@
 package id.xxx.module.auth.activity
 
-import id.xxx.module.auth.activity.utils.SignUpPasswordFragmentUtils
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -12,8 +11,9 @@ import androidx.lifecycle.asLiveData
 import id.xxx.module.auth.activity.impl.OnBackPressedCallbackImpl
 import id.xxx.module.auth.activity.utils.IOTPFragmentUtils
 import id.xxx.module.auth.activity.utils.PasswordRecoveryFragmentUtils
-import id.xxx.module.auth.activity.utils.SignInPasswordFragmentUtils
 import id.xxx.module.auth.activity.utils.PhoneSignFragmentUtils
+import id.xxx.module.auth.activity.utils.SignInPasswordFragmentUtils
+import id.xxx.module.auth.activity.utils.SignUpPasswordFragmentUtils
 import id.xxx.module.auth.fragment.password.PasswordSignInFragment
 import id.xxx.module.auth.fragment.password.listener.IPasswordRecoveryFragment
 import id.xxx.module.auth.fragment.password.listener.IPasswordSignInFragment
@@ -22,8 +22,8 @@ import id.xxx.module.auth.fragment.phone.PhoneSignFragment
 import id.xxx.module.auth.fragment.phone.PhoneSignOTPFragment
 import id.xxx.module.auth.fragment.phone.listener.IPhoneSignFragment
 import id.xxx.module.auth.fragment.phone.listener.IPhoneSignOTPFragment
-import id.xxx.module.auth.fragment.recaptcha.listener.IRecaptchaFragment
 import id.xxx.module.auth.fragment.recaptcha.RecaptchaFragment
+import id.xxx.module.auth.fragment.recaptcha.listener.IRecaptchaFragment
 import id.xxx.module.auth.ktx.isDarkThemeOn
 import id.xxx.module.auth.model.PhoneVerificationModel
 import id.xxx.module.auth.model.SignModel
@@ -31,9 +31,9 @@ import id.xxx.module.auth.model.parms.Code
 import id.xxx.module.auth.usecase.AuthUseCase
 import id.xxx.module.auth.viewmodel.AuthViewModel
 import id.xxx.module.auth.viewmodel.AuthViewModelProviderFactory
-import id.xxx.module.auth_presentation.R
 import id.xxx.module.common.Resources
 import id.xxx.module.fragment.ktx.getFragment
+import id.xxx.modules.auth.auth_presentation.R
 import kotlinx.coroutines.Job
 
 abstract class AuthActivity(useCase: AuthUseCase) : AppCompatActivity(),

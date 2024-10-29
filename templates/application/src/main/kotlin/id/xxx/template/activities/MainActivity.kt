@@ -2,8 +2,8 @@ package id.xxx.template.activities
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
+import id.xxx.templates.application.R
 
 class MainActivity : FragmentActivity() {
 
@@ -11,7 +11,7 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
 
         Toast.makeText(
-            this, "This is Main Activity", Toast.LENGTH_LONG
+            this, getString(R.string.app_name), Toast.LENGTH_LONG
         ).show()
     }
 }

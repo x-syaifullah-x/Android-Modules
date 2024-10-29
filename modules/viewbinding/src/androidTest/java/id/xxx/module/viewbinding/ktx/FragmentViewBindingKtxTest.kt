@@ -11,7 +11,7 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
-import id.xxx.module.viewbinding.databinding.ContainerMainBinding
+import id.xxx.modules.viewbinding.databinding.ContainerMainBinding
 import org.junit.Test
 
 class FragmentViewBindingKtxTest {

@@ -9,7 +9,7 @@ import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.password.listener.IPasswordRecoveryFragment
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.utils.ValidationUtils
-import id.xxx.module.auth_presentation.databinding.PasswordRecoveryFragmentBinding
+import id.xxx.modules.auth.auth_presentation.databinding.PasswordRecoveryFragmentBinding
 
 class PasswordRecoveryFragment : BaseFragment<PasswordRecoveryFragmentBinding>() {
 

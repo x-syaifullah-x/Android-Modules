@@ -1,21 +1,17 @@
 package id.xxx.module.auth.fragment.password
 
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import id.xxx.module.auth.fragment.base.BaseFragment
 import id.xxx.module.auth.fragment.password.listener.IPasswordSignInFragment
-import id.xxx.module.auth.ktx.getInputMethodManager
 import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.ktx.hideSoftInputFromWindow
 import id.xxx.module.auth.preferences.SignInputPreferences
-import id.xxx.module.auth.utils.RichTextUtils
 import id.xxx.module.auth.utils.ValidationUtils
-import id.xxx.module.auth_presentation.R
-import id.xxx.module.auth_presentation.databinding.PasswordSignInFragmentBinding
 import id.xxx.module.google_sign.GoogleAccountContract
+import id.xxx.modules.auth.auth_presentation.databinding.PasswordSignInFragmentBinding
 
 class PasswordSignInFragment : BaseFragment<PasswordSignInFragmentBinding>() {
 

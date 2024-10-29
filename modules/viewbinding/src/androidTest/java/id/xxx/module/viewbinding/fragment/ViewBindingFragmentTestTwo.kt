@@ -7,9 +7,9 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.viewbinding.ViewBinding
-import id.xxx.module.viewbinding.databinding.ContainerMainBinding
-import id.xxx.module.viewbinding.databinding.ContainerMainChildBinding
 import id.xxx.module.viewbinding.ktx.viewBinding
+import id.xxx.modules.viewbinding.databinding.ContainerMainBinding
+import id.xxx.modules.viewbinding.databinding.ContainerMainChildBinding
 import org.junit.Test
 
 class ViewBindingFragmentTestTwo {
