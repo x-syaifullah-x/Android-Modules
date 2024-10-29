@@ -32,26 +32,22 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         vBinding.textInputEditTextEmail.onFocusChangeListener =
-            object : View.OnFocusChangeListener {
-                override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                    val hint =
-                        if (hasFocus)
-                            "Email"
-                        else
-                            "Please enter your email"
-                    vBinding.textInputLayoutEmail.hint = hint
-                }
+            View.OnFocusChangeListener { _, hasFocus ->
+                val hint =
+                    if (hasFocus)
+                        "Email"
+                    else
+                        "Please enter your email"
+                vBinding.textInputLayoutEmail.hint = hint
             }
         vBinding.textInputEditTextPassword.onFocusChangeListener =
-            object : View.OnFocusChangeListener {
-                override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                    val hint =
-                        if (hasFocus)
-                            "Password"
-                        else
-                            "Please enter your password"
-                    vBinding.textInputLayoutPassword.hint = hint
-                }
+            View.OnFocusChangeListener { _, hasFocus ->
+                val hint =
+                    if (hasFocus)
+                        "Password"
+                    else
+                        "Please enter your password"
+                vBinding.textInputLayoutPassword.hint = hint
             }
         vBinding.buttonSignIn.setOnClickListener {
             signIn()

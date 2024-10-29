@@ -2,10 +2,3 @@ apply plugin: "com.android.library"
 
 apply from: "$rootDir/common_android.gradle"
 apply from: "$rootDir/code_coverage_module_android.gradle"
-
-android {
-
-    String packageName = "id.xxx.${project.displayName.replace("project ':", "").replace(":", ".").replace("-", "_").replace("'", "")}"
-    namespace packageName
-    testNamespace "${packageName}.test"
-}

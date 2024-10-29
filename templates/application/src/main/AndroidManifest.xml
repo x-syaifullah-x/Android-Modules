@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:name=".App"
+        android:name="id.xxx.template.App"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +12,7 @@
         android:theme="@style/ThemeAppNoActionBar">
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name="id.xxx.template.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
         </activity>
 
         <provider
-            android:name=".providers.MyFileProvider"
+            android:name="id.xxx.template.providers.MyFileProvider"
             android:authorities="${applicationId}.FILE_PROVIDER"
             android:exported="false"
             android:grantUriPermissions="true">
