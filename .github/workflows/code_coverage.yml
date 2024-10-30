@@ -1,4 +1,4 @@
-name: tests_and_coverage
+name: code_coverage
 
 on:
   push:
@@ -28,23 +28,14 @@ jobs:
           ORG_GRADLE_JVM=`cat gradle.properties | grep org.gradle.jvmargs`
           sed -i 's/'"${ORG_GRADLE_JVM}"'/org.gradle.jvmargs=-Xmx8192m -Dfile.encoding=UTF-8/g' gradle.properties
           cat gradle.properties
-          
-#      - name: Gradle cache
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
 
-      #      - name: AVD cache
-      #        uses: actions/cache@v3
-      #        id: avd-cache
-      #        with:
-      #          path: |
-      #            ~/.android/avd/*
-      #            ~/.android/adb*
-      #          key: avd-${{ matrix.api-level }}
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd
+          key: avd-${{ matrix.api-level }}
 
       - name: Create AVD and generate snapshot for caching
         #        if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -64,28 +55,10 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            ./gradlew build
-            ./gradlew test
-            ./gradlew connectedDebugAndroidTest
-
-      - name: Code coverage
-        run: |
-          ./gradlew debugCodeCoverage
-          
-          DIR_DES_COVERAGE=~/android-module/code-coverage-archive
-          mkdir -p $DIR_DES_COVERAGE
-          for i in `find . -name *-code-coverage`; do
-              cp -rf ${i} $DIR_DES_COVERAGE
-          done
-
-          DIR_DES_TEST_RESULTS=~/android-module/test-results-archive
-          mkdir -p $DIR_DES_TEST_RESULTS
-          for i in `find . -name test-results`; do
-            cp -rf ${i}/* $DIR_DES_TEST_RESULTS
-          done
+            ./gradlew debugCodeCoverage
 
       - name: Uploading code coverage
         uses: actions/upload-artifact@v4
         with:
-          name: code-coverage
-          path: ~/android-module/code-coverage-archive
+          name: code_coverage
+          path: build/jacoco_code_coverage

@@ -1,21 +1,20 @@
 apply plugin: "jacoco"
 
 /*
-    running :
-                ./gradlew :module_name:testDebugUnitTest &&\
-                ./gradlew :module_name:connectedDebugAndroidTest &&\
-                ./gradlew :module_name:debugCodeCoverage
-    result  :   ${module_name}/build/${module_name}-code-coverage
+    running :   ./gradlew :module_name:debugCodeCoverage
+    result  :   build/jacoco_code_coverage/${project.name}/debugCodeCoverage/html/index.html
 */
+
 jacoco {
     toolVersion = "$vJacoco"
-    reportsDirectory = layout.buildDirectory.dir("$buildDir/${project.name}-code-coverage")
+    reportsDirectory = rootProject.layout.buildDirectory.dir("jacoco_code_coverage/${project.name}")
 }
 
 android {
     buildTypes {
         debug {
-            testCoverageEnabled true
+            enableAndroidTestCoverage true
+            enableUnitTestCoverage true
         }
     }
 }
@@ -26,33 +25,20 @@ tasks.withType(Test).configureEach {
 }
 
 project.afterEvaluate {
-
     (android.hasProperty('applicationVariants')
             ? android.'applicationVariants'
             : android.'libraryVariants').all { variant ->
 
         def variantName = variant.name
-        def testVariantNameCodeCoverageTask = "${variantName.toLowerCase()}CodeCoverage"
-
-        //noinspection ConfigurationAvoidance
-        tasks.create(
-                name: "${testVariantNameCodeCoverageTask}",
-                type: JacocoReport,
-                dependsOn: [
-//                        "testDebugUnitTest",
-//                        "connectedCheck",
-//                        "connectedDebugAndroidTest"
-                ]
-        ) {
+        def testVariantNameCodeCoverageTask = "${variantName}CodeCoverage"
+        tasks.register("${testVariantNameCodeCoverageTask}", JacocoReport) {
+            dependsOn = [
+                    "testDebugUnitTest",
+                    "connectedDebugAndroidTest"
+            ]
             group = "Reporting"
             description = "Generate Jacoco coverage reports for the ${variantName.capitalize()} build"
-
-            reports {
-                html.required.set(true)
-                xml.required.set(true)
-                csv.required.set(true)
-            }
-
+            reports { html.required.set(true) }
             def fileFilter = [
                     '**/R.class',
                     '**/R$*.class',
@@ -85,27 +71,17 @@ project.afterEvaluate {
             ]
 
             classDirectories.setFrom(files([
-                    fileTree(dir: "$buildDir/tmp/kotlin-classes/$variantName", excludes: fileFilter),
+                    fileTree(dir: { layout.buildDirectory.dir("intermediates/debug") }, excludes: fileFilter),
+                    fileTree(dir: { layout.buildDirectory.dir("tmp/java-classes/debug") }, excludes: fileFilter),
+                    fileTree(dir: { layout.buildDirectory.dir("tmp/kotlin-classes/debug") }, excludes: fileFilter),
             ]))
-
-            def coverageSourceDirs = [
-                    "$project.rootDir/$project.name/src/main/java",
-            ]
-
-            additionalSourceDirs.setFrom(files(coverageSourceDirs))
-            sourceDirectories.setFrom(files(coverageSourceDirs))
-
-            File dirConnected = new File("${project.layout.buildDirectory}/outputs/code_coverage/debugAndroidTest/connected")
-            String deviceName = ""
-            for (String name : dirConnected.list()) {
-                if (!name.isBlank()) {
-                    deviceName = name
-                }
-            }
-            executionData(files([
-                    "${project.layout.buildDirectory}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
-                    "${project.layout.buildDirectory}/outputs/code_coverage/debugAndroidTest/connected/$deviceName/coverage.ec"
-            ]))
+            def coverageSourceDirs = files([
+                    layout.projectDirectory.dir("src/main/java"),
+                    layout.projectDirectory.dir("src/main/kotlin")
+            ])
+            additionalSourceDirs.setFrom(coverageSourceDirs)
+            sourceDirectories.setFrom(coverageSourceDirs)
+            executionData.setFrom(files(fileTree(layout.buildDirectory) { include(["**/*.exec", "**/*.ec"]) }))
         }
     }
 }

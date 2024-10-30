@@ -6,7 +6,7 @@ import org.junit.Test
 
 internal class AuthDataSourceRemoteTest {
 
-    private val dataSource = AuthDataSourceRemote.getInstance()
+//    private val dataSource = AuthDataSourceRemote.getInstance()
 
     @Test
     fun test() {

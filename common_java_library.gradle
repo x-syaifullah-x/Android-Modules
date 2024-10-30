@@ -1,7 +1,7 @@
 apply plugin: "java-library"
 apply plugin: "kotlin"
 
-apply from: "$rootDir/code_coverage_module_java.gradle"
+apply from: "$rootDir/code_coverage_java.gradle"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21

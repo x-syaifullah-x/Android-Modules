@@ -25,21 +25,20 @@ jobs:
           ORG_GRADLE_JVM=`cat gradle.properties | grep org.gradle.jvmargs`
           sed -i 's/'"${ORG_GRADLE_JVM}"'/org.gradle.jvmargs=-Xmx8192m -Dfile.encoding=UTF-8/g' gradle.properties
           cat gradle.properties
-          
-#      - name: Gradle cache
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            ~/.gradle/caches
-#            ~/.gradle/wrapper
-#          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+
+      #      - name: Gradle cache
+      #        uses: actions/cache@v4
+      #        with:
+      #          path: |
+      #            ~/.gradle/caches
+      #            ~/.gradle/wrapper
+      #          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
 
       - name: Grant execute gradlew
         run: chmod +x gradlew
 
       - name: Publish to maven local
         run: |
-          ./gradlew clean build
           ./gradlew clean publishToMavenLocal
 
       - name: Create a module archive

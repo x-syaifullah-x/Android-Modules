@@ -1,4 +1,4 @@
-name: build_template_application
+name: template_application
 
 on:
   push:
@@ -25,19 +25,9 @@ jobs:
           ORG_GRADLE_JVM=`cat gradle.properties | grep org.gradle.jvmargs`
           sed -i 's/'"${ORG_GRADLE_JVM}"'/org.gradle.jvmargs=-Xmx8192m -Dfile.encoding=UTF-8/g' gradle.properties
           cat gradle.properties
-          
+
       - name: Grant execute gradlew
         run: chmod +x gradlew
-
-#      - name: assembleDebug
-#        run: |
-#          ./gradlew clean :templates:application:assembleDebug
-#
-#      - name: Uploading apk
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: templateApplicationDebug
-#          path: templates/application/build/outputs/apk/debug/application-debug.apk
 
       - name: assembleRelease
         run: |

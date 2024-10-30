@@ -1,0 +1,32 @@
+apply plugin: "jacoco"
+
+/*
+    running :   ./gradlew :module_name:debugCodeCoverage
+    result  :   build/jacoco_code_coverage/${project.name}/debugCodeCoverage/html/index.html
+*/
+
+jacoco {
+    toolVersion = "$vJacoco"
+    reportsDirectory = rootProject.layout.buildDirectory.dir("jacoco_code_coverage/${project.name}")
+}
+
+tasks.withType(Test).configureEach {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+}
+
+tasks.register("debugCodeCoverage", JacocoReport) {
+    dependsOn = ["test"]
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports"
+    reports { html.required.set(true) }
+    def fileFilter = ["**/test/*"]
+    classDirectories.setFrom(files([fileTree(dir: layout.buildDirectory.dir("classes"), excludes: fileFilter),]))
+    def coverageSourceDirs = files([
+            layout.projectDirectory.dir("src/main/java"),
+            layout.projectDirectory.dir("src/main/kotlin")
+    ])
+    additionalSourceDirs.setFrom(coverageSourceDirs)
+    sourceDirectories.setFrom(coverageSourceDirs)
+    executionData.setFrom(files(fileTree(layout.buildDirectory) { include(["**/*.exec", "**/*.ec"]) }))
+}
