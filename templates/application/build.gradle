@@ -2,7 +2,6 @@ apply from: "$rootDir/common_android_application.gradle"
 
 android {
     defaultConfig {
-
         resConfigs "en"
     }
 
@@ -36,7 +35,5 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
-
     implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
 }

@@ -1,10 +1,10 @@
 apply plugin: "kotlin-android"
 
+
 android {
 
-    String packageName = "id.xxx.${project.displayName.replace("project ':", "").replace(":", ".").replace("-", "_").replace("'", "")}"
-    namespace packageName
-    testNamespace "${packageName}.test"
+    namespace "${build_versions.group_id}.${project.displayName.replace("project ':", "").replace(":", ".").replace("-", "_").replace("'", "")}"
+    testNamespace "${namespace}.test"
 
     compileSdk build_versions.compile_sdk
     buildToolsVersion = build_versions.build_tools

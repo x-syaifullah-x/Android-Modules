@@ -1,4 +1,5 @@
 def build_versions = [:]
+build_versions.group_id = "id.xxx"
 build_versions.min_sdk = 23 // android lollipop ( 5.0 )
 build_versions.target_sdk = 35 // android latest
 build_versions.compile_sdk = build_versions.target_sdk
@@ -149,18 +150,15 @@ ext {
 }
 
 def addRepos(RepositoryHandler handler) {
-    handler.gradlePluginPortal()
     handler.google()
-    handler.mavenCentral {
-        url "https://jcenter.bintray.com"
-    }
+    handler.gradlePluginPortal()
     handler.maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-        url "https://jitpack.io"
+        it.url "https://oss.sonatype.org/content/repositories/snapshots"
+        it.url "https://jitpack.io"
     }
-    handler.mavenLocal()
+    handler.mavenCentral()
     handler.mavenLocal {
-        it.url("${rootDir}/.m2/repository")
+        it.url "${rootDir}/.m2/repository"
     }
 }
 

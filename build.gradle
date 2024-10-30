@@ -195,16 +195,8 @@ buildscript {
 
 allprojects {
     addRepos(repositories)
-
-//    handle warning This class can only be used with the compiler argument "-opt-in=kotlin.RequiresOptIn"
-//    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile)
-//            .configureEach {
-//                kotlinOptions {
-//                    freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-//                }
-//            }
 }
 
 tasks.register("clean", Delete) {
-    delete rootProject.layout.buildDirectory
+    it.delete rootProject.layout.buildDirectory
 }

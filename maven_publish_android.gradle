@@ -17,17 +17,13 @@ configurations {
 //}
 
 afterEvaluate {
-
     publishing {
         publications {
-
             release(MavenPublication) {
                 from components.release
-
-                groupId = "id.xxx.module"
+                groupId = "${build_versions.group_id}.${project.displayName.replace("project ':", "").replace(":", ".").replace("-", "_").replace("'", "")}"
                 artifactId = project.name
                 version = build_versions.name
-
                 versionMapping {
                     usage("java-api") {
                         fromResolutionOf("runtimeClasspath")
@@ -36,7 +32,6 @@ afterEvaluate {
                         fromResolutionResult()
                     }
                 }
-
                 pom {
                     name = "Android library"
                     description = "Description"
@@ -59,13 +54,12 @@ afterEvaluate {
                         }
                     }
                     scm {
-                        connection = "scm:https://github.com/x-syaifullah-x/android-module.git"
-                        developerConnection = "scm:git@github.com:x-syaifullah-x/android-module.git"
-                        url = "https://github.com/x-syaifullah-x/android-module"
+                        connection = "scm:https://github.com/x-syaifullah-x/android-modules.git"
+                        developerConnection = "scm:git@github.com:x-syaifullah-x/android-modules.git"
+                        url = "https://github.com/x-syaifullah-x/android-modules"
                     }
                 }
             }
-
 //            debug(MavenPublication) {
 //                from components.debug
 //            }
