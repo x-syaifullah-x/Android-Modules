@@ -7,7 +7,7 @@ apply plugin: "jacoco"
 
 jacoco {
     toolVersion = "$vJacoco"
-    reportsDirectory = rootProject.layout.buildDirectory.dir("jacoco_code_coverage/${project.name}")
+    reportsDirectory = rootProject.layout.buildDirectory.dir("jacoco_code_coverage/${project.displayName.replace("project ':", "/").replace(":","/").replace("'","")}")
 }
 
 tasks.withType(Test).configureEach {

@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import id.xxx.module.auth.databinding.FragmentHomeBinding
 import id.xxx.module.auth.domain.model.UserModel
 import id.xxx.module.viewbinding.ktx.viewBinding
+import id.xxx.modules.authentication.application.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 

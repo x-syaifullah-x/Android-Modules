@@ -35,7 +35,7 @@ ext {
     // https://developer.android.com/jetpack/androidx/releases/concurrent
     vAndroidxConcurrent = "1.2.0"
     // https://developer.android.com/jetpack/androidx/releases/constraintlayout
-    vAndroidxConstrainLayout = "2.1.4"
+    vAndroidxConstrainLayout = "2.2.0"
     // https://developer.android.com/jetpack/androidx/releases/coordinatorlayout
     vAndroidxCoordinatorLayout = "1.2.0"
     // https://developer.android.com/jetpack/androidx/releases/core

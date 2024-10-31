@@ -1,0 +1,154 @@
+name: LINUX_OS
+
+on:
+  push:
+    branches: [ master ]
+#  pull_request:
+#    branches: [ master ]
+
+jobs:
+  code_coverage:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        api-level: [ 29 ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup directory AVD
+        run: |
+          ANDROID_AVD_DIR=~/.android/avd
+          mkdir -pv $ANDROID_AVD_DIR
+          sudo mount -v none -t tmpfs -o rw,noatime,nodiratime,size=100%,nr_inodes=0,mode=755,uid=$USER,gid=$USER,inode64 $ANDROID_AVD_DIR
+
+      - name: Setup directory Gradle
+        run: |
+          GRADLE_DIR=~/.gradle
+          mkdir -pv $GRADLE_DIR
+          sudo mount -v none -t tmpfs -o rw,noatime,nodiratime,size=100%,nr_inodes=0,mode=755,uid=$USER,gid=$USER,inode64 $GRADLE_DIR
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "oracle"
+
+      - name: Gradle cache
+        uses: actions/cache@v4
+        id: gradle-cache
+        with:
+          path: |
+            ~/.gradle
+            ~/.m2
+          key: gradle-${{ github.job }}-${{ hashFiles('versions.gradle') }}
+
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            /usr/local/lib/android/sdk/system-images
+          key: avd-${{ github.job }}-${{ matrix.api-level }}
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Running debug code coverage
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          arch: x86_64
+          force-avd-creation: false
+          emulator-options: -nocache -no-boot-anim -no-snapshot -no-snapshot-load -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -camera-back none -accel on -qemu -cpu host,kvm=on -smp $(nproc) -m $(expr 1024 \* 16)
+          disable-animations: true
+          script: |
+            ./gradlew debugCodeCoverage
+
+      - name: Uploading code coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: code_coverage
+          path: build/jacoco_code_coverage
+
+  publish_to_maven_local:
+    runs-on: ubuntu-latest
+    needs:
+      - code_coverage
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup directory Gradle
+        run: |
+          GRADLE_DIR=~/.gradle
+          mkdir -pv $GRADLE_DIR
+          sudo mount -v none -t tmpfs -o rw,noatime,nodiratime,size=100%,nr_inodes=0,mode=755,uid=$USER,gid=$USER,inode64 $GRADLE_DIR
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "oracle"
+
+      - name: Gradle cache
+        uses: actions/cache@v4
+        id: gradle-cache
+        with:
+          path: |
+            ~/.gradle
+            ~/.m2
+          key: gradle-${{ github.job }}-${{ hashFiles('versions.gradle') }}
+
+      - name: Publish to maven local
+        run: |
+          ./gradlew clean publishToMavenLocal
+          cd ~ && tar czvf /tmp/m2.tar.gz .m2/repository/id/xxx*
+
+      - name: Uploading archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: m2.tar.gz
+          path: /tmp/m2.tar.gz
+
+  make_template_application:
+    runs-on: ubuntu-latest
+    needs:
+      - code_coverage
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup directory Gradle
+        run: |
+          GRADLE_DIR=~/.gradle
+          mkdir -pv $GRADLE_DIR
+          sudo mount -v none -t tmpfs -o rw,noatime,nodiratime,size=100%,nr_inodes=0,mode=755,uid=$USER,gid=$USER,inode64 $GRADLE_DIR
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "oracle"
+
+      - name: Gradle cache
+        uses: actions/cache@v4
+        id: gradle-cache
+        with:
+          path: |
+            ~/.gradle
+            ~/.m2
+          key: gradle-${{ github.job }}-${{ hashFiles('versions.gradle') }}
+
+      - name: Assemble release
+        run: |
+          ./gradlew clean :templates:application:assembleRelease
+
+      - name: Uploading apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: application-release-unsigned.apk
+          path: templates/application/build/outputs/apk/release/application-release-unsigned.apk

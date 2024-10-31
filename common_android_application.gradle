@@ -1,3 +1,4 @@
 apply plugin: "com.android.application"
 
 apply from: "$rootDir/common_android.gradle"
+apply from: "$rootDir/code_coverage_android.gradle"

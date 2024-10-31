@@ -1,0 +1,74 @@
+#DOC https://github.com/cashapp/redwood/blob/trunk/.github/workflows/build.yaml
+
+name: MAC_OS
+
+on:
+  push:
+    branches: [ master ]
+#  pull_request:
+#    branches: [ master ]
+
+jobs:
+  code_coverage:
+    runs-on: macos-13
+    strategy:
+      matrix:
+        api-level: [ 29 ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "oracle"
+          cache: gradle
+
+      #      - name: Setup gradle properties
+      #        run: |
+      #          ORG_GRADLE_JVM=`cat gradle.properties | grep org.gradle.jvmargs`
+      #          sed -i 's/'"${ORG_GRADLE_JVM}"'/org.gradle.jvmargs=-Xmx16384m -Dfile.encoding=UTF-8/g' gradle.properties
+      #          cat gradle.properties
+
+      #      - name: AVD cache
+      #        uses: actions/cache@v4
+      #        id: avd-cache
+      #        with:
+      #          path: |
+      #            ~/.android/avd
+      #          key: avd-${{ matrix.api-level }}
+
+#      - name: Abc
+#        run: |
+#          original_dir=$(pwd)
+#          ls -la /Users/runner/Library/Android/sdk/emulator/qemu
+#          target_dir=/Users/runner/Library/Android/sdk/emulator/qemu/linux-x86_64/
+#          file_path=entitlements.xml
+#          xml_content='<?xml version="1.0" encoding="UTF-8"?>
+#          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+#          <plist version="1.0">
+#          <dict>
+#          <key>com.apple.security.hypervisor</key>
+#          <true/>
+#          </dict>
+#          </plist>'
+#
+#          cd "$target_dir"
+#          ls -la .
+#          echo "$xml_content" > "$file_path"
+#          codesign -s - --entitlements entitlements.xml --force ./qemu-system-aarch64
+#          cd "$original_dir"
+
+      - name: Running debug code coverage
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          arch: x86_64
+          cores: 4
+          force-avd-creation: false
+          emulator-options: -no-window -noaudio -no-boot-anim -camera-back none -accel on -qemu -m $(expr 1024 \* 16)
+          disable-animations: true
+          script: |
+            ./gradlew dependencies
+            ./gradlew debugCodeCoverage

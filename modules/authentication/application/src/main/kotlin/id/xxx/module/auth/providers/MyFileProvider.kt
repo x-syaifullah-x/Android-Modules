@@ -3,8 +3,8 @@ package id.xxx.module.auth.providers
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
-import id.xxx.module.auth.BuildConfig
 import java.io.File
+import id.xxx.modules.authentication.application.BuildConfig
 
 class MyFileProvider : FileProvider() {
 

@@ -21,7 +21,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = "${build_versions.group_id}.${project.displayName.replace("project ':", "").replace(":", ".").replace("-", "_").replace("'", "")}"
+                groupId = "${build_versions.group_id}.${project.displayName.replace("project ':", "").replace(":", ".").replace("-", "_").replace("'", "").replace(".${project.name.replace("-","_")}", "")}"
                 artifactId = project.name
                 version = build_versions.name
                 versionMapping {

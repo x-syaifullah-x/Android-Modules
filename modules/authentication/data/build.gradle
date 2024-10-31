@@ -1,14 +1,7 @@
 apply from: "$rootDir/common_android_library.gradle"
-apply from: "$rootDir/maven_publish_android.gradle"
+//apply from: "$rootDir/maven_publish_android.gradle"
 
 apply plugin: "com.google.devtools.ksp"
-
-android {
-
-    String packageName = "id.xxx.module.authentication.data"
-    namespace packageName
-    testNamespace "${packageName}.test"
-}
 
 dependencies {
     implementation project(":modules:authentication:domain")

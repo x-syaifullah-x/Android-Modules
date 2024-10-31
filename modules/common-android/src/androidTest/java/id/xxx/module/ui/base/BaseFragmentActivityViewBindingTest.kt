@@ -74,8 +74,7 @@ class BaseFragmentActivityViewBindingTest {
     }
 
     @get:Rule
-    var activityScenarioRule =
-        ActivityScenarioRule(ExampleActivity::class.java)
+    var activityScenarioRule = ActivityScenarioRule(ExampleActivity::class.java)
 
     @Test
     fun test() {
