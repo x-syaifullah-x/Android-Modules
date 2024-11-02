@@ -9,7 +9,5 @@ java {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
-
     testImplementation project(":modules:common-test")
 }

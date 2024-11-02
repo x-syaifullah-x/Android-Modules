@@ -53,7 +53,7 @@ ext {
     // https://developer.android.com/jetpack/androidx/releases/dynamicanimation
     vAndroidxDynamicanimation = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/fragment
-    vAndroidxFragment = "1.8.4"
+    vAndroidxFragment = "1.8.5"
     // https://developer.android.com/jetpack/androidx/releases/interpolator
     vAndroidxInterpolator = "1.0.0"
     // https://developer.android.com/jetpack/androidx/releases/legacy
@@ -149,17 +149,15 @@ ext {
     vSquareupOkhttp3 = "4.12.0"
 }
 
-def addRepos(RepositoryHandler handler) {
+static def addRepos(RepositoryHandler handler) {
+//    handler.mavenLocal { it.url "${rootDir}/.m2/repository" }
     handler.google()
-    handler.gradlePluginPortal()
-    handler.maven {
-        it.url "https://oss.sonatype.org/content/repositories/snapshots"
-        it.url "https://jitpack.io"
-    }
     handler.mavenCentral()
-    handler.mavenLocal {
-        it.url "${rootDir}/.m2/repository"
-    }
+    handler.gradlePluginPortal()
+//    handler.maven {
+//        it.url "https://oss.sonatype.org/content/repositories/snapshots"
+//        it.url "https://jitpack.io"
+//    }
 }
 
 ext.addRepos = this.&addRepos
