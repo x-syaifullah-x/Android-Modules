@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.delegate.ViewBinding
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.fragment.app.testing.withFragment
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import id.xxx.modules.viewbinding.R
 import id.xxx.modules.viewbinding.databinding.ContainerMainBinding
 import org.junit.Test
 
@@ -22,22 +21,9 @@ class FragmentViewBindingKtxTest {
         const val DATA_CHANGE = "MOCK DATA CHANGE"
     }
 
-    @Test
-    fun test_one() {
-        launchFragmentInContainer<ExampleOneFragment>()
-        Espresso
-            .onView(ViewMatchers.withText(DATA))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .perform(ViewActions.click())
-//        Espresso
-//            .onView(ViewMatchers.withText(DATA_CHANGE))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.pressBackUnconditionally()
-    }
+    abstract class BaseFragment : Fragment() {
 
-    class ExampleOneFragment : Fragment() {
-
-        private val viewBinding by ViewBinding(ContainerMainBinding::class)
+        protected abstract val viewBinding: ContainerMainBinding
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -52,81 +38,57 @@ class FragmentViewBindingKtxTest {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
+
             viewBinding.tvHead.setOnClickListener {
                 viewBinding.tvHead.text = DATA_CHANGE
             }
         }
+    }
+
+    @Test
+    fun test_one() {
+        launchFragmentInContainer<ExampleOneFragment>()
+        Espresso.onView(ViewMatchers.withId(R.id.tv_head))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check { view, _ -> view.callOnClick() }
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.withText(DATA_CHANGE)))
+        Espresso.pressBackUnconditionally()
+    }
+
+    class ExampleOneFragment : BaseFragment() {
+        override val viewBinding by ViewBinding(ContainerMainBinding::class)
     }
 
     @Test
     fun test_two() {
         launchFragmentInContainer<ExampleTwoFragment>()
-        Espresso
-            .onView(ViewMatchers.withText(DATA))
+        Espresso.onView(ViewMatchers.withId(R.id.tv_head))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .perform(ViewActions.click())
-//        Espresso
-//            .onView(ViewMatchers.withText(DATA_CHANGE))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check { view, _ -> view.callOnClick() }
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.withText(DATA_CHANGE)))
         Espresso.pressBackUnconditionally()
     }
 
-    class ExampleTwoFragment : Fragment() {
+    class ExampleTwoFragment : BaseFragment() {
 
-        private val viewBinding by viewBinding(ContainerMainBinding::class)
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            viewBinding.tvHead.text = DATA
-        }
-
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ) = viewBinding.root
-
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            viewBinding.tvHead.setOnClickListener {
-                viewBinding.tvHead.text = DATA_CHANGE
-            }
-        }
+        override val viewBinding by viewBinding(ContainerMainBinding::class)
     }
 
     @Test
     fun test_three() {
         launchFragmentInContainer<ExampleThreeFragment>()
-        Espresso
-            .onView(ViewMatchers.withText(DATA))
+        Espresso.onView(ViewMatchers.withId(R.id.tv_head))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .perform(ViewActions.click())
-//        Espresso
-//            .onData(ViewMatchers.withText(DATA_CHANGE))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check { view, _ -> view.callOnClick() }
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.withText(DATA_CHANGE)))
         Espresso.pressBackUnconditionally()
     }
 
-    class ExampleThreeFragment : Fragment() {
+    class ExampleThreeFragment : BaseFragment() {
 
-        private val viewBinding by viewBinding<ContainerMainBinding>()
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            viewBinding.tvHead.text = DATA
-        }
-
-        override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ) = viewBinding.root
-
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            viewBinding.tvHead.setOnClickListener {
-                viewBinding.tvHead.text = DATA_CHANGE
-            }
-        }
+        override val viewBinding by viewBinding<ContainerMainBinding>()
     }
 }
