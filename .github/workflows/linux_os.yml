@@ -11,7 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        api-level: [ 29 ]
+        api-level:
+          - 23
+          - 24
+          - 25
+          - 26
+          - 27
+          - 28
+          - 29
+          - 30
+          - 31
+          - 32
+          - 33
+          - 34
+          - 35
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,14 +47,14 @@ jobs:
           java-version: "21"
           distribution: "oracle"
 
-      - name: Gradle cache
-        uses: actions/cache@v4
-        id: gradle-cache
-        with:
-          path: |
-            ~/.gradle
-            ~/.m2
-          key: gradle-${{ github.job }}-${{ hashFiles('versions.gradle') }}
+#      - name: Gradle cache
+#        uses: actions/cache@v4
+#        id: gradle-cache
+#        with:
+#          path: |
+#            ~/.gradle
+#            ~/.m2
+#          key: gradle-${{ github.job }}-${{ hashFiles('versions.gradle') }}
 
       - name: AVD cache
         uses: actions/cache@v4
@@ -49,7 +62,7 @@ jobs:
         with:
           path: |
             /usr/local/lib/android/sdk/system-images
-          key: avd-${{ github.job }}-${{ matrix.api-level }}
+          key: avd-${{ matrix.api-level }}
 
       - name: Enable KVM group perms
         run: |
@@ -57,22 +70,48 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Running debug code coverage
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          arch: x86_64
-          force-avd-creation: false
-          emulator-options: -nocache -no-boot-anim -no-snapshot -no-snapshot-load -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -camera-back none -accel on -qemu -cpu host,kvm=on -smp $(nproc) -m $(expr 1024 \* 16)
-          disable-animations: true
-          script: |
-            ./gradlew debugCodeCoverage
+      - name: Install AVD dependencies
+        run: |
+          sudo apt install --no-install-suggests --no-install-recommends mesa-vulkan-drivers libpulse0 -y
+
+      - name: Start AVD
+        env:
+          API_LEVEL: ${{ matrix.api-level }}
+        run: |
+          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+          echo yes | sdkmanager --licenses > /dev/null
+          sdkmanager --install "cmdline-tools;latest" --channel=0 > /dev/null
+          echo y | sdkmanager --install emulator --channel=0 > /dev/null
+          echo y | sdkmanager --install "system-images;android-$API_LEVEL;default;x86_64" --channel=0 > /dev/null
+          avdmanager create avd --force -n test -k "system-images;android-$API_LEVEL;default;x86_64" -d "17"
+          sdkmanager --install platform-tools --channel=0> /dev/null
+          export PATH=$PATH:$ANDROID_HOME/platform-tools
+          adb kill-server
+          adb start-server
+          export PATH=$PATH:$ANDROID_HOME/emulator
+          if [ $API_LEVEL -lt 26 ]; then
+            emulator -avd test -metrics-collection -log-nofilter -no-boot-anim -nocache -no-snapstorage -no-snapshot -no-snapshot-load -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -camera-back none -accel on -memory $(expr 1024 \* 2) -cores 2 &
+          else
+            emulator -avd test -metrics-collection -log-nofilter -no-boot-anim -nocache -no-snapstorage -no-snapshot -no-snapshot-load -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -camera-back none -accel on -qemu -cpu host,kvm=on -smp $(nproc) -m $(expr 1024 \* 6) &
+          fi
+
+      - name: Run code coverage
+        run: |
+          export PATH=$PATH:$ANDROID_HOME/platform-tools
+          adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+          adb shell settings put global window_animation_scale 0.0
+          adb shell settings put global transition_animation_scale 0.0
+          adb shell settings put global animator_duration_scale 0.0
+          adb shell input keyevent 82
+          ./gradlew debugCodeCoverage
 
       - name: Uploading code coverage
         uses: actions/upload-artifact@v4
         with:
-          name: code_coverage
+          name: code-coverage_api-level-${{ matrix.api-level }}
+          overwrite: true
           path: build/jacoco_code_coverage
+          compression-level: 9
 
   publish_to_maven_local:
     runs-on: ubuntu-latest

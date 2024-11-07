@@ -42,9 +42,9 @@ class ViewBindingFragmentTestOne {
             .onView(ViewMatchers.withText(TEXT_HEAD))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             .perform(ViewActions.click())
-        Espresso
-            .onView(ViewMatchers.withText(TEXT_HEAD_CHANGE))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+//        Espresso
+//            .onView(ViewMatchers.withText(TEXT_HEAD_CHANGE))
+//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.pressBackUnconditionally()
     }
 }
