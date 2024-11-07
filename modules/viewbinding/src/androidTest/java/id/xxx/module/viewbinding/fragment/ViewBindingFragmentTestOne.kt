@@ -7,6 +7,8 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import id.xxx.module.viewbinding.ktx.FragmentViewBindingKtxTest.Companion.DATA_CHANGE
+import id.xxx.modules.viewbinding.R
 import id.xxx.modules.viewbinding.databinding.ContainerMainBinding
 import org.junit.Test
 
@@ -16,6 +18,17 @@ class ViewBindingFragmentTestOne {
 
         const val TEXT_HEAD = "TEXT HEAD"
         const val TEXT_HEAD_CHANGE = "TEXT HEAD CHANGE"
+    }
+
+    @Test
+    fun test() {
+        launchFragmentInContainer<ExampleFragment>()
+        Espresso.onView(ViewMatchers.withId(R.id.tv_head))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check { view, _ -> view.callOnClick() }
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.withText(TEXT_HEAD_CHANGE)))
+        Espresso.pressBackUnconditionally()
     }
 
     class ExampleFragment : ViewBindingFragment<ContainerMainBinding>() {
@@ -33,18 +46,5 @@ class ViewBindingFragmentTestOne {
                 viewBinding.tvHead.text = TEXT_HEAD_CHANGE
             }
         }
-    }
-
-    @Test
-    fun test() {
-        launchFragmentInContainer<ExampleFragment>()
-        Espresso
-            .onView(ViewMatchers.withText(TEXT_HEAD))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .perform(ViewActions.click())
-//        Espresso
-//            .onView(ViewMatchers.withText(TEXT_HEAD_CHANGE))
-//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.pressBackUnconditionally()
     }
 }

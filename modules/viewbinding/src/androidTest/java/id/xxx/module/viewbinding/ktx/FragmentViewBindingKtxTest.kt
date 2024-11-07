@@ -21,6 +21,39 @@ class FragmentViewBindingKtxTest {
         const val DATA_CHANGE = "MOCK DATA CHANGE"
     }
 
+    @Test
+    fun test_one() {
+        launchFragmentInContainer<ExampleOneFragment>()
+        Espresso.onView(ViewMatchers.withId(R.id.tv_head))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check { view, _ -> view.callOnClick() }
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.withText(DATA_CHANGE)))
+        Espresso.pressBackUnconditionally()
+    }
+
+    @Test
+    fun test_two() {
+        launchFragmentInContainer<ExampleTwoFragment>()
+        Espresso.onView(ViewMatchers.withId(R.id.tv_head))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check { view, _ -> view.callOnClick() }
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.withText(DATA_CHANGE)))
+        Espresso.pressBackUnconditionally()
+    }
+
+    @Test
+    fun test_three() {
+        launchFragmentInContainer<ExampleThreeFragment>()
+        Espresso.onView(ViewMatchers.withId(R.id.tv_head))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check { view, _ -> view.callOnClick() }
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.withText(DATA_CHANGE)))
+        Espresso.pressBackUnconditionally()
+    }
+
     abstract class BaseFragment : Fragment() {
 
         protected abstract val viewBinding: ContainerMainBinding
@@ -45,46 +78,13 @@ class FragmentViewBindingKtxTest {
         }
     }
 
-    @Test
-    fun test_one() {
-        launchFragmentInContainer<ExampleOneFragment>()
-        Espresso.onView(ViewMatchers.withId(R.id.tv_head))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .check { view, _ -> view.callOnClick() }
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .check(ViewAssertions.matches(ViewMatchers.withText(DATA_CHANGE)))
-        Espresso.pressBackUnconditionally()
-    }
-
     class ExampleOneFragment : BaseFragment() {
         override val viewBinding by ViewBinding(ContainerMainBinding::class)
-    }
-
-    @Test
-    fun test_two() {
-        launchFragmentInContainer<ExampleTwoFragment>()
-        Espresso.onView(ViewMatchers.withId(R.id.tv_head))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .check { view, _ -> view.callOnClick() }
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .check(ViewAssertions.matches(ViewMatchers.withText(DATA_CHANGE)))
-        Espresso.pressBackUnconditionally()
     }
 
     class ExampleTwoFragment : BaseFragment() {
 
         override val viewBinding by viewBinding(ContainerMainBinding::class)
-    }
-
-    @Test
-    fun test_three() {
-        launchFragmentInContainer<ExampleThreeFragment>()
-        Espresso.onView(ViewMatchers.withId(R.id.tv_head))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .check { view, _ -> view.callOnClick() }
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .check(ViewAssertions.matches(ViewMatchers.withText(DATA_CHANGE)))
-        Espresso.pressBackUnconditionally()
     }
 
     class ExampleThreeFragment : BaseFragment() {
