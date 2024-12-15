@@ -21,14 +21,16 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var instance: AppDatabase? = null
 
-        fun getInstance(context: Context) =
+        fun getInstance(context: Context?) =
             instance ?: synchronized(AppDatabase::class.java) {
+                val appContext = context?.applicationContext
+                    ?: throw NullPointerException("Context")
 //                instance ?: Room.databaseBuilder(
 //                    context.applicationContext,
 //                    AppDatabase::class.java,
 //                    "app_database"
 //                )
-                instance ?: Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
+                instance ?: Room.inMemoryDatabaseBuilder(appContext, AppDatabase::class.java)
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build().also { instance = it }

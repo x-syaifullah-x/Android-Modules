@@ -10,13 +10,13 @@ import id.xxx.module.auth.ktx.getListener
 import id.xxx.module.auth.ktx.hideSoftInputFromWindow
 import id.xxx.module.auth.preferences.SignInputPreferences
 import id.xxx.module.auth.utils.ValidationUtils
-import id.xxx.module.google_sign.GoogleAccountContract
+import id.xxx.module.google_sign.GoogleAccountResultContract
 import id.xxx.modules.auth.auth_presentation.databinding.PasswordSignInFragmentBinding
 
 class PasswordSignInFragment : BaseFragment<PasswordSignInFragmentBinding>() {
 
     private val googleAccountLauncher =
-        registerForActivityResult(GoogleAccountContract()) { result ->
+        registerForActivityResult(GoogleAccountResultContract()) { result ->
             if (result != null) {
                 getListener<IPasswordSignInFragment>()?.onAction(
                     IPasswordSignInFragment.Action.ClickContinueWithGoogle(

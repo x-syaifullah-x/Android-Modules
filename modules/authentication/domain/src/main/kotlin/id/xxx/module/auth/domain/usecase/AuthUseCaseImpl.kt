@@ -1,6 +1,6 @@
 package id.xxx.module.auth.domain.usecase
 
-import id.xxx.module.auth.domain.model.TypeSign
+import id.xxx.module.auth.domain.model.AuthenticationType
 import id.xxx.module.auth.domain.repository.AuthRepository
 
 class AuthUseCaseImpl private constructor(
@@ -19,7 +19,7 @@ class AuthUseCaseImpl private constructor(
             }
     }
 
-    override fun sign(type: TypeSign) = repo.sign(type)
+    override fun sign(type: AuthenticationType) = repo.sign(type)
 
     override fun getCurrentUser() = repo.getCurrentUser()
 }

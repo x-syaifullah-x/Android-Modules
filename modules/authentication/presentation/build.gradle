@@ -9,11 +9,14 @@ android {
 }
 
 dependencies {
-    implementation project(":modules:authentication:domain")
     api project(":modules:viewbinding")
 
-    implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
+    implementation project(":modules:authentication:domain")
+
+//    implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
     implementation "androidx.constraintlayout:constraintlayout:$vAndroidxConstrainLayout"
     implementation "androidx.fragment:fragment-ktx:$vAndroidxFragment"
+
+    implementation "com.google.android.gms:play-services-auth:$vComGoogleAndroidGmsPlayServicesAuth"
     implementation "com.google.android.material:material:$vMaterial"
 }

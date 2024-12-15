@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:name="id.xxx.module.auth.App"
+        android:name="id.xxx.module.authentication.DemoApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +12,7 @@
         android:theme="@style/ThemeAppNoActionBar">
 
         <activity
-            android:name="id.xxx.module.auth.activities.MainActivity"
+            android:name="id.xxx.module.authentication.DemoActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
         </activity>
 
         <provider
-            android:name="id.xxx.module.auth.providers.MyFileProvider"
+            android:name="id.xxx.module.authentication.providers.AuthenticationFileProvider"
             android:authorities="${applicationId}.FILE_PROVIDER"
             android:exported="false"
             android:grantUriPermissions="true">

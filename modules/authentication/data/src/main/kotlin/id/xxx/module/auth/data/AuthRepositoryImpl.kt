@@ -8,7 +8,7 @@ import id.xxx.module.auth.data.source.local.entity.UserEntity
 import id.xxx.module.auth.data.source.remote.RemoteDataSource
 import id.xxx.module.auth.domain.exception.AuthInvalidCredentialsException
 import id.xxx.module.auth.domain.exception.AuthNetworkException
-import id.xxx.module.auth.domain.model.TypeSign
+import id.xxx.module.auth.domain.model.AuthenticationType
 import id.xxx.module.auth.domain.model.UserModel
 import id.xxx.module.auth.domain.repository.AuthRepository
 import id.xxx.module.common.Resources
@@ -40,14 +40,20 @@ class AuthRepositoryImpl private constructor(
         }
     }
 
-    override fun sign(type: TypeSign): Flow<Resources<UserModel>> = flow {
+    override fun sign(type: AuthenticationType): Flow<Resources<UserModel>> = flow {
         emit(Resources.Loading())
         val signResult = remote.sign(type)
         val uid = signResult.uid
         val isNewUser = signResult.isNewUser
-        val userEntity = UserEntity(uid = uid, isLoggedIn = true, isNewUser = isNewUser)
+        val signProvider = signResult.signProvider
+        val userEntity = UserEntity(
+            uid = uid,
+            isLoggedIn = true,
+            isNewUser = isNewUser,
+            signProvider = signProvider
+        )
         val isSaveToLocal = local.save(userEntity)
-        val signModel = UserModel(uid = uid, isNewUser = isNewUser)
+        val signModel = UserModel(uid = uid, isNewUser = isNewUser, signProvider = signProvider)
         if (isSaveToLocal) {
             emit(Resources.Success(signModel))
             return@flow
@@ -75,8 +81,11 @@ class AuthRepositoryImpl private constructor(
                     if (it == null)
                         null
                     else
-                        UserModel(uid = it.uid, isNewUser = it.isNewUser)
-                res
+                        UserModel(
+                            uid = it.uid,
+                            isNewUser = it.isNewUser,
+                            signProvider = it.signProvider
+                        )
                 trySend(Resources.Success(res))
             }
         }

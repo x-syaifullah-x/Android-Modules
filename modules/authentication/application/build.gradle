@@ -46,6 +46,7 @@ dependencies {
     implementation project(":modules:authentication:presentation")
 
     implementation "androidx.appcompat:appcompat:$vAndroidxAppCompat"
+    implementation "androidx.constraintlayout:constraintlayout:$vAndroidxConstrainLayout"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$vAndroidxLifecycle"
 
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$vLeakcanaryAndroid"

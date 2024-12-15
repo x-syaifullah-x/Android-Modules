@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_web_client_id" />
+    <string name="continue_with_google">Continue With Google</string>
+    <string name="continue_with_password">Continue With Password</string>
+    <string name="continue_with_phone">Continue With Phone</string>
+    <string name="or">OR</string>
+    <string name="title_sign_in">Sign In To XXX</string>
+    <string name="title_sign_up">Create Your Account</string>
+    <string name="title_sign_phone">Continue With Phone</string>
+    <string-array name="don_t_have_an_account">
+        <item>Don\'t have an account?\u0020</item>
+        <item>Signup</item>
+    </string-array>
+    <string-array name="already_have_an_account">
+        <item>Already have an account?\u0020</item>
+        <item>Login</item>
+    </string-array>
+    <string name="text_button_login">LOGIN</string>
+    <string name="text_button_signup">SIGNUP</string>
+</resources>

@@ -4,5 +4,6 @@ import java.io.Serializable
 
 data class UserModel(
     val uid: String,
-    val isNewUser: Boolean
+    val isNewUser: Boolean,
+    val signProvider: String
 ) : Serializable

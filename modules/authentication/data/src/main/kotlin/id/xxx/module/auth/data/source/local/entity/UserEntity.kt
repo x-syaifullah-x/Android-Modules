@@ -14,7 +14,10 @@ data class UserEntity(
     val isLoggedIn: Boolean,
 
     @ColumnInfo(name = COLUMN_NAME_IS_NEW_USER)
-    val isNewUser: Boolean
+    val isNewUser: Boolean,
+
+    @ColumnInfo(name = COLUMN_NAME_SIGN_PROVIDER)
+    val signProvider: String
 ) {
 
     companion object {
@@ -23,5 +26,6 @@ data class UserEntity(
         const val COLUMN_NAME_UID = "uid"
         const val COLUMN_NAME_IS_LOGGED_IN = "is_logged_in"
         const val COLUMN_NAME_IS_NEW_USER = "is_new_user"
+        const val COLUMN_NAME_SIGN_PROVIDER = "sign_provider"
     }
 }

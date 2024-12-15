@@ -4,14 +4,15 @@ apply from: "$rootDir/common_android_library.gradle"
 apply plugin: "com.google.devtools.ksp"
 
 dependencies {
+    // Project
     implementation project(":modules:authentication:domain")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:$vFirebaseBom"))
-    implementation "com.google.firebase:firebase-auth-ktx"
+    api(platform("com.google.firebase:firebase-bom:$vFirebaseBom"))
+    api "com.google.firebase:firebase-auth-ktx"
 
     // Room
-    implementation "androidx.room:room-ktx:$vAndroidxRoom" // support suspend fun
+    implementation "androidx.room:room-ktx:$vAndroidxRoom" // Support the suspend function
     api "androidx.room:room-runtime:$vAndroidxRoom"
     ksp "androidx.room:room-compiler:$vAndroidxRoom"
 }

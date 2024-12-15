@@ -2,13 +2,13 @@ package id.xxx.example.chat.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import id.xxx.module.google_sign.GoogleAccountContract
+import id.xxx.module.google_sign.GoogleAccountResultContract
 
 class MainActivity : AppCompatActivity() {
 
 
     private val activityResultLauncher =
-        registerForActivityResult(GoogleAccountContract()) { result ->
+        registerForActivityResult(GoogleAccountResultContract()) { result ->
             if (result != null) {
 //                auth.signInWithCredential(
 //                    GoogleAuthProvider.getCredential("${result.idToken}", null)
